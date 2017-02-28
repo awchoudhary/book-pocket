@@ -52,27 +52,18 @@ public class SearchBooksActivity extends AppCompatActivity {
     }
 
     private void handleIntent(Intent intent) {
+        String query = "";
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
+            query = intent.getStringExtra(SearchManager.QUERY);
         }
 
-        //create same book list for testing purposes
-        ArrayList<Book> books = new ArrayList<Book>();
-        Book b1 = new Book("Half a King", "Joe Abercrombie", "http://books.google.com/books/content?id=K1-LL9vlxZcC&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api");
-        Book b2 = new Book("Magicians", "Leive Grossman", "http://books.google.com/books/content?id=kJJdRiEVHxYC&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api");
-        books.add(b1);
-        books.add(b2);
-
-        adaptor.updateEntries(books);
-
-        //LoadFeedData loadFeedData = new LoadFeedData(adapter);
-        //loadFeedData.execute();
+        SearchBooksTask task = new SearchBooksTask(this, adaptor);
+        task.execute(query);
     }
 
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if(id == R.id.action_search){
             return onSearchRequested();
         }

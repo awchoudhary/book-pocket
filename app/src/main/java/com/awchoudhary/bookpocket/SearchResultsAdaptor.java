@@ -58,7 +58,6 @@ public class SearchResultsAdaptor extends BaseAdapter{
         //download image into imageview
         Picasso.with(context)
                 .load(books.get(position).getCoverUrl())
-                .placeholder(R.drawable.sabriel_cover)
                 .error(R.drawable.sample_cover)
                 .into(cover);
 
