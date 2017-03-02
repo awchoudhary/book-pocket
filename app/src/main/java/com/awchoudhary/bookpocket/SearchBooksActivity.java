@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -34,6 +36,16 @@ public class SearchBooksActivity extends AppCompatActivity {
         ListView searchResultsList = (ListView) findViewById(R.id.searchResultsList);
         adaptor = new SearchResultsAdaptor(this);
         searchResultsList.setAdapter(adaptor);
+
+        //attach list item click event
+        searchResultsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
+                Intent appInfo = new Intent(SearchBooksActivity.this, ViewBookActivity.class);
+                startActivity(appInfo);
+            }
+        });
+
 
         handleIntent(getIntent());
     }
