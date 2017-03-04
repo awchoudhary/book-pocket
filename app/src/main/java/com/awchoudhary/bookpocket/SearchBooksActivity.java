@@ -1,6 +1,5 @@
 package com.awchoudhary.bookpocket;
 
-import android.app.ListActivity;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +11,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import java.util.ArrayList;
 
 /**
  * Created by awaeschoudhary on 2/23/17.
@@ -69,7 +67,7 @@ public class SearchBooksActivity extends AppCompatActivity {
             query = intent.getStringExtra(SearchManager.QUERY);
         }
 
-        SearchBooksTask task = new SearchBooksTask(this, adaptor);
+        GoogleBooksSearchTask task = new GoogleBooksSearchTask(this, adaptor);
         task.execute(query);
     }
 

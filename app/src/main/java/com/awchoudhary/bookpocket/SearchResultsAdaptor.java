@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -49,16 +50,21 @@ public class SearchResultsAdaptor extends BaseAdapter{
         View rowView = layoutInflater.inflate(R.layout.search_results_list, parent, false);
         ImageView cover = (ImageView) rowView.findViewById(R.id.coverImage);
         TextView title = (TextView) rowView.findViewById(R.id.title);
+        TextView subtitle = (TextView) rowView.findViewById(R.id.subtitle);
         TextView author = (TextView) rowView.findViewById(R.id.author);
+        TextView numPages = (TextView) rowView.findViewById(R.id.numPages);
 
         //set text values.
         title.setText(books.get(position).getName());
+        subtitle.setText(books.get(position).getSubtitle());
         author.setText(books.get(position).getAuthor());
+        numPages.setText(Integer.toString(books.get(position).getNumPages()) + " Pages");
 
         //download image into imageview
         Picasso.with(context)
                 .load(books.get(position).getCoverUrl())
-                .error(R.drawable.sample_cover)
+                .placeholder(R.drawable.default_cover_image)
+                .error(R.drawable.default_cover_image)
                 .into(cover);
 
         return rowView;
