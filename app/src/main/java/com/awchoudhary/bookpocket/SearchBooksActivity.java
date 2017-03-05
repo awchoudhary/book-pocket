@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 
@@ -31,7 +32,7 @@ public class SearchBooksActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //set the list adaptor
-        ListView searchResultsList = (ListView) findViewById(R.id.searchResultsList);
+        final ListView searchResultsList = (ListView) findViewById(R.id.searchResultsList);
         adaptor = new SearchResultsAdaptor(this);
         searchResultsList.setAdapter(adaptor);
 
@@ -39,8 +40,11 @@ public class SearchBooksActivity extends AppCompatActivity {
         searchResultsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
-                Intent appInfo = new Intent(SearchBooksActivity.this, ViewBookActivity.class);
-                startActivity(appInfo);
+                //get selected book and pass it into the next view
+                Book selectedBook = (Book)searchResultsList.getItemAtPosition(position);
+                Intent intent = new Intent(SearchBooksActivity.this, ViewBookActivity.class);
+                intent.putExtra("book", selectedBook);
+                startActivity(intent);
             }
         });
 

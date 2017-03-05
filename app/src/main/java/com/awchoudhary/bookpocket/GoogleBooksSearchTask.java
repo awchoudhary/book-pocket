@@ -93,7 +93,7 @@ public class GoogleBooksSearchTask extends
         for(int i = 0; i < items.length(); i++){
             Book book = new Book();
             JSONObject jsonBook = items.getJSONObject(i);
-            JSONObject volumeInfo = new JSONObject();//the volumeInfo object contains most information about the book
+            JSONObject volumeInfo = new JSONObject(); //the volumeInfo object contains most information about the book
 
             //set id to google books volume id
             if(jsonBook.has("id")){

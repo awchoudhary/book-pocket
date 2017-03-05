@@ -85,18 +85,7 @@
                     android:textColor="@color/colorAccent"
                     android:visibility="gone"/>
 
-                <Button
-                    android:id="@+id/add_btn"
 
-                    android:text="Start Reading"
-                    android:textColor="#FCF8F0"
-                    android:textSize="11sp"
-
-                    android:layout_width="117dp"
-                    android:layout_height="28dp"
-                    android:background="@drawable/add_button_background"
-
-                    android:layout_marginTop="10dp" />
 
             </LinearLayout>
 

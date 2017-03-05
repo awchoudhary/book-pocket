@@ -1,9 +1,11 @@
 package com.awchoudhary.bookpocket;
 
+import java.io.Serializable;
+
 /**
  * Created by awaeschoudhary on 2/21/17.
  */
-public class Book {
+public class Book implements Serializable {
     private String id;
     private String name;
     private String subtitle;
