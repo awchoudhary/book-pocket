@@ -41,7 +41,7 @@ public class BookArrayAdaptor extends ArrayAdapter<Book> {
         title.setText(books.get(position).getName());
         author.setText(books.get(position).getAuthor());
 
-        //download image into imageview
+        //download image into imageview. TODO: Change to work with Glide
         Picasso.with(context)
                 .load(books.get(position).getCoverUrl())
                 .error(R.drawable.sample_cover)

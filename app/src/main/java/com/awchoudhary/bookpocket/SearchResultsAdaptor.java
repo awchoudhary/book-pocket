@@ -56,7 +56,7 @@ public class SearchResultsAdaptor extends BaseAdapter{
         subtitle.setText("(" + books.get(position).getSubtitle() + ")");
         author.setText(books.get(position).getAuthor());
 
-        //download image into imageview
+        //download image into imageview TODO: Change to work with Glide
         Picasso.with(context)
                 .load(books.get(position).getCoverUrl())
                 .placeholder(R.drawable.default_cover_image)

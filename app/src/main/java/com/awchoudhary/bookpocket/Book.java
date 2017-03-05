@@ -1,19 +1,27 @@
 package com.awchoudhary.bookpocket;
 
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+
 import java.io.Serializable;
 
 /**
  * Created by awaeschoudhary on 2/21/17.
  */
+
 public class Book implements Serializable {
     private String id;
-    private String name;
+    private String name; //TODO: Change "name" to "title"
     private String subtitle;
     private String author;
     private String coverUrl;
     private int numPages;
     private String description;
     private int ratings;
+    private String notes;
+    private boolean completed;
+    private DateTime dateStarted;
+    private DateTime dateCompleted;
 
     public Book(){}
 
@@ -77,5 +85,45 @@ public class Book implements Serializable {
     }
     public void setRatings(int ratings){
         this.ratings = ratings;
+    }
+
+    public String getNotes(){
+        return notes;
+    }
+    public void setNotes(String notes){
+        this.notes = notes;
+    }
+
+    public boolean getCompleted(){
+        return completed;
+    }
+    public void setCompleted(boolean completed){
+        this.completed = completed;
+    }
+
+    public DateTime getDateStarted(){
+        return dateStarted;
+    }
+    public void setDateStarted(DateTime dateStarted){
+        this.dateStarted = dateStarted;
+    }
+
+    public DateTime getDateCompleted(){
+        return dateCompleted;
+    }
+    public void setDateCompleted(DateTime dateCompleted){
+        this.dateCompleted = dateCompleted;
+    }
+
+    public int getDaysSinceStarted(){
+        return Days.daysBetween(dateStarted, new DateTime()).getDays();
+    }
+
+    public int getDaysTakenToComplete(){
+        return Days.daysBetween(dateStarted, dateCompleted).getDays();
+    }
+
+    public int getDaysSinceCompleted(){
+        return Days.daysBetween(dateCompleted, new DateTime()).getDays();
     }
 }
