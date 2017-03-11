@@ -8,7 +8,7 @@
         app:showAsAction="never" />
     <item android:id="@+id/action_search"
         android:icon="@drawable/icon_search"
-        android:title="@string/search_hint"
+        android:title="@string/hint_search"
         app:showAsAction="ifRoom"
         android:orderInCategory="1"
         android:menuCategory="secondary"/>

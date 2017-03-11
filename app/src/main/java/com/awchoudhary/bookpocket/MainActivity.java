@@ -43,15 +43,14 @@ public class MainActivity extends AppCompatActivity
         // Assign adapter to ListView
         booksList.setAdapter(new BookArrayAdaptor(this, books));
 
-        /* Might need this button for later
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(MainActivity.this, CreateBookActivity.class);
+                startActivity(intent);
             }
-        })*/
+        });
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -39,6 +39,13 @@
             android:label="View Book"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+
+        <activity
+            android:name=".CreateBookActivity"
+            android:label="Create Book"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan">
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

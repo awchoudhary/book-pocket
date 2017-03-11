@@ -86,8 +86,13 @@ public class GoogleBooksSearchTask extends
         ArrayList<Book> results = new ArrayList<Book>();
         JSONObject reader = new JSONObject(jsonResponse);
 
+        //holds list of json books
+        JSONArray items = new JSONArray();
+
         //get the array of search results
-        JSONArray items = reader.getJSONArray("items");
+        if(reader.has("items")){
+            items = reader.getJSONArray("items");
+        }
 
         //populate results list from items array
         for(int i = 0; i < items.length(); i++){
