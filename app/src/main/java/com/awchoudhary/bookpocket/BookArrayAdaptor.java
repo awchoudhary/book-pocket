@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -41,10 +42,12 @@ public class BookArrayAdaptor extends ArrayAdapter<Book> {
         title.setText(books.get(position).getName());
         author.setText(books.get(position).getAuthor());
 
-        //download image into imageview. TODO: Change to work with Glide
-        Picasso.with(context)
+        //download image into imageview.
+        Glide.with(context)
                 .load(books.get(position).getCoverUrl())
-                .error(R.drawable.sample_cover)
+                .placeholder(R.drawable.default_cover_image)
+                .error(R.drawable.default_cover_image)
+                .override(131, 200) //TODO: Needs to be responsive
                 .into(cover);
 
         return rowView;

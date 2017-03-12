@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -56,11 +57,12 @@ public class SearchResultsAdaptor extends BaseAdapter{
         subtitle.setText("(" + books.get(position).getSubtitle() + ")");
         author.setText(books.get(position).getAuthor());
 
-        //download image into imageview TODO: Change to work with Glide
-        Picasso.with(context)
+        //download image into imageview
+        Glide.with(context)
                 .load(books.get(position).getCoverUrl())
                 .placeholder(R.drawable.default_cover_image)
                 .error(R.drawable.default_cover_image)
+                .override(131, 200) //TODO: Needs to be responsive
                 .into(cover);
 
         //if the subtitle is null, hide the textview for it
