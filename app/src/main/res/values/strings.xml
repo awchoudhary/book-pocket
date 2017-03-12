@@ -6,14 +6,16 @@
 
     <string name="action_settings">Settings</string>
 
-    <!-- Hint Strings -->
+    <!-- Input Hint Strings -->
     <string name="hint_search">Search Title or Author</string>
     <string name="hint_title_input">Title</string>
     <string name="hint_subtitle_input">Subtitle</string>
     <string name="hint_author_input">Author</string>
-    <string name="hint_num_pages_input">Number of Pages</string>
+    <string name="hint_num_pages_input">Pages</string>
     <string name="hint_date_started_input">Date Started</string>
     <string name="hint_date_completed_input">Date completed</string>
+    <string name="hint_description">Description</string>
+    <string name="hint_notes">Notes</string>
 
     <!-- Label Strings -->
     <string name="label_Title">Title</string>
@@ -24,4 +26,7 @@
     <string name="label_Date_Completed">Date Completed</string>
     <string name="label_description">Description</string>
     <string name="label_notes">Notes</string>
+    <string name="label_save_button">Save</string>
+    <string name="label_cancel_button">Cancel</string>
+
 </resources>

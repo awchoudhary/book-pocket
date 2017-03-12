@@ -13,110 +13,159 @@
     tools:context="com.awchoudhary.bookpocket.CreateBookActivity"
     tools:showIn="@layout/activity_create_book">
 
+    <android.support.percent.PercentRelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.awchoudhary.bookpocket.CreateBookActivity"
+        tools:showIn="@layout/activity_create_book">
 
 
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="100dp" >
+        <ScrollView
+            android:id="@+id/scrollView1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_heightPercent="92%"
+            app:layout_widthPercent="100%" >
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/coverImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/input_spacing"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/goldenhand_cover"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="@dimen/input_spacing"
+                    android:background="@color/colorAccent" />
+
+                <EditText
+                    android:id="@+id/titleInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_title_input"
+                    android:background="@drawable/input_background"
+                    android:padding="@dimen/input_padding"
+                    android:layout_marginBottom="@dimen/input_spacing"
+                    android:inputType="text" />
+
+                <EditText
+                    android:id="@+id/subtitleInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_subtitle_input"
+                    android:background="@drawable/input_background"
+                    android:padding="@dimen/input_padding"
+                    android:layout_marginBottom="@dimen/input_spacing"
+                    android:inputType="text" />
+
+                <EditText
+                    android:id="@+id/authorInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_author_input"
+                    android:background="@drawable/input_background"
+                    android:padding="@dimen/input_padding"
+                    android:layout_marginBottom="@dimen/input_spacing"
+                    android:inputType="text" />
+
+                <EditText
+                    android:id="@+id/numPagesInput"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_num_pages_input"
+                    android:background="@drawable/input_background"
+                    android:padding="@dimen/input_padding"
+                    android:layout_marginBottom="@dimen/input_spacing"
+                    android:inputType="number" />
+
+                <EditText
+                    android:id="@+id/dateStartedInput"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_date_started_input"
+                    android:background="@drawable/input_background"
+                    android:padding="@dimen/input_padding"
+                    android:layout_marginBottom="@dimen/input_spacing"
+                    android:inputType="date" />
+
+                <EditText
+                    android:id="@+id/dateCompletedInput"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_date_completed_input"
+                    android:background="@drawable/input_background"
+                    android:padding="@dimen/input_padding"
+                    android:layout_marginBottom="@dimen/input_spacing"
+                    android:inputType="date" />
+
+                <EditText
+                    android:id="@+id/descriptionInput"
+                    android:inputType="textMultiLine"
+                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                    android:hint="@string/hint_description"
+                    android:background="@drawable/input_background"
+                    android:layout_marginBottom="@dimen/input_spacing"
+                    android:padding="@dimen/input_padding"
+                    android:minLines="5"/>
+
+                <EditText
+                    android:id="@+id/notesInput"
+                    android:inputType="textMultiLine"
+                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                    android:hint="@string/hint_notes"
+                    android:background="@drawable/input_background"
+                    android:layout_marginBottom="@dimen/input_spacing"
+                    android:padding="@dimen/input_padding"
+                    android:minLines="5"/>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <!-- - - - - - - - - - - - - - - - - - - - - - - - - Bottom toolbar - - - - - - - - - - - - - - - - - - - - - - - - -->
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="fill_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            app:layout_heightPercent="8%"
+            app:layout_widthPercent="100%"
+            android:layout_marginTop="10dp"
+            android:weightSum="1"
+            android:layout_alignParentBottom="true">
 
-            <ImageView
-                android:id="@+id/coverImage"
-                android:layout_width="wrap_content"
+            <Button android:layout_width="0dp"
+                android:layout_weight="0.5"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="10dp"
-                android:src="@drawable/goldenhand_cover"/>
+                android:layout_marginRight="10dp"
+                android:background="@drawable/add_button_background"
+                android:textColor="@color/colorAccent"
+                android:text="@string/label_save_button"
+                android:textSize="18sp"/> <!-- TODO: make text size size responsive across devices -->
 
-            <EditText
-                android:id="@+id/titleInput"
-                android:layout_width="wrap_content"
+            <Button android:layout_width="0dp"
+                android:layout_weight="0.5"
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_title_input"
-                android:background="@drawable/input_background"
-                android:padding="10dp"
-                android:layout_marginBottom="10dp"
-                android:inputType="text" />
-
-            <EditText
-                android:id="@+id/subtitleInput"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="@string/hint_subtitle_input"
-                android:background="@drawable/input_background"
-                android:padding="10dp"
-                android:layout_marginBottom="10dp"
-                android:inputType="text" />
-
-            <EditText
-                android:id="@+id/authorInput"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="@string/hint_author_input"
-                android:background="@drawable/input_background"
-                android:padding="10dp"
-                android:layout_marginBottom="10dp"
-                android:inputType="text" />
-
-            <EditText
-                android:id="@+id/numPagesInput"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="@string/hint_num_pages_input"
-                android:background="@drawable/input_background"
-                android:padding="10dp"
-                android:layout_marginBottom="10dp"
-                android:inputType="number" />
-
-            <EditText
-                android:id="@+id/dateStartedInput"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="@string/hint_date_started_input"
-                android:background="@drawable/input_background"
-                android:padding="10dp"
-                android:layout_marginBottom="10dp"
-                android:inputType="date" />
-
-            <EditText
-                android:id="@+id/dateCompletedInput"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="@string/hint_date_completed_input"
-                android:background="@drawable/input_background"
-                android:padding="10dp"
-                android:layout_marginBottom="10dp"
-                android:inputType="date" />
-
-            <EditText
-                android:id="@+id/descriptionInput"
-                android:inputType="textMultiLine"
-                android:layout_height="wrap_content"
-                android:layout_width="fill_parent"
-                android:hint="Description"
-                android:background="@drawable/input_background"
-                android:layout_marginBottom="10dp"
-                android:padding="10dp"/>
-
-            <EditText
-                android:id="@+id/notesInput"
-                android:inputType="textMultiLine"
-                android:layout_height="wrap_content"
-                android:layout_width="fill_parent"
-                android:hint="Notes"
-                android:background="@drawable/input_background"
-                android:paddingBottom="50dp"
-                android:padding="10dp"/>
+                android:background="@drawable/add_button_background"
+                android:textColor="@color/colorAccent"
+                android:text="@string/label_cancel_button"
+                android:textSize="18sp"/>
 
         </LinearLayout>
 
-
-    </ScrollView>
-
-    <include layout="@layout/bottom_save_bar" />
+    </android.support.percent.PercentRelativeLayout>
 
 </RelativeLayout>

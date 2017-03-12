@@ -7,4 +7,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="default_element_margin">16dp</dimen>
+
+    <dimen name="input_spacing">10dp</dimen>
+    <dimen name="input_padding">10dp</dimen>
 </resources>
