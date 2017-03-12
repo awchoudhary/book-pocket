@@ -96,7 +96,8 @@
                     android:background="@drawable/input_background"
                     android:padding="@dimen/input_padding"
                     android:layout_marginBottom="@dimen/input_spacing"
-                    android:inputType="date" />
+                    android:inputType="date"
+                    android:focusable="false" />
 
                 <EditText
                     android:id="@+id/dateCompletedInput"
@@ -106,7 +107,8 @@
                     android:background="@drawable/input_background"
                     android:padding="@dimen/input_padding"
                     android:layout_marginBottom="@dimen/input_spacing"
-                    android:inputType="date" />
+                    android:inputType="date"
+                    android:focusable="false" />
 
                 <EditText
                     android:id="@+id/descriptionInput"

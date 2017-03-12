@@ -33,20 +33,13 @@ public class MainActivity extends AppCompatActivity
         //handles db interactions
         DatabaseHandler db = new DatabaseHandler(this);
 
-        //populate the books list view
         // Listview to populate
         ListView booksList = (ListView) findViewById(R.id.booksList);
-
-        //create same book list for testing purposes
-        /*ArrayList<Book> books = new ArrayList<Book>();
-        Book b1 = new Book("Half a King", "Joe Abercrombie", "http://books.google.com/books/content?id=K1-LL9vlxZcC&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api");
-        Book b2 = new Book("Magicians", "Leive Grossman", "http://books.google.com/books/content?id=kJJdRiEVHxYC&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api");
-        books.add(b1);
-        books.add(b2);*/
 
         // populate listview with my books
         booksList.setAdapter(new BookArrayAdaptor(this, db.getAllMyBooks()));
 
+        //attach event handlers
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -100,11 +100,6 @@ public class GoogleBooksSearchTask extends
             JSONObject jsonBook = items.getJSONObject(i);
             JSONObject volumeInfo = new JSONObject(); //the volumeInfo object contains most information about the book
 
-            //set id to google books volume id
-            if(jsonBook.has("id")){
-                book.setId(jsonBook.getString("id"));
-            }
-
             if(jsonBook.has("volumeInfo")) {
                 volumeInfo = jsonBook.getJSONObject("volumeInfo");
             }

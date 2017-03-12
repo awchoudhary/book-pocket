@@ -20,13 +20,16 @@ import com.squareup.picasso.Picasso;
  */
 
 public class ViewBookActivity  extends AppCompatActivity {
+    //Book being viewed. Set in onCreate
+    private Book book = new Book();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_book);
 
         //get selected book
-        Book book = (Book)getIntent().getSerializableExtra("book");
+        book = (Book)getIntent().getSerializableExtra("book");
 
         //set title for action bar to name of selected book
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarViewBook);
@@ -48,8 +51,10 @@ public class ViewBookActivity  extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
 
+        //call create book view with the selected book
         if(id == R.id.action_add){
             Intent intent = new Intent(ViewBookActivity.this, CreateBookActivity.class);
+            intent.putExtra("book", book);
             startActivity(intent);
         }
 
@@ -65,7 +70,7 @@ public class ViewBookActivity  extends AppCompatActivity {
         RatingBar ratingBar = (RatingBar) findViewById(R.id.ratingBar);
         TextView description = (TextView) findViewById(R.id.descriptionText);
 
-        //load image
+        //load image. TODO: make cover image responsive
         Glide.with(this)
                 .load(b.getCoverUrl())
                 .override(257, 389)

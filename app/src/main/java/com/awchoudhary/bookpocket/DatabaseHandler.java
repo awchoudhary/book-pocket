@@ -124,8 +124,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 book.setDescription(cursor.getString(6));
                 book.setRatings(Integer.parseInt(cursor.getString(7)));
                 book.setNotes(cursor.getString(8));
-                book.setDateStarted(dateFormatter.parseDateTime(cursor.getString(9)));
-                book.setDateCompleted(dateFormatter.parseDateTime(cursor.getString(10)));
+                book.setDateStarted((!cursor.getString(9).equals("")) ? dateFormatter.parseDateTime(cursor.getString(9)) : null);
+                book.setDateCompleted((!cursor.getString(10).equals("")) ? dateFormatter.parseDateTime(cursor.getString(10)) : null);
 
                 // Adding book to list
                 myBooks.add(book);
