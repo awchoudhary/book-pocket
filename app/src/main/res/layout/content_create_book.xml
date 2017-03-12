@@ -40,7 +40,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/input_spacing"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/goldenhand_cover"/>
+                    android:src="@drawable/default_cover_image_big"/>
 
                 <View
                     android:layout_width="match_parent"

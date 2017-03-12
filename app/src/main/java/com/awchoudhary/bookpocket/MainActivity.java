@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity
         DatabaseHandler db = new DatabaseHandler(this);
 
         // Listview to populate
-        ListView booksList = (ListView) findViewById(R.id.booksList);
+        final ListView booksList = (ListView) findViewById(R.id.booksList);
 
         // populate listview with my books
         booksList.setAdapter(new BookArrayAdaptor(this, db.getAllMyBooks()));
@@ -64,8 +64,11 @@ public class MainActivity extends AppCompatActivity
         booksList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
-                Intent appInfo = new Intent(MainActivity.this, ViewBookActivity.class);
-                startActivity(appInfo);
+                //get selected book and pass it into the next view
+                Book selectedBook = (Book)booksList.getItemAtPosition(position);
+                Intent intent = new Intent(MainActivity.this, ViewBookActivity.class);
+                intent.putExtra("book", selectedBook);
+                startActivity(intent);
             }
         });
     }

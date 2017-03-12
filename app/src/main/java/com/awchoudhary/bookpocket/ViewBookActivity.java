@@ -69,6 +69,7 @@ public class ViewBookActivity  extends AppCompatActivity {
         TextView numPages = (TextView) findViewById(R.id.numPages);
         RatingBar ratingBar = (RatingBar) findViewById(R.id.ratingBar);
         TextView description = (TextView) findViewById(R.id.descriptionText);
+        TextView notes = (TextView) findViewById(R.id.notesText);
 
         //load image. TODO: make cover image responsive
         Glide.with(this)
@@ -91,7 +92,7 @@ public class ViewBookActivity  extends AppCompatActivity {
         //populate other text fields
         numPages.setText(Integer.toString(b.getNumPages()) + " Pages");
         author.setText(b.getAuthor());
-        description.setText(b.getDescription() != null ? b.getDescription() : "No Description");
-
+        description.setText((b.getDescription() != null && !b.getDescription().equals("")) ? b.getDescription() : "No Description");
+        notes.setText((b.getNotes() != null && !b.getNotes().equals("")) ? b.getNotes() : "No Notes");
     }
 }
