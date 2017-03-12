@@ -24,7 +24,6 @@
 
 
         <ScrollView
-            android:id="@+id/scrollView1"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_heightPercent="92%"
@@ -147,7 +146,8 @@
             android:weightSum="1"
             android:layout_alignParentBottom="true">
 
-            <Button android:layout_width="0dp"
+            <Button android:id="@+id/saveButton"
+                android:layout_width="0dp"
                 android:layout_weight="0.5"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
@@ -156,7 +156,8 @@
                 android:text="@string/label_save_button"
                 android:textSize="18sp"/> <!-- TODO: make text size size responsive across devices -->
 
-            <Button android:layout_width="0dp"
+            <Button android:id="@+id/cancelButton"
+                android:layout_width="0dp"
                 android:layout_weight="0.5"
                 android:layout_height="wrap_content"
                 android:background="@drawable/add_button_background"

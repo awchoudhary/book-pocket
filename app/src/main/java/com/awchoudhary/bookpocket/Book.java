@@ -19,7 +19,6 @@ public class Book implements Serializable {
     private String description;
     private int ratings;
     private String notes;
-    private boolean completed;
     private DateTime dateStarted;
     private DateTime dateCompleted;
 
@@ -92,13 +91,6 @@ public class Book implements Serializable {
     }
     public void setNotes(String notes){
         this.notes = notes;
-    }
-
-    public boolean getCompleted(){
-        return completed;
-    }
-    public void setCompleted(boolean completed){
-        this.completed = completed;
     }
 
     public DateTime getDateStarted(){

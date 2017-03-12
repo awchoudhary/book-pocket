@@ -31,9 +31,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_DESCRIPTION = "Description";
     private static final String KEY_RATINGS = "Ratings";
     private static final String KEY_NOTES = "Notes";
-    private static final String KEY_COMPLETED = "Completed";
-    private static final String KEY_DATE_STARTED = "Date Started";
-    private static final String KEY_DATE_COMPLETED = "Date Completed";
+    private static final String KEY_DATE_STARTED = "DateStarted";
+    private static final String KEY_DATE_COMPLETED = "DateCompleted";
+
+    //date formatter used to parse date strings
+    private DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd/MM/yyyy");
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -47,8 +49,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_SUB_TITLE + " TEXT," + KEY_AUTHOR + " TEXT,"
                 + KEY_NUM_PAGES + " INTEGER," + KEY_COVER_URL + " TEXT," +
                 KEY_DESCRIPTION + " TEXT," + KEY_RATINGS + " INTEGER," + KEY_NOTES
-                + " TEXT," + KEY_COMPLETED + " INTEGER," + KEY_DATE_STARTED + " TEXT," +
-                KEY_DATE_COMPLETED + " TEXT," + ")";
+                + " TEXT," + KEY_DATE_STARTED + " TEXT," +
+                KEY_DATE_COMPLETED + " TEXT" + ")";
 
         db.execSQL(CREATE_MY_BOOKS_TABLE);
     }
@@ -63,20 +65,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addBook(Book b){
+    public void createBook(Book b){
         SQLiteDatabase db = this.getWritableDatabase();
 
         //strings for dateStarted and dateCompleted
         String dateStartedString = "";
         String dateCompletedString = "";
-        DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
 
         //convert dateStarted and dateCompleted to strings first
         if(b.getDateStarted() != null) {
-            dateStartedString = fmt.print(b.getDateStarted());
+            dateStartedString = dateFormatter.print(b.getDateStarted());
         }
         if(b.getDateCompleted() != null) {
-            dateCompletedString = fmt.print(b.getDateCompleted());
+            dateCompletedString = dateFormatter.print(b.getDateCompleted());
         }
 
         //place all values
@@ -89,7 +90,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_DESCRIPTION, b.getDescription());
         values.put(KEY_RATINGS, b.getRatings());
         values.put(KEY_NOTES, b.getNotes());
-        values.put(KEY_COMPLETED, b.getCompleted());
         values.put(KEY_DATE_STARTED, dateStartedString);
         values.put(KEY_DATE_COMPLETED, dateCompletedString);
 
@@ -101,11 +101,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     // get all books from my books table
-    public List<Book> getAllMyBooks() {
-        List<Book> myBooks = new ArrayList<Book>();
-
-        //to format the dateStarted and dateCompleted properties
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm:ss");
+    public ArrayList<Book> getAllMyBooks() {
+        ArrayList<Book> myBooks = new ArrayList<Book>();
 
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_MY_BOOKS;
@@ -127,9 +124,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 book.setDescription(cursor.getString(6));
                 book.setRatings(Integer.parseInt(cursor.getString(7)));
                 book.setNotes(cursor.getString(8));
-                book.setCompleted(!cursor.getString(9).equals("0"));
-                book.setDateStarted(formatter.parseDateTime(cursor.getString(10)));
-                book.setDateCompleted(formatter.parseDateTime(cursor.getString(11)));
+                book.setDateStarted(dateFormatter.parseDateTime(cursor.getString(9)));
+                book.setDateCompleted(dateFormatter.parseDateTime(cursor.getString(10)));
 
                 // Adding book to list
                 myBooks.add(book);
@@ -139,7 +135,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         //close the cursor
         cursor.close();
 
-        // return contact list
+        // return book list
         return myBooks;
     }
 
@@ -150,14 +146,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         //strings for dateStarted and dateCompleted
         String dateStartedString = "";
         String dateCompletedString = "";
-        DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
 
         //convert dateStarted and dateCompleted to strings first
         if(b.getDateStarted() != null) {
-            dateStartedString = fmt.print(b.getDateStarted());
+            dateStartedString = dateFormatter.print(b.getDateStarted());
         }
         if(b.getDateCompleted() != null) {
-            dateCompletedString = fmt.print(b.getDateCompleted());
+            dateCompletedString = dateFormatter.print(b.getDateCompleted());
         }
 
         //place all values
@@ -170,7 +165,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_DESCRIPTION, b.getDescription());
         values.put(KEY_RATINGS, b.getRatings());
         values.put(KEY_NOTES, b.getNotes());
-        values.put(KEY_COMPLETED, b.getCompleted());
         values.put(KEY_DATE_STARTED, dateStartedString);
         values.put(KEY_DATE_COMPLETED, dateCompletedString);
 
@@ -179,12 +173,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 new String[] { b.getId() });
     }
 
-    // Deleting single contact
-    public void deleteContact(Book b) {
+    // Deletes single book
+    public void deleteBook(Book b) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_MY_BOOKS, KEY_ID + " = ?",
                 new String[] { b.getId()});
         db.close();
     }
+
 
 }

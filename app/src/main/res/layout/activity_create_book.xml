@@ -25,6 +25,15 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <!--  Hidden input to keep track of book being edited. If new book is being made then 'new'-->
+    <EditText android:id="@+id/bookId"
+        android:visibility="gone"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="new">
+    </EditText>
+
+
     <include layout="@layout/content_create_book" />
 
 </android.support.design.widget.CoordinatorLayout>
