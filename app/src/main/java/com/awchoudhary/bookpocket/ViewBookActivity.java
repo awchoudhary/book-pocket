@@ -11,9 +11,12 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
+
+import static android.view.View.GONE;
 
 /**
  * Created by awaeschoudhary on 2/28/17.
@@ -23,6 +26,10 @@ public class ViewBookActivity  extends AppCompatActivity {
     //Book being viewed. Set in onCreate
     private Book book = new Book();
 
+    //determines if the book is being edited or viewed from search
+    Boolean isEdit;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,12 +38,15 @@ public class ViewBookActivity  extends AppCompatActivity {
         //get selected book
         book = (Book)getIntent().getSerializableExtra("book");
 
+        //set isEdit
+        isEdit = getIntent().getExtras().getBoolean("isEdit");
+
         //set title for action bar to name of selected book
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarViewBook);
         toolbar.setTitle(book.getName());
         setSupportActionBar(toolbar);
 
-        //populate fields
+        //populate input fields
         populateFields(book);
 
     }
@@ -48,6 +58,19 @@ public class ViewBookActivity  extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        //hide/show toolbar menu buttons based on isEdit. i.e. show add for isEdit=false and edit and delete for isEdit=true
+        if(isEdit){
+            menu.findItem(R.id.action_add).setVisible(false);
+        }
+        else{
+            menu.findItem(R.id.action_edit).setVisible(false);
+            menu.findItem(R.id.action_delete).setVisible(false);
+        }
+        return true;
+    }
+
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
 
@@ -55,6 +78,18 @@ public class ViewBookActivity  extends AppCompatActivity {
         if(id == R.id.action_add){
             Intent intent = new Intent(ViewBookActivity.this, CreateBookActivity.class);
             intent.putExtra("book", book);
+            startActivity(intent);
+        }
+        else if(id == R.id.action_edit){
+            Intent intent = new Intent(ViewBookActivity.this, CreateBookActivity.class);
+            intent.putExtra("book", book);
+            startActivity(intent);
+        }
+        else if(id == R.id.action_delete){
+            //delete and navigate to mybooks page.
+            deleteBook();
+            Toast.makeText(getApplicationContext(), "Deleted " + book.getName(), Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(ViewBookActivity.this, MainActivity.class);
             startActivity(intent);
         }
 
@@ -94,5 +129,11 @@ public class ViewBookActivity  extends AppCompatActivity {
         author.setText(b.getAuthor());
         description.setText((b.getDescription() != null && !b.getDescription().equals("")) ? b.getDescription() : "No Description");
         notes.setText((b.getNotes() != null && !b.getNotes().equals("")) ? b.getNotes() : "No Notes");
+    }
+
+    //delete book being viewed from db
+    private void deleteBook(){
+        DatabaseHandler db = new DatabaseHandler(this);
+        db.deleteBook(book);
     }
 }

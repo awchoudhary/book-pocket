@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity
                 Book selectedBook = (Book)booksList.getItemAtPosition(position);
                 Intent intent = new Intent(MainActivity.this, ViewBookActivity.class);
                 intent.putExtra("book", selectedBook);
+                intent.putExtra("isEdit", true);
                 startActivity(intent);
             }
         });

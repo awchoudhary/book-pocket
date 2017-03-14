@@ -18,6 +18,7 @@ import java.util.List;
  * Created by awaeschoudhary on 3/4/17.
  */
 
+//TODO: Exception handling for all these methods!
 public class DatabaseHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "Books";

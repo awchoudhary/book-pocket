@@ -30,9 +30,9 @@ import java.util.concurrent.ExecutionException;
 
 /**
  * Created by awaeschoudhary on 3/5/17.
- * Handles logic for creating a new book.
+ * Handles logic for creating a new book and editing book. TODO: Class name is misleading. Change it.
  */
-
+//TODO: Functionality to upload cover image.
 public class CreateBookActivity extends AppCompatActivity {
     //True if book is being created and False if it is being edited. True by default.
     boolean newBook = true;
@@ -157,13 +157,22 @@ public class CreateBookActivity extends AppCompatActivity {
         book.setDescription(description);
         book.setNotes(notes);
 
-        //TODO: Need to download image into device when book is created.
+        //save and set cover image
+        saveCoverImage(book);
+
+        if(newBook){
+            dbHandler.createBook(book);
+        }
+        else{
+            dbHandler.updateBook(book);
+        }
+    }
+
+    //save cover image on device and set book coverUrl to the local path TODO: Error checking of some sort
+    private void saveCoverImage(Book book){
         //set the local image path (where image is going to be downloaded) as cover url
         File localImageFile = getOutputImageFile();
-        if(localImageFile == null){
-            Toast.makeText(getApplicationContext(), "Failed to create book.", Toast.LENGTH_SHORT).show();
-            return;
-        }
+
         book.setCoverUrl(localImageFile.getPath());
 
         //get bitmap for the image in imageview
@@ -180,13 +189,6 @@ public class CreateBookActivity extends AppCompatActivity {
         //save image to local path
         SaveImageTask task = new SaveImageTask(this, bitmap);
         task.execute(localImageFile);
-
-        if(newBook){
-            dbHandler.createBook(book);
-        }
-        else{
-            dbHandler.updateBook(book);
-        }
     }
 
     /* Create a File for saving an image */
@@ -202,7 +204,7 @@ public class CreateBookActivity extends AppCompatActivity {
         }
 
         // Create a media file name. Use current date and time to ensure unique name for all images.
-        String timeStamp = new SimpleDateFormat("ddMMyyyy_HHmm").format(new Date());
+        String timeStamp = new SimpleDateFormat("ddMMyyyy_HHmmss").format(new Date());
         File mediaFile;
         String mImageName="MI_"+ timeStamp +".jpg";
         mediaFile = new File(mediaStorageDir.getPath() + File.separator + mImageName);

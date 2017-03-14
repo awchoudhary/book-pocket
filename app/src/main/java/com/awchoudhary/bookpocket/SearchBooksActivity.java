@@ -44,6 +44,7 @@ public class SearchBooksActivity extends AppCompatActivity {
                 Book selectedBook = (Book)searchResultsList.getItemAtPosition(position);
                 Intent intent = new Intent(SearchBooksActivity.this, ViewBookActivity.class);
                 intent.putExtra("book", selectedBook);
+                intent.putExtra("isEdit", false);
                 startActivity(intent);
             }
         });
