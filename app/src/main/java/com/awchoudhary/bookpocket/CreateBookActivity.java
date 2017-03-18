@@ -32,10 +32,12 @@ import java.util.concurrent.ExecutionException;
  * Created by awaeschoudhary on 3/5/17.
  * Handles logic for creating a new book and editing book. TODO: Class name is misleading. Change it.
  */
-//TODO: Functionality to upload cover image.
 public class CreateBookActivity extends AppCompatActivity {
+    //book that is being created/edited
+    private Book book = new Book();
+
     //True if book is being created and False if it is being edited. True by default.
-    boolean newBook = true;
+    private boolean newBook = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,7 +51,7 @@ public class CreateBookActivity extends AppCompatActivity {
 
         //if a book was passed to the view, populate inputs. Book is passed to view on add by search and edit.
         if(intent.hasExtra("book")){
-            Book book = (Book)intent.getSerializableExtra("book");
+            book = (Book)intent.getSerializableExtra("book");
 
             //if book has an ID, it already exists in the DB and is therefore being edited.
             if(book.getId() != null){
@@ -65,6 +67,7 @@ public class CreateBookActivity extends AppCompatActivity {
 
         //attached even handlers
         Button saveButton = (Button) findViewById(R.id.saveButton);
+        Button cancelButton = (Button) findViewById(R.id.cancelButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,6 +77,12 @@ public class CreateBookActivity extends AppCompatActivity {
                     Intent intent = new Intent(CreateBookActivity.this, MainActivity.class);
                     startActivity(intent);
                 }
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
             }
         });
 
@@ -101,7 +110,6 @@ public class CreateBookActivity extends AppCompatActivity {
         DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd/MM/yyyy");
 
         //populate text inputs
-        ((EditText) findViewById(R.id.bookId)).setText(book.getId());
         ((EditText) findViewById(R.id.titleInput)).setText(book.getName());
         ((EditText) findViewById(R.id.subtitleInput)).setText(book.getSubtitle());
         ((EditText) findViewById(R.id.authorInput)).setText(book.getAuthor());
@@ -131,7 +139,6 @@ public class CreateBookActivity extends AppCompatActivity {
 
 
         //get all text field inputs
-        String id = ((EditText) findViewById(R.id.bookId)).getText().toString();
         String title = ((EditText) findViewById(R.id.titleInput)).getText().toString();
         String subtitle = ((EditText) findViewById(R.id.subtitleInput)).getText().toString();
         String author = ((EditText) findViewById(R.id.authorInput)).getText().toString();
@@ -143,11 +150,7 @@ public class CreateBookActivity extends AppCompatActivity {
 
         //TODO: Validation
 
-        //populate new book object with inputs
-        Book book = new Book();
-        //It doesn't matter what the ID is when the book is being created, so don't worry about null id.
-        //ID should be non-null when book is being edited. Tab bhi null hui tou mai kya karoon?
-        book.setId(id);
+        //update book with text inputs
         book.setName(title);
         book.setSubtitle(subtitle);
         book.setAuthor(author);
@@ -157,8 +160,10 @@ public class CreateBookActivity extends AppCompatActivity {
         book.setDescription(description);
         book.setNotes(notes);
 
-        //save and set cover image
-        saveCoverImage(book);
+        //save and set cover image. For now we are just not saving if edit. TODO: Take care of image uploading and updating
+        if(newBook){
+            saveCoverImage(book);
+        }
 
         if(newBook){
             dbHandler.createBook(book);
