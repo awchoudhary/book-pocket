@@ -199,6 +199,10 @@ public class CreateBookActivity extends AppCompatActivity {
             showMessage("Book must have an author.");
             return false;
         }
+        if(dateStarted.equals("") && !dateCompleted.equals("")){
+            showMessage("Book must have start date if it has a complete date.");
+            return false;
+        }
 
         //update book with text inputs
         book.setName(title);

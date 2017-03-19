@@ -11,6 +11,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.util.ArrayList;
 
 /**
@@ -29,6 +32,9 @@ public class BookArrayAdaptor extends ArrayAdapter<Book> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd/MM/yyyy");
+        Book book = books.get(position);
+
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -37,20 +43,33 @@ public class BookArrayAdaptor extends ArrayAdapter<Book> {
         ImageView cover = (ImageView) rowView.findViewById(R.id.coverImage);
         TextView title = (TextView) rowView.findViewById(R.id.title);
         TextView author = (TextView) rowView.findViewById(R.id.author);
+        TextView date = (TextView) rowView.findViewById(R.id.date);
 
         //set text values.
-        title.setText(books.get(position).getName());
-        author.setText(books.get(position).getAuthor());
+        title.setText(book.getName());
+        author.setText(book.getAuthor());
 
         //download image into imageview.
         Glide.with(context)
-                .load(books.get(position).getCoverUrl())
+                .load(book.getCoverUrl())
                 .placeholder(R.drawable.default_cover_image)
                 .error(R.drawable.default_cover_image)
                 .override(131, 200) //TODO: Needs to be responsive
                 .into(cover);
 
-        //set background for row
+        //if book has a start and end date (completed), display the date completed.
+        if(book.getDateStarted() != null && book.getDateCompleted() != null){
+            date.setText("Completed on " + dateFormatter.print(book.getDateCompleted()));
+            date.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_completed, 0, 0, 0);
+        }
+
+        //if book is in progress, display the date started
+        if(book.getDateStarted() != null && book.getDateCompleted() == null){
+            date.setText("Started on " + dateFormatter.print(book.getDateStarted()));
+            date.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_reading, 0, 0, 0);
+        }
+
+        //set background for row (those swank borders)
         rowView.setBackgroundResource(R.drawable.list_item_background);
 
         return rowView;
