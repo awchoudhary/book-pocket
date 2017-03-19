@@ -3,11 +3,15 @@ package com.awchoudhary.bookpocket;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.TransitionDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -28,6 +32,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
+import static com.awchoudhary.bookpocket.R.id.imageView;
+
 /**
  * Created by awaeschoudhary on 3/5/17.
  * Handles logic for creating a new book and editing book. TODO: Class name is misleading. Change it.
@@ -38,6 +44,13 @@ public class CreateBookActivity extends AppCompatActivity {
 
     //True if book is being created and False if it is being edited. True by default.
     private boolean newBook = true;
+
+    //indicates if a new cover image was uploaded
+    private boolean isNewCoverImage = false;
+
+    //code for intents
+    private static final int SELECT_IMAGE = 1;
+    private static final int WRITE_IMAGE = 2;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,6 +99,18 @@ public class CreateBookActivity extends AppCompatActivity {
             }
         });
 
+        //click event on cover imageview to upload cover image
+        findViewById(R.id.coverImage).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //start gallery intent for user to select image
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent,
+                        "Select Picture"), SELECT_IMAGE);
+            }
+        });
+
     }
 
     //called after user responds to storage access request.
@@ -101,6 +126,28 @@ public class CreateBookActivity extends AppCompatActivity {
         else{
             //phir lpc. Nahi banti book tumhaari.
             Toast.makeText(getApplicationContext(), "Failed to create book.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    //called on resturn from dialog activity
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == SELECT_IMAGE) {
+                Uri selectedImageUri = data.getData();
+                String selectedImagePath = getPath(selectedImageUri);
+
+                //download image into imageview.
+                Glide.with(this)
+                        .load(selectedImagePath)
+                        .asBitmap() //ensures that bitmap is a BitmapDrawable object
+                        .placeholder(R.drawable.default_cover_image_big)
+                        .error(R.drawable.default_cover_image_big)
+                        .override(257, 389) //TODO: Needs to be responsive
+                        .into((ImageView)findViewById(R.id.coverImage));
+
+                //mark our image uploaded flag as true
+                isNewCoverImage = true;
+            }
         }
     }
 
@@ -161,7 +208,7 @@ public class CreateBookActivity extends AppCompatActivity {
         book.setNotes(notes);
 
         //save and set cover image. For now we are just not saving if edit. TODO: Take care of image uploading and updating
-        if(newBook){
+        if(isNewCoverImage){
             saveCoverImage(book);
         }
 
@@ -183,11 +230,12 @@ public class CreateBookActivity extends AppCompatActivity {
         //get bitmap for the image in imageview
         ImageView imageView = (ImageView) findViewById(R.id.coverImage);
         Bitmap bitmap;
+
         //The bitmap for default cover image is of type BitmapDrawable whereas images obtained from the api are GlideBitmapDrawables.
         if(imageView.getDrawable() instanceof GlideBitmapDrawable){
             bitmap = ((GlideBitmapDrawable)imageView.getDrawable()).getBitmap();
         }
-        else{
+        else {
             bitmap = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
         }
 
@@ -224,13 +272,38 @@ public class CreateBookActivity extends AppCompatActivity {
                 return true;
             } else {
                 //ask for permission from user to access storage.
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_IMAGE);
                 return false;
             }
         }
         else { //permission is automatically granted on sdk<23 upon installation
             return true;
         }
+    }
+
+    /**
+     * helper to retrieve the path of an image URI
+     */
+    public String getPath(Uri uri) {
+        // just some safety built in
+        if( uri == null ) {
+            // TODO perform some logging or show user feedback
+            return null;
+        }
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        String document_id = cursor.getString(0);
+        document_id = document_id.substring(document_id.lastIndexOf(":")+1);
+        cursor.close();
+
+        cursor = getContentResolver().query(
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
+        cursor.moveToFirst();
+        String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+        cursor.close();
+
+        return path;
     }
 
 
