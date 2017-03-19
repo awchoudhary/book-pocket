@@ -10,4 +10,5 @@
 
     <dimen name="input_spacing">10dp</dimen>
     <dimen name="input_padding">10dp</dimen>
+    <dimen name="label_input_spacing">5dp</dimen>
 </resources>

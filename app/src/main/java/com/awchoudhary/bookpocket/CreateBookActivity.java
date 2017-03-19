@@ -80,22 +80,17 @@ public class CreateBookActivity extends AppCompatActivity {
 
         //attached even handlers
         Button saveButton = (Button) findViewById(R.id.saveButton);
-        Button cancelButton = (Button) findViewById(R.id.cancelButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //perform save if we have permission to access storage to download cover image.
                 if(isStoragePermissionGranted()){
-                    save();
-                    Intent intent = new Intent(CreateBookActivity.this, MainActivity.class);
-                    startActivity(intent);
+                    boolean isSaved = save();
+                    if(isSaved){
+                        Intent intent = new Intent(CreateBookActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    }
                 }
-            }
-        });
-
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
             }
         });
 
@@ -125,7 +120,7 @@ public class CreateBookActivity extends AppCompatActivity {
         }
         else{
             //phir lpc. Nahi banti book tumhaari.
-            Toast.makeText(getApplicationContext(), "Failed to create book.", Toast.LENGTH_SHORT).show();
+            showMessage("Failed to create book");
         }
     }
 
@@ -177,7 +172,7 @@ public class CreateBookActivity extends AppCompatActivity {
                 .into(cover);
     }
 
-    private void save() {
+    private boolean save() {
         //handles db interactions
         DatabaseHandler dbHandler = new DatabaseHandler(this);
 
@@ -195,7 +190,15 @@ public class CreateBookActivity extends AppCompatActivity {
         String description = ((EditText) findViewById(R.id.descriptionInput)).getText().toString();
         String notes = ((EditText) findViewById(R.id.notesInput)).getText().toString();
 
-        //TODO: Validation
+        //Validation of inputs
+        if(title.equals("")){
+            showMessage("Book must have a title.");
+            return false;
+        }
+        if(author.equals("")){
+            showMessage("Book must have an author.");
+            return false;
+        }
 
         //update book with text inputs
         book.setName(title);
@@ -218,6 +221,8 @@ public class CreateBookActivity extends AppCompatActivity {
         else{
             dbHandler.updateBook(book);
         }
+
+        return true;
     }
 
     //save cover image on device and set book coverUrl to the local path TODO: Error checking of some sort
@@ -265,7 +270,7 @@ public class CreateBookActivity extends AppCompatActivity {
     }
 
     //check if permission was granted to access storage. If not, ask for it. Only for > Marshmallow.
-    public  boolean isStoragePermissionGranted() {
+    private boolean isStoragePermissionGranted() {
         if (Build.VERSION.SDK_INT >= 23) {
             if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     == PackageManager.PERMISSION_GRANTED) {
@@ -284,7 +289,7 @@ public class CreateBookActivity extends AppCompatActivity {
     /**
      * helper to retrieve the path of an image URI
      */
-    public String getPath(Uri uri) {
+    private String getPath(Uri uri) {
         // just some safety built in
         if( uri == null ) {
             // TODO perform some logging or show user feedback
@@ -304,6 +309,11 @@ public class CreateBookActivity extends AppCompatActivity {
         cursor.close();
 
         return path;
+    }
+
+    //display toast
+    private void showMessage(String message){
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
 
