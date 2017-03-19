@@ -50,6 +50,9 @@ public class BookArrayAdaptor extends ArrayAdapter<Book> {
                 .override(131, 200) //TODO: Needs to be responsive
                 .into(cover);
 
+        //set background for row
+        rowView.setBackgroundResource(R.drawable.list_item_background);
+
         return rowView;
     }
 }
