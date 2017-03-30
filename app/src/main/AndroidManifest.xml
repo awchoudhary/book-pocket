@@ -50,6 +50,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
+
+        <activity
+            android:name=".TabManagerActivity"
+            android:label="View Book"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan">
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

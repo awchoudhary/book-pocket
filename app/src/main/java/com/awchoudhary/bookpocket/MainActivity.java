@@ -66,9 +66,9 @@ public class MainActivity extends AppCompatActivity
             public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
                 //get selected book and pass it into the next view
                 Book selectedBook = (Book)booksList.getItemAtPosition(position);
-                Intent intent = new Intent(MainActivity.this, ViewBookActivity.class);
+                Intent intent = new Intent(MainActivity.this, TabManagerActivity.class);
                 intent.putExtra("book", selectedBook);
-                intent.putExtra("isEdit", true);
+                intent.putExtra("isEdit", false);
                 startActivity(intent);
             }
         });

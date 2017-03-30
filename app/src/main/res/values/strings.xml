@@ -28,5 +28,6 @@
     <string name="label_notes">Notes</string>
     <string name="label_save_button">Save</string>
     <string name="label_cancel_button">Cancel</string>
+    <string name="label_date">Date</string>
 
 </resources>

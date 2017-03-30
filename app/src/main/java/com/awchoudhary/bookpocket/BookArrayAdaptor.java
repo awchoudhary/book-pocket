@@ -32,7 +32,7 @@ public class BookArrayAdaptor extends ArrayAdapter<Book> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd/MM/yyyy");
+        DateTimeHelper dateTimeHelper = new DateTimeHelper();
         Book book = books.get(position);
 
         LayoutInflater inflater = (LayoutInflater) context
@@ -59,13 +59,13 @@ public class BookArrayAdaptor extends ArrayAdapter<Book> {
 
         //if book has a start and end date (completed), display the date completed.
         if(book.getDateStarted() != null && book.getDateCompleted() != null){
-            date.setText("Completed on " + dateFormatter.print(book.getDateCompleted()));
+            date.setText("Completed on " + dateTimeHelper.toString(book.getDateCompleted()));
             date.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_completed, 0, 0, 0);
         }
 
         //if book is in progress, display the date started
         if(book.getDateStarted() != null && book.getDateCompleted() == null){
-            date.setText("Started on " + dateFormatter.print(book.getDateStarted()));
+            date.setText("Started on " + dateTimeHelper.toString(book.getDateStarted()));
             date.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_reading, 0, 0, 0);
         }
 
