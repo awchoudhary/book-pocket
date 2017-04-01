@@ -55,7 +55,8 @@
                 android:background="@drawable/input_background"
                 android:padding="@dimen/input_padding"
                 android:layout_marginBottom="@dimen/input_spacing"
-                android:inputType="text" />
+                android:inputType="text"
+                android:focusable="false"/>
 
             <EditText
                 android:id="@+id/noteInput"
@@ -67,7 +68,7 @@
                 android:padding="@dimen/input_padding"
                 android:minLines="5" />
 
-            <TextView android:id="@+id/newNoteButton"
+            <TextView android:id="@+id/newNoteText"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:layout_marginBottom="@dimen/label_input_spacing"

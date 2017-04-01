@@ -32,7 +32,7 @@ public class NotesListAdapter extends ArrayAdapter<BookNote> {
     private final Context context;
     private ArrayList<BookNote> notes;
     private Book book;
-    int viewPositon; //keeps track of position of visible notes in list
+    private int viewPosition; //keeps track of position of visible notes in list
     //These maps keep track of text view content as they become invisible on scroll.
     private HashMap<Integer, String> titleTextMap;
     private HashMap<Integer, String> dateTextMap;
@@ -43,24 +43,24 @@ public class NotesListAdapter extends ArrayAdapter<BookNote> {
         public void onTextChanged(CharSequence s, int start, int before, int count) {}
         public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
         public void afterTextChanged(Editable s) {
-            titleTextMap.put(viewPositon, s.toString());
-            notes.get(viewPositon).setTitle(s.toString());
+            titleTextMap.put(viewPosition, s.toString());
+            notes.get(viewPosition).setTitle(s.toString());
         }
     };
     private TextWatcher dateTextWatcher = new TextWatcher() {
         public void onTextChanged(CharSequence s, int start, int before, int count) {}
         public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
         public void afterTextChanged(Editable s) {
-            dateTextMap.put(viewPositon, s.toString());
-            notes.get(viewPositon).setDate(dateTimeHelper.toDateTime(s.toString()));
+            dateTextMap.put(viewPosition, s.toString());
+            notes.get(viewPosition).setDate(dateTimeHelper.toDateTime(s.toString()));
         }
     };
     private TextWatcher bodyTextWatcher = new TextWatcher() {
         public void onTextChanged(CharSequence s, int start, int before, int count) {}
         public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
         public void afterTextChanged(Editable s) {
-            bodyTextMap.put(viewPositon, s.toString());
-            notes.get(viewPositon).setBody(s.toString());
+            bodyTextMap.put(viewPosition, s.toString());
+            notes.get(viewPosition).setBody(s.toString());
         }
     };
 
@@ -76,8 +76,9 @@ public class NotesListAdapter extends ArrayAdapter<BookNote> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        viewPositon = position;
         ViewHolder holder;
+        viewPosition = position;
+
         BookNote note = notes.get(position);
 
         if(convertView == null){
@@ -87,10 +88,12 @@ public class NotesListAdapter extends ArrayAdapter<BookNote> {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.edit_notes_tab_fragment, null);
             holder.form = (LinearLayout) convertView.findViewById(R.id.newNoteForm);
-            holder.titleInput = (TextView) convertView.findViewById(R.id.titleInput);
-            holder.dateInput = (TextView) convertView.findViewById(R.id.dateInput);
-            holder.bodyInput = (TextView) convertView.findViewById(R.id.noteInput);
-            holder.newNoteButton = (TextView) convertView.findViewById(R.id.newNoteButton);
+            holder.titleInput = (EditText) convertView.findViewById(R.id.titleInput);
+            holder.dateInput = (EditText) convertView.findViewById(R.id.dateInput);
+            holder.bodyInput = (EditText) convertView.findViewById(R.id.noteInput);
+            holder.newNoteButton = (TextView) convertView.findViewById(R.id.newNoteText);
+
+            new DatePickerCustom(context, holder.dateInput);
 
             //store the holder object to reuse later
             convertView.setTag(holder);
@@ -103,18 +106,18 @@ public class NotesListAdapter extends ArrayAdapter<BookNote> {
         /*if row is being loaded for the very first time, update the maps with
         * the contents of the note at the row position*/
         if(firstLoad){
-            titleTextMap.put(viewPositon, note.getTitle());
-            dateTextMap.put(viewPositon, dateTimeHelper.toString(note.getDate()));
-            bodyTextMap.put(viewPositon, note.getBody());
+            titleTextMap.put(viewPosition, note.getTitle());
+            dateTextMap.put(viewPosition, dateTimeHelper.toString(note.getDate()));
+            bodyTextMap.put(viewPosition, note.getBody());
         }
 
         //populate fields
-        holder.titleInput.setText(titleTextMap.get(viewPositon));
-        String noteDate = dateTextMap.get(viewPositon);
+        holder.titleInput.setText(titleTextMap.get(viewPosition));
+        String noteDate = dateTextMap.get(viewPosition);
         if (noteDate != null && noteDate.equals("")) { //if date is null, the current date is returned. Probably a jodatime thing.
-            holder.dateInput.setText(dateTextMap.get(viewPositon));
+            holder.dateInput.setText(dateTextMap.get(viewPosition));
         }
-        holder.bodyInput.setText(bodyTextMap.get(viewPositon));
+        holder.bodyInput.setText(bodyTextMap.get(viewPosition));
 
         //set event handlers
         holder.newNoteButton.setOnClickListener(new View.OnClickListener() {
@@ -152,9 +155,9 @@ public class NotesListAdapter extends ArrayAdapter<BookNote> {
     //object to wrap all views for a note row
     private class ViewHolder{
         LinearLayout form;
-        TextView titleInput;
-        TextView dateInput;
-        TextView bodyInput;
+        EditText titleInput;
+        EditText dateInput;
+        EditText bodyInput;
         TextView newNoteButton;
     }
 }

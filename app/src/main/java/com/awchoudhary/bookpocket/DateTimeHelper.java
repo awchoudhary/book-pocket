@@ -15,11 +15,17 @@ public class DateTimeHelper {
 
     //parses DateTime object to string
     public static String toString(DateTime date){
+        if(date == null){
+            return "";
+        }
         return DATE_FORMATTER.print(date);
     }
 
     //parses string to DateTime object.
     public static DateTime toDateTime(String dateTimeString){
+        if(dateTimeString == null || dateTimeString.equals("")){
+            return null;
+        }
         return DATE_FORMATTER.parseDateTime(dateTimeString);
     }
 }

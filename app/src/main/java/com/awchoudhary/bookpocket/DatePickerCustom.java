@@ -21,10 +21,10 @@ public class DatePickerCustom implements View.OnClickListener, DatePickerDialog.
     private int year;
     private Context context;
 
-    public DatePickerCustom(Context context, int editTextViewID)
+    public DatePickerCustom(Context context, EditText editText)
     {
         Activity activity = (Activity)context;
-        this.editText = (EditText)activity.findViewById(editTextViewID);
+        this.editText = editText;
         this.editText.setOnClickListener(this);
         this.context = context;
     }
@@ -52,6 +52,6 @@ public class DatePickerCustom implements View.OnClickListener, DatePickerDialog.
     private void updateDisplay() {
         editText.setText(new StringBuilder()
                 // Month is 0 based so add 1
-                .append(day).append("/").append(month + 1).append("/").append(year));
+                .append(month + 1).append("/").append(day).append("/").append(year));
     }
 }

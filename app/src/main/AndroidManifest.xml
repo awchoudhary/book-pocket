@@ -55,8 +55,7 @@
             android:name=".TabManagerActivity"
             android:label="View Book"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize"
-            android:isScrollContainer="false">
+            android:windowSoftInputMode="adjustPan">
         </activity>
     </application>
 

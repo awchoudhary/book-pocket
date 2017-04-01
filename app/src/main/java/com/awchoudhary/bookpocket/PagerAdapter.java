@@ -46,7 +46,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
                 case 0:
                     return ViewDetailsTabFragment.newInstance(book);
                 case 1:
-                    return ViewDetailsTabFragment.newInstance(book);
+                    return NotesTabFragment.newInstance(book);
                 case 2:
                     return ViewDetailsTabFragment.newInstance(book);
                 default:

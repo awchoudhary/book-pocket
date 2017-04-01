@@ -210,7 +210,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 note.setNoteId(cursor.getString(0));
                 note.setBookId(cursor.getString(1));
                 note.setTitle(cursor.getString(2));
-                note.setDate((!cursor.getString(3).equals("")) ? dateTimeHelper.toDateTime(cursor.getString(3)) : null);
+                note.setDate((dateTimeHelper.toDateTime(cursor.getString(3))));
                 note.setBody(cursor.getString(4));
                 note.setDeleted(cursor.getString(5).equals("1"));
 
@@ -227,7 +227,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     //create new note
-    private void createBookNote(BookNote note){
+    public void createBookNote(BookNote note){
         SQLiteDatabase db = this.getWritableDatabase();
 
         //place all values
@@ -247,7 +247,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     //update a BookNote row
-    private int updateBookNote(BookNote note){
+    public int updateBookNote(BookNote note){
         SQLiteDatabase db = this.getWritableDatabase();
 
         //place all values

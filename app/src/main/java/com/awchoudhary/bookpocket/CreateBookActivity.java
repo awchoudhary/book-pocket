@@ -75,8 +75,8 @@ public class CreateBookActivity extends AppCompatActivity {
         }
 
         //set the date edit texts as date pickers
-        new DatePickerCustom(this, R.id.dateStartedInput);
-        new DatePickerCustom(this, R.id.dateCompletedInput);
+        new DatePickerCustom(this, (EditText) findViewById(R.id.dateStartedInput));
+        new DatePickerCustom(this, (EditText) findViewById(R.id.dateCompletedInput));
 
         //attached even handlers
         Button saveButton = (Button) findViewById(R.id.saveButton);

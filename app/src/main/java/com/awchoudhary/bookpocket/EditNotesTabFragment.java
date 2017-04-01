@@ -15,7 +15,6 @@ import java.util.ArrayList;
  */
 
 public class EditNotesTabFragment extends Fragment{
-    View view;
     private DatabaseHandler db;
     Book book; //Book being edited
     ArrayList<BookNote> notes; // Notes being edited
@@ -37,7 +36,7 @@ public class EditNotesTabFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         db = new DatabaseHandler(getActivity());
-        view = inflater.inflate(R.layout.edit_notes_tab_fragment, container, false);
+        View view = inflater.inflate(R.layout.edit_notes_tab_fragment, container, false);
         book = (Book) getArguments().getSerializable(BOOK_KEY); // get Book to be Edited
 
         //populate listview with notes for book from db
