@@ -50,8 +50,7 @@ public class TabManagerActivity extends AppCompatActivity{
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("Details"));
-        tabLayout.addTab(tabLayout.newTab().setText("Notes"));
-        tabLayout.addTab(tabLayout.newTab().setText("Progress"));
+        tabLayout.addTab(tabLayout.newTab().setText("Notes & Progress"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         viewPager = (ViewPager) findViewById(R.id.pager);
