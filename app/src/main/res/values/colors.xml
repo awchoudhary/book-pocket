@@ -8,4 +8,5 @@
     <color name="black">#000000</color>
     <color name="colorBackground">#FCF8F0</color>
     <color name="grey">#bfbfbf</color>
+    <color name="colorSelectedCard">#ff6699</color>
 </resources>

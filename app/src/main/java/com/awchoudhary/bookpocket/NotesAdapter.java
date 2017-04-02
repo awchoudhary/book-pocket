@@ -2,6 +2,7 @@ package com.awchoudhary.bookpocket;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +21,11 @@ import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.R.color.transparent;
+import static com.awchoudhary.bookpocket.R.color.abc_background_cache_hint_selector_material_light;
+import static com.awchoudhary.bookpocket.R.color.colorPrimary;
+import static com.awchoudhary.bookpocket.R.color.colorSelectedCard;
 
 /**
  * Created by awaeschoudhary on 4/1/17.
@@ -55,7 +61,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
     }
 
     @Override
-    public void onBindViewHolder(NoteViewHolder noteViewHolder, final int position) {
+    public void onBindViewHolder(final NoteViewHolder noteViewHolder, final int position) {
         BookNote note = notes.get(position);
         String title = note.getTitle();
         DateTime date = note.getDate();
@@ -76,17 +82,14 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
         }
 
         noteViewHolder.noteBodyView.setText(noteBody);
-
+        noteViewHolder.cv.setCardBackgroundColor(transparent);
         noteViewHolder.cv.setOnClickListener(new View.OnClickListener() {
             BookNote note = notes.get(position);
             @Override
             public void onClick(View v) {
                 if(isActionMode){
-                    //update activated attribute for view
-                    v.setActivated((v.isActivated()) ? false : true);
-
                     //add or remove item from selected list
-                    toggleSelection(position);
+                    toggleSelection(position, noteViewHolder.cv);
 
                     //update title for action mode
                     actionMode.setTitle(Integer.toString(getSelectedItemCount()));
@@ -138,7 +141,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
                 actionMode = ((TabManagerActivity)context).startSupportActionMode(new ActionModeCallback());
 
                 //add or remove item from selected list
-                toggleSelection(position);
+                toggleSelection(position, noteViewHolder.cv);
 
                 //update title for action mode
                 actionMode.setTitle(Integer.toString(getSelectedItemCount()));
@@ -157,19 +160,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
     public void updateEntries(BookNote note) {
         notes.add(note);
         notifyDataSetChanged();
-    }
-
-    public static class NoteViewHolder extends RecyclerView.ViewHolder {
-        CardView cv;
-        TextView titleAndDateView;
-        TextView noteBodyView;
-
-        NoteViewHolder(View itemView) {
-            super(itemView);
-            cv = (CardView) itemView.findViewById(R.id.cv);
-            titleAndDateView = (TextView)itemView.findViewById(R.id.titleAndDateView);
-            noteBodyView = (TextView)itemView.findViewById(R.id.noteBody);
-        }
     }
 
     private void updateNote(BookNote note, Dialog dialog){
@@ -191,20 +181,20 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
     }
 
     //remove or add index to the selectedItems list
-    public void toggleSelection(int pos) {
-        if (selectedItems.get(pos)) {
+    public void toggleSelection(int pos, CardView cardView) {
+        if (selectedItems.get(pos, false)) {
             selectedItems.delete(pos);
+            cardView.setCardBackgroundColor(transparent);
         }
         else {
             selectedItems.put(pos, true);
+            cardView.setCardBackgroundColor(Color.parseColor("#e6e6e6"));
         }
-        notifyItemChanged(pos);
     }
 
     //remove all indexes from selected items
     public void clearSelections() {
         selectedItems.clear();
-        notifyDataSetChanged();
     }
 
     public int getSelectedItemCount() {
@@ -219,6 +209,19 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
             items.add(selectedItems.keyAt(i));
         }
         return items;
+    }
+
+    public static class NoteViewHolder extends RecyclerView.ViewHolder {
+        CardView cv;
+        TextView titleAndDateView;
+        TextView noteBodyView;
+
+        NoteViewHolder(View itemView) {
+            super(itemView);
+            cv = (CardView) itemView.findViewById(R.id.cv);
+            titleAndDateView = (TextView)itemView.findViewById(R.id.titleAndDateView);
+            noteBodyView = (TextView)itemView.findViewById(R.id.noteBody);
+        }
     }
 
     //actionmode callback for longpress
@@ -244,8 +247,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
                     for (int i = selectedItemPositions.size()-1; i >= 0; i--) {
                         notes.remove(selectedItemPositions.get(i).intValue());
                     }
-                    notifyDataSetChanged();
                     actionMode.finish();
+                    notifyDataSetChanged();
                     return true;
                 default:
                     return false;
