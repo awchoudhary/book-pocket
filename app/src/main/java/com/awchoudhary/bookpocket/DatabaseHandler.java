@@ -263,4 +263,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 new String[] { note.getNoteId() });
     }
 
+    // Deletes single book note
+    public void deleteBookNote(BookNote note) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_BOOK_NOTES, KEY_NOTE_ID + " = ?",
+                new String[] { note.getNoteId()});
+        db.close();
+    }
+
 }

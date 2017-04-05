@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.joda.time.DateTime;
 
@@ -34,6 +35,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
     private final DateTimeHelper dateHelper;
     private boolean isActionMode; // indicates if action mode is active
     private ActionMode actionMode;
+    private DatabaseHandler db;
 
     //keeps track of selected cards
     private SparseBooleanArray selectedItems;
@@ -43,6 +45,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
         this.notes = notes;
         dateHelper = new DateTimeHelper();
         selectedItems = new SparseBooleanArray();
+        db = new DatabaseHandler(context);
     }
 
     @Override
@@ -243,8 +246,18 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
                     //remove all selected items from the list
                     List<Integer> selectedItemPositions = getSelectedItems();
                     for (int i = selectedItemPositions.size()-1; i >= 0; i--) {
+                        BookNote note = notes.get(selectedItemPositions.get(i).intValue());
+
+                        //remove note from adapter list
                         notes.remove(selectedItemPositions.get(i).intValue());
+
+                        //remove note from db
+                        db.deleteBookNote(note);
                     }
+
+                    //display confirmation message
+                    showMessage(getSelectedItemCount() + " notes deleted.");
+
                     actionMode.finish();
                     notifyDataSetChanged();
                     return true;
@@ -265,4 +278,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
         }
     }
 
+    //display toast
+    private void showMessage(String message){
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    }
 }
