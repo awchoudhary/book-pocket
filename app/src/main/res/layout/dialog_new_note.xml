@@ -73,7 +73,8 @@
             android:background="@drawable/input_background"
             android:layout_marginBottom="16dp"
             android:padding="@dimen/input_padding"
-            android:minLines="5"
+            android:lines="5"
+            android:scrollbars = "vertical"
             android:textColor="@color/colorAccent"/>
 
         <Button android:id="@+id/saveButton"

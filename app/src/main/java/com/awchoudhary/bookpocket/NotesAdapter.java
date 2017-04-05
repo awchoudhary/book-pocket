@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.joda.time.DateTime;
 
@@ -23,9 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.R.color.transparent;
-import static com.awchoudhary.bookpocket.R.color.abc_background_cache_hint_selector_material_light;
-import static com.awchoudhary.bookpocket.R.color.colorPrimary;
-import static com.awchoudhary.bookpocket.R.color.colorSelectedCard;
+
 
 /**
  * Created by awaeschoudhary on 4/1/17.
@@ -104,7 +101,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
 
                     //populate fields with note values
                     ((EditText) dialog.findViewById(R.id.titleInput)).setText(note.getTitle());
-                    ((EditText) dialog.findViewById(R.id.dateInput)).setText((note.getDate() != null) ? dateHelper.toString(note.getDate()) : "");
+                    ((EditText) dialog.findViewById(R.id.dateInput)).setText((dateHelper.toString(note.getDate())));
                     ((EditText) dialog.findViewById(R.id.noteInput)).setText(note.getBody());
 
                     //set date input as a date picker
@@ -130,15 +127,17 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
             }
         });
 
+        //start actionmode activity on long press for mass delete
         noteViewHolder.cv.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 isActionMode = true;
 
-                //update activated attribute for view
-                v.setActivated((v.isActivated()) ? false : true);
-
                 actionMode = ((TabManagerActivity)context).startSupportActionMode(new ActionModeCallback());
+
+                if(actionMode == null){
+                    return false;
+                }
 
                 //add or remove item from selected list
                 toggleSelection(position, noteViewHolder.cv);
@@ -234,7 +233,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
 
         @Override
         public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
-            actionMode.setTitle("Test");
             return true;
         }
 
@@ -258,6 +256,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
         @Override
         public void onDestroyActionMode(ActionMode actionMode) {
             isActionMode = false;
+
+            //a hacky way to remove highlighting from rows since row color is set to transparent on binding
+            notifyDataSetChanged();
 
             //unselect all items
             clearSelections();

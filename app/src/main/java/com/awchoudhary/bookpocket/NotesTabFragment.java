@@ -85,6 +85,7 @@ public class NotesTabFragment extends Fragment{
         return view;
     }
 
+
     //save note in db
     private BookNote createNote(Dialog dialog){
         DateTimeHelper dateHelper = new DateTimeHelper();
