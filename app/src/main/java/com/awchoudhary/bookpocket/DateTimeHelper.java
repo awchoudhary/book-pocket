@@ -1,6 +1,7 @@
 package com.awchoudhary.bookpocket;
 
 import org.joda.time.DateTime;
+import org.joda.time.Days;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -27,5 +28,17 @@ public class DateTimeHelper {
             return null;
         }
         return DATE_FORMATTER.parseDateTime(dateTimeString);
+    }
+
+    public int getDaysSinceStarted(DateTime dateStarted){
+        return Days.daysBetween(dateStarted, new DateTime()).getDays();
+    }
+
+    public int getDaysTakenToComplete(DateTime dateStarted, DateTime dateCompleted){
+        return Days.daysBetween(dateStarted, dateCompleted).getDays();
+    }
+
+    public int getDaysSinceCompleted(DateTime dateCompleted){
+        return Days.daysBetween(dateCompleted, new DateTime()).getDays();
     }
 }

@@ -22,6 +22,9 @@
     <string name="label_Subtitle">Subtitle</string>
     <string name="label_Author">Author</string>
     <string name="label_Num_Pages">Number Of Pages</string>
+    <string name="label_publisher">Publisher</string>
+    <string name="label_date_published">Date Published</string>
+    <string name="label_isbn">ISBN</string>
     <string name="label_Date_Started">Date Started</string>
     <string name="label_Date_Completed">Date Completed</string>
     <string name="label_description">Description</string>

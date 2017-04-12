@@ -59,33 +59,26 @@
                         android:textSize="14sp"
                         android:textColor="@color/colorAccent"/>
 
-                    <RatingBar
-                        android:id="@+id/ratingBar"
-                        style="?android:attr/ratingBarStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:numStars="5"
-                        android:stepSize="1.0"
-                        android:rating="2.0" />
-
                     <TextView
                         android:id="@+id/numPages"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="300 Pages"
                         android:textSize="14sp"
                         android:textColor="@color/colorAccent"/>
 
                     <TextView
-                        android:id="@+id/readStatus"
+                        android:id="@+id/publisher"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Started on 02/28/2017 (30 Days Ago)"
                         android:textSize="14sp"
-                        android:textColor="@color/colorAccent"
-                        android:visibility="gone"/>
+                        android:textColor="@color/colorAccent"/>
 
-
+                    <TextView
+                        android:id="@+id/isbn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textColor="@color/colorAccent"/>
 
                 </LinearLayout>
 
@@ -112,40 +105,9 @@
                     android:id="@+id/descriptionText"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="Lirael lost one of her hands in the binding of Orannis, but now she has a new hand, one of gilded steel and Charter Magic. On a dangerous journey, Lirael returns to her childhood home, the Clayr’s Glacier, where she was once a Second Assistant Librarian. There, a young woman from the distant North brings her a message from her long-dead mother, Arielle. It is a warning about the Witch with No Face. But who is the Witch, and what is she planning? Lirael must use her new powers to save the Old Kingdom from this great danger—and it must be forestalled not only in the living world but also in the cold, remorseless river of Death."
                     android:textColor="@color/colorAccent"
                     android:textSize="14sp"
                     android:paddingBottom="10dp"/>
-
-
-            </LinearLayout>
-
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/book_info_background"
-                android:minHeight="100dp">
-
-                <TextView
-                    android:id="@+id/notesLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/label_notes"
-                    android:textSize="18sp"
-                    android:textColor="@color/colorAccent"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"/>
-
-                <TextView
-                    android:id="@+id/notesText"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="No Notes"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="14sp"
-                    android:paddingBottom="10dp"/>
-
             </LinearLayout>
 
         </LinearLayout>

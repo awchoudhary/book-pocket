@@ -117,72 +117,67 @@
                     android:layout_marginBottom="@dimen/input_spacing"
                     android:inputType="number" />
 
-                <TextView android:id="@+id/dateStartedLabel"
+                <TextView android:id="@+id/isbnLabel"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:layout_marginBottom="@dimen/label_input_spacing"
                     android:textColor="@color/colorAccent"
-                    android:text="@string/label_Date_Started"
+                    android:text="@string/label_isbn"
                     android:textStyle="bold"/>
 
                 <EditText
-                    android:id="@+id/dateStartedInput"
-                    android:layout_width="wrap_content"
-                    android:minWidth="100dp"
+                    android:id="@+id/isbnInput"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/input_background"
                     android:padding="@dimen/input_padding"
-                    android:layout_marginBottom="@dimen/input_spacing"
-                    android:inputType="date"
-                    android:focusable="false" />
+                    android:layout_marginBottom="@dimen/input_spacing"/>
 
-                <TextView android:id="@+id/dateCompletedLabel"
+                <TextView android:id="@+id/publisherLabel"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:layout_marginBottom="@dimen/label_input_spacing"
                     android:textColor="@color/colorAccent"
-                    android:text="@string/label_Date_Completed"
+                    android:text="@string/label_publisher"
                     android:textStyle="bold"/>
 
                 <EditText
-                    android:id="@+id/dateCompletedInput"
-                    android:layout_width="wrap_content"
-                    android:minWidth="100dp"
+                    android:id="@+id/publisherInput"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/input_background"
                     android:padding="@dimen/input_padding"
+                    android:layout_marginBottom="@dimen/input_spacing"/>
+
+                <TextView android:id="@+id/datePublishedLabel"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_marginBottom="@dimen/label_input_spacing"
+                    android:textColor="@color/colorAccent"
+                    android:text="@string/label_date_published"
+                    android:textStyle="bold"/>
+
+                <EditText
+                    android:id="@+id/datePublishedInput"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="100dp"
+                    android:background="@drawable/input_background"
+                    android:padding="@dimen/input_padding"
                     android:layout_marginBottom="@dimen/input_spacing"
-                    android:inputType="date"
-                    android:focusable="false" />
+                    android:focusable="false"
+                    android:textColor="@color/colorAccent"/>
 
                 <TextView android:id="@+id/descriptionLabel"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:layout_marginBottom="@dimen/label_input_spacing"
                     android:textColor="@color/colorAccent"
-                    android:text="@string/label_description"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    android:text="@string/label_description"/>
 
                 <EditText
                     android:id="@+id/descriptionInput"
-                    android:inputType="textMultiLine"
-                    android:layout_height="wrap_content"
-                    android:layout_width="fill_parent"
-                    android:background="@drawable/input_background"
-                    android:layout_marginBottom="@dimen/input_spacing"
-                    android:padding="@dimen/input_padding"
-                    android:minLines="5"/>
-
-                <TextView android:id="@+id/notesLabel"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:layout_marginBottom="@dimen/label_input_spacing"
-                    android:textColor="@color/colorAccent"
-                    android:text="@string/label_notes"
-                    android:textStyle="bold"/>
-
-                <EditText
-                    android:id="@+id/notesInput"
                     android:inputType="textMultiLine"
                     android:layout_height="wrap_content"
                     android:layout_width="fill_parent"

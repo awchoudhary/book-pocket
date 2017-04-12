@@ -30,6 +30,7 @@ import java.util.ArrayList;
 public class GoogleBooksSearchTask extends
         AsyncTask<String, Void, ArrayList<Book>> {
 
+    private DateTimeHelper dateTimeHelper = new DateTimeHelper();
     private Context context;
     private ProgressDialog progressDialog;
     private String key = "AIzaSyB_Jum6jlzpm7ayQ3xexXplNVtmurc3Gb4";
@@ -137,12 +138,29 @@ public class GoogleBooksSearchTask extends
                 }
             }
 
-            if(volumeInfo.has("averageRating")){
-                book.setRatings(volumeInfo.getInt("averageRating"));
-            }
-
             if(volumeInfo.has("subtitle")){
                 book.setSubtitle(volumeInfo.getString("subtitle"));
+            }
+
+            if(volumeInfo.has("publisher")){
+                book.setPublisher(volumeInfo.getString("publisher"));
+            }
+
+            if(volumeInfo.has("publishedDate")){
+                //convert the date from yyyy-mm-dd to mm/dd/yyyy format
+                String[] dateNums = volumeInfo.getString("publishedDate").split("-");
+                //make sure we have the numbers for month date and year
+                if(dateNums.length == 3){
+                    book.setDatePublished(dateTimeHelper.toDateTime(dateNums[1] + "/" + dateNums[2] + "/" + dateNums[0]));
+                }
+            }
+
+            if(volumeInfo.has("industryIdentifiers")){
+                JSONArray industryIdentifiers = (JSONArray) volumeInfo.get("industryIdentifiers");
+                if(industryIdentifiers.length() > 0){
+                    //the ISBN 13 should be the first object. If not, we'll just grab the 10.
+                    book.setIsbn(((JSONObject)industryIdentifiers.get(0)).get("identifier").toString());
+                }
             }
 
             results.add(book);

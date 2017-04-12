@@ -33,10 +33,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_NUM_PAGES = "NumPages";
     private static final String KEY_COVER_URL = "CoverUrl";
     private static final String KEY_DESCRIPTION = "Description";
-    private static final String KEY_RATINGS = "Ratings";
-    private static final String KEY_NOTES = "Notes";
     private static final String KEY_DATE_STARTED = "DateStarted";
     private static final String KEY_DATE_COMPLETED = "DateCompleted";
+    private static final String KEY_DATE_TO_READ_BY = "DateToReadBy";
+    private static final String KEY_DATE_PUBLISHED = "DatePublished";
+    private static final String KEY_DATE_ADDED = "DateAdded";
+    private static final String KEY_READING_STATUS = "ReadingStatus";
+    private static final String KEY_ROW_COLOR = "RowColor";
+    private static final String KEY_PUBLISHER = "Publisher";
+    private static final String KEY_ISBN = "ISBN";
+    private static final String KEY_FAVORITE = "Favorite";
+    private static final String KEY_BOOK_SEQ_NO = "SequenceNumber";
 
     //BookNote table
     private static final String TABLE_BOOK_NOTES = "BookNotes";
@@ -45,8 +52,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_NOTE_TITLE = "Title";
     private static final String KEY_NOTE_DATE = "Date";
     private static final String KEY_NOTE_BODY = "Body";
-    private static final String KEY_NOTE_DELETED = "Deleted";
-
+    private static final String KEY_COLOR = "Color";
+    private static final String KEY_NOTE_SEQ_NO = "SequenceNumber";
 
     //handles DateTime operations
     DateTimeHelper dateTimeHelper = new DateTimeHelper();
@@ -62,14 +69,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_ID + " INTEGER PRIMARY KEY," + KEY_TITLE + " TEXT,"
                 + KEY_SUB_TITLE + " TEXT," + KEY_AUTHOR + " TEXT,"
                 + KEY_NUM_PAGES + " INTEGER," + KEY_COVER_URL + " TEXT," +
-                KEY_DESCRIPTION + " TEXT," + KEY_RATINGS + " INTEGER," + KEY_NOTES
-                + " TEXT," + KEY_DATE_STARTED + " TEXT," +
-                KEY_DATE_COMPLETED + " TEXT)";
+                KEY_DESCRIPTION + " TEXT," +  KEY_DATE_STARTED + " TEXT,"
+                + KEY_DATE_COMPLETED + " TEXT," + KEY_DATE_TO_READ_BY + " TEXT," +
+                KEY_DATE_PUBLISHED + " TEXT," + KEY_DATE_ADDED + " TEXT," +
+                KEY_READING_STATUS + " TEXT," + KEY_ROW_COLOR + " TEXT," +
+                KEY_PUBLISHER + " TEXT," + KEY_ISBN + " TEXT," + KEY_FAVORITE +
+                " INTEGER," + KEY_BOOK_SEQ_NO + " INTEGER)";
 
         String CREATE_BOOK_NOTES_TABLE = "CREATE TABLE " + TABLE_BOOK_NOTES + "("
                 + KEY_NOTE_ID + " INTEGER PRIMARY KEY," + KEY_BOOK_ID + " INTEGER,"
                 + KEY_NOTE_TITLE + " TEXT," + KEY_NOTE_DATE + " TEXT,"
-                + KEY_NOTE_BODY + " TEXT," + KEY_NOTE_DELETED + " INTEGER)";
+                + KEY_NOTE_BODY + " TEXT," + KEY_COLOR + " TEXT," + KEY_NOTE_SEQ_NO + " INTEGER)";
 
         db.execSQL(CREATE_MY_BOOKS_TABLE);
         db.execSQL(CREATE_BOOK_NOTES_TABLE);
@@ -97,10 +107,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_NUM_PAGES, b.getNumPages());
         values.put(KEY_COVER_URL, b.getCoverUrl());
         values.put(KEY_DESCRIPTION, b.getDescription());
-        values.put(KEY_RATINGS, b.getRatings());
-        values.put(KEY_NOTES, b.getNotes());
         values.put(KEY_DATE_STARTED, dateTimeHelper.toString(b.getDateStarted()));
         values.put(KEY_DATE_COMPLETED, dateTimeHelper.toString(b.getDateCompleted()));
+        values.put(KEY_DATE_TO_READ_BY, dateTimeHelper.toString(b.getDateToReadBy()));
+        values.put(KEY_DATE_PUBLISHED, dateTimeHelper.toString(b.getDatePublished()));
+        values.put(KEY_DATE_ADDED, dateTimeHelper.toString(b.getDateAdded()));
+        values.put(KEY_READING_STATUS, b.getReadingStatus());
+        values.put(KEY_ROW_COLOR, b.getRowColor());
+        values.put(KEY_PUBLISHER, b.getPublisher());
+        values.put(KEY_ISBN, b.getIsbn());
+        values.put(KEY_FAVORITE, b.isFavorite());
+        values.put(KEY_BOOK_SEQ_NO, b.getSeqNo());
 
         // Insert Row
         //2nd argument is String that specifies nullable column name
@@ -131,10 +148,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 book.setNumPages(Integer.parseInt(cursor.getString(4)));
                 book.setCoverUrl(cursor.getString(5));
                 book.setDescription(cursor.getString(6));
-                book.setRatings(Integer.parseInt(cursor.getString(7)));
-                book.setNotes(cursor.getString(8));
-                book.setDateStarted((!cursor.getString(9).equals("")) ? dateTimeHelper.toDateTime(cursor.getString(9)) : null);
-                book.setDateCompleted((!cursor.getString(10).equals("")) ? dateTimeHelper.toDateTime(cursor.getString(10)) : null);
+                book.setDateStarted(dateTimeHelper.toDateTime(cursor.getString(7)));
+                book.setDateCompleted(dateTimeHelper.toDateTime(cursor.getString(8)));
+                book.setDateToReadBy(dateTimeHelper.toDateTime(cursor.getString(9)));
+                book.setDatePublished(dateTimeHelper.toDateTime(cursor.getString(10)));
+                book.setDateAdded(dateTimeHelper.toDateTime(cursor.getString(11)));
+                book.setReadingStatus(cursor.getString(12));
+                book.setRowColor(cursor.getString(13));
+                book.setPublisher(cursor.getString(14));
+                book.setIsbn(cursor.getString(15));
+                book.setFavorite((Integer.parseInt(cursor.getString(16)) == 0) ? false : true);
+                book.setSeqNo(Integer.parseInt(cursor.getString(17)));
 
                 // Adding book to list
                 myBooks.add(book);
@@ -160,10 +184,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_NUM_PAGES, b.getNumPages());
         values.put(KEY_COVER_URL, b.getCoverUrl());
         values.put(KEY_DESCRIPTION, b.getDescription());
-        values.put(KEY_RATINGS, b.getRatings());
-        values.put(KEY_NOTES, b.getNotes());
         values.put(KEY_DATE_STARTED, dateTimeHelper.toString(b.getDateStarted()));
         values.put(KEY_DATE_COMPLETED, dateTimeHelper.toString(b.getDateCompleted()));
+        values.put(KEY_DATE_TO_READ_BY, dateTimeHelper.toString(b.getDateToReadBy()));
+        values.put(KEY_DATE_PUBLISHED, dateTimeHelper.toString(b.getDatePublished()));
+        values.put(KEY_DATE_ADDED, dateTimeHelper.toString(b.getDateAdded()));
+        values.put(KEY_READING_STATUS, b.getReadingStatus());
+        values.put(KEY_ROW_COLOR, b.getRowColor());
+        values.put(KEY_PUBLISHER, b.getPublisher());
+        values.put(KEY_ISBN, b.getIsbn());
+        values.put(KEY_FAVORITE, b.isFavorite());
+        values.put(KEY_BOOK_SEQ_NO, b.getSeqNo());
 
         // updating row
         return db.update(TABLE_MY_BOOKS, values, KEY_ID + " = ?",
@@ -178,7 +209,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    //update or create new BookNotes
+    //TODO: This method is deprecated - remove it.
     public void saveBookNotes(ArrayList<BookNote> notes){
         for(BookNote note : notes){
             //if the note does not have an ID, it does not exist in the db
@@ -196,8 +227,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ArrayList<BookNote> notes = new ArrayList<BookNote>();
 
         // Select all notes that are not deleted with the bookId
-        String selectQuery = "SELECT  * FROM " + TABLE_BOOK_NOTES + " WHERE " + KEY_BOOK_ID + "=" + bookId
-                + " AND " + KEY_NOTE_DELETED + "= 0";
+        String selectQuery = "SELECT  * FROM " + TABLE_BOOK_NOTES + " WHERE " + KEY_BOOK_ID + "=" + bookId;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -212,7 +242,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 note.setTitle(cursor.getString(2));
                 note.setDate((dateTimeHelper.toDateTime(cursor.getString(3))));
                 note.setBody(cursor.getString(4));
-                note.setDeleted(cursor.getString(5).equals("1"));
+                note.setColor(cursor.getString(5));
+                note.setSeqNo(Integer.parseInt(cursor.getString(6)));
 
                 // Add note to list
                 notes.add(note);
@@ -237,7 +268,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_NOTE_TITLE, note.getTitle());
         values.put(KEY_NOTE_DATE, dateTimeHelper.toString(note.getDate()));
         values.put(KEY_NOTE_BODY, note.getBody());
-        values.put(KEY_NOTE_DELETED, note.isDeleted());
+        values.put(KEY_COLOR, note.getColor());
+        values.put(KEY_NOTE_SEQ_NO, note.getSeqNo());
 
         // Insert Row
         //2nd argument is String that specifies nullable column name
@@ -256,9 +288,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_NOTE_TITLE, note.getTitle());
         values.put(KEY_NOTE_DATE, dateTimeHelper.toString(note.getDate()));
         values.put(KEY_NOTE_BODY, note.getBody());
-        values.put(KEY_NOTE_DELETED, note.isDeleted());
+        values.put(KEY_COLOR, note.getColor());
+        values.put(KEY_NOTE_SEQ_NO, note.getSeqNo());
 
-        // updating row
+        // update row
         return db.update(TABLE_BOOK_NOTES, values, KEY_ID + " = ?",
                 new String[] { note.getNoteId() });
     }

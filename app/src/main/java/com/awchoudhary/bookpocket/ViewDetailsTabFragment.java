@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
  */
 
 public class ViewDetailsTabFragment extends Fragment{
+    private DateTimeHelper dateTimeHelper = new DateTimeHelper();
     private static final String BOOK_KEY = "book_key";
 
     public static ViewDetailsTabFragment newInstance(Book book) {
@@ -43,10 +44,10 @@ public class ViewDetailsTabFragment extends Fragment{
         ImageView cover = (ImageView) view.findViewById(R.id.coverImage);
         TextView title = (TextView) view.findViewById(R.id.title);
         TextView author = (TextView) view.findViewById(R.id.author);
+        TextView isbn = (TextView) view.findViewById(R.id.isbn);
+        TextView publisher = (TextView) view.findViewById(R.id.publisher);
         TextView numPages = (TextView) view.findViewById(R.id.numPages);
-        RatingBar ratingBar = (RatingBar) view.findViewById(R.id.ratingBar);
         TextView description = (TextView) view.findViewById(R.id.descriptionText);
-        TextView notes = (TextView) view.findViewById(R.id.notesText);
 
         //load image. TODO: make cover image responsive
         Glide.with(this)
@@ -54,9 +55,6 @@ public class ViewDetailsTabFragment extends Fragment{
                 .override(257, 389)
                 .error(R.drawable.default_cover_image_big)
                 .into(cover);
-
-        //set rating
-        ratingBar.setRating(b.getRatings());
 
         //set title values
         String titleString = b.getName();
@@ -70,7 +68,14 @@ public class ViewDetailsTabFragment extends Fragment{
         numPages.setText(Integer.toString(b.getNumPages()) + " Pages");
         author.setText(b.getAuthor());
         description.setText((b.getDescription() != null && !b.getDescription().equals("")) ? b.getDescription() : "No Description");
-        notes.setText((b.getNotes() != null && !b.getNotes().equals("")) ? b.getNotes() : "No Notes");
+        isbn.setText(b.getIsbn());
+
+        if(b.getDatePublished() != null){
+            publisher.setText(b.getPublisher() + " (" + dateTimeHelper.toString(b.getDatePublished()) + ")");
+        }
+        else{
+            publisher.setText(b.getPublisher());
+        }
     }
 
 }

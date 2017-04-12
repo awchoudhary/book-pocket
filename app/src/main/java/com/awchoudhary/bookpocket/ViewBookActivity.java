@@ -113,9 +113,6 @@ public class ViewBookActivity  extends AppCompatActivity {
                 .error(R.drawable.default_cover_image_big)
                 .into(cover);
 
-        //set rating
-        ratingBar.setRating(b.getRatings());
-
         //set title values
         String titleString = b.getName();
         //if there is a subtitle, append it to the title
@@ -128,7 +125,6 @@ public class ViewBookActivity  extends AppCompatActivity {
         numPages.setText(Integer.toString(b.getNumPages()) + " Pages");
         author.setText(b.getAuthor());
         description.setText((b.getDescription() != null && !b.getDescription().equals("")) ? b.getDescription() : "No Description");
-        notes.setText((b.getNotes() != null && !b.getNotes().equals("")) ? b.getNotes() : "No Notes");
     }
 
     //delete book being viewed from db

@@ -39,6 +39,7 @@ import static com.awchoudhary.bookpocket.R.id.imageView;
  * Handles logic for creating a new book and editing book. TODO: Class name is misleading. Change it.
  */
 public class CreateBookActivity extends AppCompatActivity {
+    private DateTimeHelper dateTimeHelper = new DateTimeHelper();
     //book that is being created/edited
     private Book book = new Book();
 
@@ -75,8 +76,7 @@ public class CreateBookActivity extends AppCompatActivity {
         }
 
         //set the date edit texts as date pickers
-        new DatePickerCustom(this, (EditText) findViewById(R.id.dateStartedInput));
-        new DatePickerCustom(this, (EditText) findViewById(R.id.dateCompletedInput));
+        new DatePickerCustom(this, (EditText) findViewById(R.id.datePublishedInput));
 
         //attached even handlers
         Button saveButton = (Button) findViewById(R.id.saveButton);
@@ -148,21 +148,17 @@ public class CreateBookActivity extends AppCompatActivity {
 
     //populates inputs in view with provided parameter
     private void populate(Book book){
-        //used for parsing dates to string
-        DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd/MM/yyyy");
-
         //populate text inputs
         ((EditText) findViewById(R.id.titleInput)).setText(book.getName());
         ((EditText) findViewById(R.id.subtitleInput)).setText(book.getSubtitle());
         ((EditText) findViewById(R.id.authorInput)).setText(book.getAuthor());
+        ((EditText) findViewById(R.id.isbnInput)).setText(book.getIsbn());
+        ((EditText) findViewById(R.id.publisherInput)).setText(book.getPublisher());
+        ((EditText) findViewById(R.id.datePublishedInput)).setText(dateTimeHelper.toString(book.getDatePublished()));
         ((EditText) findViewById(R.id.numPagesInput)).setText(Integer.toString(book.getNumPages()));
         ((EditText) findViewById(R.id.descriptionInput)).setText(book.getDescription());
-        ((EditText) findViewById(R.id.notesInput)).setText(book.getNotes());
 
-        //set dates if non null
-        ((EditText) findViewById(R.id.dateStartedInput)).setText((book.getDateStarted() != null) ? dateFormatter.print(book.getDateStarted()) : "");
-        ((EditText) findViewById(R.id.dateCompletedInput)).setText((book.getDateCompleted() != null) ? dateFormatter.print(book.getDateCompleted()) : "");
-
+        //load cover image
         ImageView cover = (ImageView) findViewById(R.id.coverImage);
         Glide.with(this)
                 .load(book.getCoverUrl())
@@ -176,19 +172,15 @@ public class CreateBookActivity extends AppCompatActivity {
         //handles db interactions
         DatabaseHandler dbHandler = new DatabaseHandler(this);
 
-        //date formatter used to parse date strings
-        DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd/MM/yyyy");
-
-
         //get all text field inputs
         String title = ((EditText) findViewById(R.id.titleInput)).getText().toString();
         String subtitle = ((EditText) findViewById(R.id.subtitleInput)).getText().toString();
         String author = ((EditText) findViewById(R.id.authorInput)).getText().toString();
+        String isbn = ((EditText) findViewById(R.id.isbnInput)).getText().toString();
+        String publisher = ((EditText) findViewById(R.id.publisherInput)).getText().toString();
+        String datePublished = ((EditText) findViewById(R.id.datePublishedInput)).getText().toString();
         String numPages = ((EditText) findViewById(R.id.numPagesInput)).getText().toString();
-        String dateStarted = ((EditText) findViewById(R.id.dateStartedInput)).getText().toString();
-        String dateCompleted = ((EditText) findViewById(R.id.dateCompletedInput)).getText().toString();
         String description = ((EditText) findViewById(R.id.descriptionInput)).getText().toString();
-        String notes = ((EditText) findViewById(R.id.notesInput)).getText().toString();
 
         //Validation of inputs
         if(title.equals("")){
@@ -199,26 +191,23 @@ public class CreateBookActivity extends AppCompatActivity {
             showMessage("Book must have an author.");
             return false;
         }
-        if(dateStarted.equals("") && !dateCompleted.equals("")){
-            showMessage("Book must have start date if it has a complete date.");
-            return false;
-        }
 
         //update book with text inputs
         book.setName(title);
         book.setSubtitle(subtitle);
         book.setAuthor(author);
         book.setNumPages((!numPages.equals("")) ? Integer.parseInt(numPages) : 0);
-        book.setDateStarted((!dateStarted.equals("")) ? dateFormatter.parseDateTime(dateStarted) : null);
-        book.setDateCompleted((!dateCompleted.equals("")) ? dateFormatter.parseDateTime(dateCompleted) : null);
+        book.setIsbn(isbn);
+        book.setPublisher(publisher);
+        book.setDatePublished(dateTimeHelper.toDateTime(datePublished));
         book.setDescription(description);
-        book.setNotes(notes);
 
-        //save and set cover image. For now we are just not saving if edit. TODO: Take care of image uploading and updating
+        //save the cover image if it was changed
         if(isNewCoverImage){
             saveCoverImage(book);
         }
 
+        //update or create a new book
         if(newBook){
             dbHandler.createBook(book);
         }

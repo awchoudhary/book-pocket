@@ -147,7 +147,6 @@ public class EditDetailsTabFragment extends Fragment {
         ((EditText) view.findViewById(R.id.authorInput)).setText(book.getAuthor());
         ((EditText) view.findViewById(R.id.numPagesInput)).setText(Integer.toString(book.getNumPages()));
         ((EditText) view.findViewById(R.id.descriptionInput)).setText(book.getDescription());
-        ((EditText) view.findViewById(R.id.notesInput)).setText(book.getNotes());
 
         //set dates if non null
         ((EditText) view.findViewById(R.id.dateStartedInput)).setText((book.getDateStarted() != null) ? dateFormatter.print(book.getDateStarted()) : "");
@@ -202,7 +201,6 @@ public class EditDetailsTabFragment extends Fragment {
         book.setDateStarted((!dateStarted.equals("")) ? dateFormatter.parseDateTime(dateStarted) : null);
         book.setDateCompleted((!dateCompleted.equals("")) ? dateFormatter.parseDateTime(dateCompleted) : null);
         book.setDescription(description);
-        book.setNotes(notes);
 
         //save and set cover image. For now we are just not saving if edit. TODO: Take care of image uploading and updating
         if(isNewCoverImage){

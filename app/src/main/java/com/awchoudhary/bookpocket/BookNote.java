@@ -13,7 +13,8 @@ public class BookNote {
     private String title;
     private DateTime date;
     private String body; // the contents of the note
-    private boolean deleted; //indicates if note is deleted
+    private String color;
+    private int SeqNo;
 
     public String getNoteId() {
         return noteId;
@@ -50,10 +51,17 @@ public class BookNote {
         this.body = body;
     }
 
-    public boolean isDeleted() {
-        return deleted;
+    public String getColor() {
+        return color;
     }
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public int getSeqNo() {
+        return SeqNo;
+    }
+    public void setSeqNo(int seqNo) {
+        SeqNo = seqNo;
     }
 }
