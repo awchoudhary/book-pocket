@@ -30,7 +30,7 @@
                 android:paddingStart="10dp"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/icon_status_readin"/>
+                android:src="@drawable/icon_status_reading"/>
 
             <TextView
                 android:id="@+id/status_text"
@@ -54,13 +54,7 @@
 
     </android.support.percent.PercentRelativeLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/addNoteButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/icon_plus_primary" />
+    <include layout="@layout/notes_tab_fab" />
 
 </android.support.design.widget.CoordinatorLayout>
 

@@ -82,7 +82,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
         }
 
         noteViewHolder.noteBodyView.setText(noteBody);
-        noteViewHolder.cv.setCardBackgroundColor(Color.parseColor("#fdf9f2"));
+        noteViewHolder.cv.setCardBackgroundColor(Color.parseColor("#ffffff"));
         noteViewHolder.cv.setOnClickListener(new View.OnClickListener() {
             BookNote note = notes.get(position);
             @Override
@@ -186,7 +186,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
     public void toggleSelection(int pos, CardView cardView) {
         if (selectedItems.get(pos, false)) {
             selectedItems.delete(pos);
-            cardView.setCardBackgroundColor(Color.parseColor("#fdf9f2"));
+            cardView.setCardBackgroundColor(Color.parseColor("#ffffff"));
         }
         else {
             selectedItems.put(pos, true);

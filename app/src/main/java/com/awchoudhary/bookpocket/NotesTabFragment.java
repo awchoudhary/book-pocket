@@ -1,7 +1,9 @@
 package com.awchoudhary.bookpocket;
 
 import android.app.Dialog;
-import android.support.design.widget.FloatingActionButton;
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
+
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -48,9 +50,14 @@ public class NotesTabFragment extends Fragment{
         rv.setLayoutManager(new LinearLayoutManager(getActivity()));
         final NotesAdapter adapter = new NotesAdapter(notes, getActivity());
         rv.setAdapter(adapter);
+        rv.setNestedScrollingEnabled(true);
+
+
+        FloatingActionMenu fabMenu = (FloatingActionMenu) view.findViewById(R.id.fab_notes_tab);
+        fabMenu.setClosedOnTouchOutside(true);
 
         //set event handler for new note button
-        FloatingActionButton newNoteButton = (FloatingActionButton) view.findViewById(R.id.addNoteButton);
+        FloatingActionButton newNoteButton = (FloatingActionButton) view.findViewById(R.id.createNoteButton);
         newNoteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,6 +118,7 @@ public class NotesTabFragment extends Fragment{
 
         return note;
     }
+
 
 
 }
