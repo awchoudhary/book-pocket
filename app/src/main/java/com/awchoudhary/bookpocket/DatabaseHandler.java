@@ -12,6 +12,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -54,9 +55,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_NOTE_BODY = "Body";
     private static final String KEY_COLOR = "Color";
     private static final String KEY_NOTE_SEQ_NO = "SequenceNumber";
-
-    //handles DateTime operations
-    DateTimeHelper dateTimeHelper = new DateTimeHelper();
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -107,11 +105,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_NUM_PAGES, b.getNumPages());
         values.put(KEY_COVER_URL, b.getCoverUrl());
         values.put(KEY_DESCRIPTION, b.getDescription());
-        values.put(KEY_DATE_STARTED, dateTimeHelper.toString(b.getDateStarted()));
-        values.put(KEY_DATE_COMPLETED, dateTimeHelper.toString(b.getDateCompleted()));
-        values.put(KEY_DATE_TO_READ_BY, dateTimeHelper.toString(b.getDateToReadBy()));
-        values.put(KEY_DATE_PUBLISHED, dateTimeHelper.toString(b.getDatePublished()));
-        values.put(KEY_DATE_ADDED, dateTimeHelper.toString(b.getDateAdded()));
+        values.put(KEY_DATE_STARTED, DateTimeHelper.toString(b.getDateStarted()));
+        values.put(KEY_DATE_COMPLETED, DateTimeHelper.toString(b.getDateCompleted()));
+        values.put(KEY_DATE_TO_READ_BY, DateTimeHelper.toString(b.getDateToReadBy()));
+        values.put(KEY_DATE_PUBLISHED, DateTimeHelper.toString(b.getDatePublished()));
+        values.put(KEY_DATE_ADDED, DateTimeHelper.toString(b.getDateAdded()));
         values.put(KEY_READING_STATUS, b.getReadingStatus());
         values.put(KEY_ROW_COLOR, b.getRowColor());
         values.put(KEY_PUBLISHER, b.getPublisher());
@@ -148,11 +146,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 book.setNumPages(Integer.parseInt(cursor.getString(4)));
                 book.setCoverUrl(cursor.getString(5));
                 book.setDescription(cursor.getString(6));
-                book.setDateStarted(dateTimeHelper.toDateTime(cursor.getString(7)));
-                book.setDateCompleted(dateTimeHelper.toDateTime(cursor.getString(8)));
-                book.setDateToReadBy(dateTimeHelper.toDateTime(cursor.getString(9)));
-                book.setDatePublished(dateTimeHelper.toDateTime(cursor.getString(10)));
-                book.setDateAdded(dateTimeHelper.toDateTime(cursor.getString(11)));
+                book.setDateStarted(DateTimeHelper.toDateTime(cursor.getString(7)));
+                book.setDateCompleted(DateTimeHelper.toDateTime(cursor.getString(8)));
+                book.setDateToReadBy(DateTimeHelper.toDateTime(cursor.getString(9)));
+                book.setDatePublished(DateTimeHelper.toDateTime(cursor.getString(10)));
+                book.setDateAdded(DateTimeHelper.toDateTime(cursor.getString(11)));
                 book.setReadingStatus(cursor.getString(12));
                 book.setRowColor(cursor.getString(13));
                 book.setPublisher(cursor.getString(14));
@@ -184,11 +182,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_NUM_PAGES, b.getNumPages());
         values.put(KEY_COVER_URL, b.getCoverUrl());
         values.put(KEY_DESCRIPTION, b.getDescription());
-        values.put(KEY_DATE_STARTED, dateTimeHelper.toString(b.getDateStarted()));
-        values.put(KEY_DATE_COMPLETED, dateTimeHelper.toString(b.getDateCompleted()));
-        values.put(KEY_DATE_TO_READ_BY, dateTimeHelper.toString(b.getDateToReadBy()));
-        values.put(KEY_DATE_PUBLISHED, dateTimeHelper.toString(b.getDatePublished()));
-        values.put(KEY_DATE_ADDED, dateTimeHelper.toString(b.getDateAdded()));
+        values.put(KEY_DATE_STARTED, DateTimeHelper.toString(b.getDateStarted()));
+        values.put(KEY_DATE_COMPLETED, DateTimeHelper.toString(b.getDateCompleted()));
+        values.put(KEY_DATE_TO_READ_BY, DateTimeHelper.toString(b.getDateToReadBy()));
+        values.put(KEY_DATE_PUBLISHED, DateTimeHelper.toString(b.getDatePublished()));
+        values.put(KEY_DATE_ADDED, DateTimeHelper.toString(b.getDateAdded()));
         values.put(KEY_READING_STATUS, b.getReadingStatus());
         values.put(KEY_ROW_COLOR, b.getRowColor());
         values.put(KEY_PUBLISHER, b.getPublisher());
@@ -240,7 +238,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 note.setNoteId(cursor.getString(0));
                 note.setBookId(cursor.getString(1));
                 note.setTitle(cursor.getString(2));
-                note.setDate((dateTimeHelper.toDateTime(cursor.getString(3))));
+                note.setDate((DateTimeHelper.toDateTime(cursor.getString(3))));
                 note.setBody(cursor.getString(4));
                 note.setColor(cursor.getString(5));
                 note.setSeqNo(Integer.parseInt(cursor.getString(6)));
@@ -266,7 +264,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_NOTE_ID, note.getNoteId());
         values.put(KEY_BOOK_ID, note.getBookId());
         values.put(KEY_NOTE_TITLE, note.getTitle());
-        values.put(KEY_NOTE_DATE, dateTimeHelper.toString(note.getDate()));
+        values.put(KEY_NOTE_DATE, DateTimeHelper.toString(note.getDate()));
         values.put(KEY_NOTE_BODY, note.getBody());
         values.put(KEY_COLOR, note.getColor());
         values.put(KEY_NOTE_SEQ_NO, note.getSeqNo());
@@ -286,7 +284,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(KEY_BOOK_ID, note.getBookId());
         values.put(KEY_NOTE_TITLE, note.getTitle());
-        values.put(KEY_NOTE_DATE, dateTimeHelper.toString(note.getDate()));
+        values.put(KEY_NOTE_DATE, DateTimeHelper.toString(note.getDate()));
         values.put(KEY_NOTE_BODY, note.getBody());
         values.put(KEY_COLOR, note.getColor());
         values.put(KEY_NOTE_SEQ_NO, note.getSeqNo());

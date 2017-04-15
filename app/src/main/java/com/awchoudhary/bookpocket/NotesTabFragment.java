@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 
 import java.util.ArrayList;
 
@@ -21,11 +22,19 @@ import java.util.ArrayList;
  */
 
 public class NotesTabFragment extends Fragment{
+    //dialogs used in fragment
+    private Dialog createNoteDialog;
+    private Dialog updateStatusDialog;
+
+
     //the book that is being edited
     private Book book;
 
-    //codes for intents
+    //codes for fragment args
     private static final String BOOK_KEY = "book_key";
+
+    //keeps track of selected radio button in the update status dialog
+    private int selectedRadioID;
 
     public static NotesTabFragment newInstance(Book book) {
         NotesTabFragment fragment = new NotesTabFragment();
@@ -56,36 +65,115 @@ public class NotesTabFragment extends Fragment{
         FloatingActionMenu fabMenu = (FloatingActionMenu) view.findViewById(R.id.fab_notes_tab);
         fabMenu.setClosedOnTouchOutside(true);
 
-        //set event handler for new note button
+        //set event handlers for fab buttons
         FloatingActionButton newNoteButton = (FloatingActionButton) view.findViewById(R.id.createNoteButton);
         newNoteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //get dialog and set title
-                final Dialog dialog = new Dialog(getActivity(), R.style.NoteDialog);
-                dialog.setContentView(R.layout.dialog_new_note);
-                dialog.setTitle("New Note");
-                dialog.getWindow().setBackgroundDrawableResource(R.drawable.note_dialog_background);
+                createNoteDialog = new Dialog(getActivity(), R.style.NoteDialog);
+                createNoteDialog.setContentView(R.layout.dialog_new_note);
+                createNoteDialog.setTitle("New Note");
+                createNoteDialog.getWindow().setBackgroundDrawableResource(R.drawable.note_dialog_background);
 
                 //set date input as a date picker
-                EditText dateInput = (EditText) dialog.findViewById(R.id.dateInput);
+                EditText dateInput = (EditText) createNoteDialog.findViewById(R.id.dateInput);
                 new DatePickerCustom(getActivity(), dateInput);
 
                 //set event handler for save button
-                Button saveButton = (Button) dialog.findViewById(R.id.saveButton);
+                Button saveButton = (Button) createNoteDialog.findViewById(R.id.saveButton);
                 saveButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        BookNote note = createNote(dialog);
+                        BookNote note = createNote(createNoteDialog);
 
                         //add new book to adapter
                         adapter.updateEntries(note);
 
                         //hide dialog
-                        dialog.dismiss();
+                        createNoteDialog.dismiss();
                     }
                 });
-                dialog.show();
+                createNoteDialog.show();
+            }
+        });
+
+        final FloatingActionButton updateStatusButton = (FloatingActionButton) view.findViewById(R.id.updateReadingStatusButton);
+        updateStatusButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                //get dialog and set title
+                updateStatusDialog = new Dialog(getActivity(), R.style.NoteDialog);
+                updateStatusDialog.setContentView(R.layout.dialog_update_reading_status);
+                updateStatusDialog.setTitle("Update Reading Status");
+                updateStatusDialog.getWindow().setBackgroundDrawableResource(R.drawable.note_dialog_background);
+
+                //set event handlers for all dialog buttons
+                RadioButton radioWantToRead = (RadioButton) updateStatusDialog.findViewById(R.id.radio_want_to_read);
+                radioWantToRead.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v){
+                        onRadioButtonClicked(v);
+                    }
+                });
+
+                RadioButton radioStartedReading = (RadioButton) updateStatusDialog.findViewById(R.id.radio_start_reading);
+                radioStartedReading.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v){
+                        onRadioButtonClicked(v);
+                    }
+                });
+
+                RadioButton radioCompleted= (RadioButton) updateStatusDialog.findViewById(R.id.radio_completed);
+                radioCompleted.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v){
+                        onRadioButtonClicked(v);
+                    }
+                });
+
+                RadioButton radioClearStatus = (RadioButton) updateStatusDialog.findViewById(R.id.radio_clear_status);
+                radioClearStatus.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v){
+                        onRadioButtonClicked(v);
+                    }
+                });
+
+                Button saveButton = (Button) updateStatusDialog.findViewById(R.id.saveButton);
+                saveButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        switch (selectedRadioID){
+                            case R.id.radio_want_to_read:
+                                String dateToReadBy = ((EditText)updateStatusDialog.findViewById(R.id.input_date_to_start_reading))
+                                                        .getText().toString();
+                                int priority = Integer.parseInt(((EditText)updateStatusDialog.findViewById(R.id.input_priority_number))
+                                                .getText().toString());
+                                book.setDateToReadBy(DateTimeHelper.toDateTime(dateToReadBy));
+                                book.setSeqNo(priority);
+
+                            case R.id.radio_start_reading:
+                                String dateStarted = ((EditText)updateStatusDialog.findViewById(R.id.input_date_started))
+                                        .getText().toString();
+                                int currentPage = Integer.parseInt(((EditText)updateStatusDialog.findViewById(R.id.input_current_page))
+                                        .getText().toString());
+                                book.setDateToReadBy(DateTimeHelper.toDateTime(dateToReadBy));
+                                book.setCurrentPage(currentPage);
+
+                            case R.id.radio_completed:
+                                String dateStarted = ((EditText)updateStatusDialog.findViewById(R.id.input_date_started))
+                                        .getText().toString();
+
+                            case R.id.radio_clear_status:
+                                book.setReadingStatus(ReadingStatus.NO_STATUS.toString());
+                        }
+                    }
+                });
+
+
+                updateStatusDialog.show();
             }
         });
 
@@ -117,6 +205,45 @@ public class NotesTabFragment extends Fragment{
         db.createBookNote(note);
 
         return note;
+    }
+
+    //on click handlers for update status dialog radio buttons
+    public void onRadioButtonClicked(View view){
+        //first of all, hide all inputs
+        hideUpdateDialogInputs();
+
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // show the inputs for the selected radio button
+        switch(view.getId()) {
+            case R.id.radio_want_to_read:
+                if (checked)
+                    updateStatusDialog.findViewById(R.id.inputs_want_to_read).setVisibility(View.VISIBLE);
+                    selectedRadioID = R.id.radio_want_to_read;
+                    break;
+            case R.id.radio_start_reading:
+                if (checked)
+                    updateStatusDialog.findViewById(R.id.inputs_start_reading).setVisibility(View.VISIBLE);
+                    selectedRadioID = R.id.radio_start_reading;
+                    break;
+            case R.id.radio_completed:
+                if (checked)
+                    updateStatusDialog.findViewById(R.id.inputs_completed).setVisibility(View.VISIBLE);
+                    selectedRadioID = R.id.radio_completed;
+                break;
+            case R.id.radio_clear_status:
+                //No inputs to show here
+                selectedRadioID = R.id.radio_clear_status;
+                break;
+        }
+    }
+
+    //hide all inputs in the update status dialog
+    private void hideUpdateDialogInputs(){
+        updateStatusDialog.findViewById(R.id.inputs_want_to_read).setVisibility(View.GONE);
+        updateStatusDialog.findViewById(R.id.inputs_start_reading).setVisibility(View.GONE);
+        updateStatusDialog.findViewById(R.id.inputs_completed).setVisibility(View.GONE);
     }
 
 

@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 /**
  * Created by awaeschoudhary on 3/21/17.
@@ -116,6 +117,12 @@ public class TabManagerActivity extends AppCompatActivity{
             startActivity(intent);
         }
         else if(id == R.id.action_delete) {
+            //delete and navigate to mybooks page.
+            DatabaseHandler db = new DatabaseHandler(this);
+            db.deleteBook(book);
+            Toast.makeText(getApplicationContext(), "Deleted " + book.getName(), Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(TabManagerActivity.this, MainActivity.class);
+            startActivity(intent);
             return true;
         }
 
