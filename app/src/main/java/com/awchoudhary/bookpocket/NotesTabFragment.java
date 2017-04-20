@@ -4,6 +4,7 @@ import android.app.Dialog;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
+import android.content.DialogInterface;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -24,6 +25,9 @@ import java.util.ArrayList;
  */
 
 public class NotesTabFragment extends Fragment{
+    //view for activity
+    private View tabLayout;
+
     //dialogs used in fragment
     private Dialog createNoteDialog;
 
@@ -44,28 +48,28 @@ public class NotesTabFragment extends Fragment{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.notes_tab_fragment, container, false);
+        tabLayout = inflater.inflate(R.layout.notes_tab_fragment, container, false);
         DatabaseHandler db = new DatabaseHandler(getActivity());
         book = (Book) getArguments().getSerializable(BOOK_KEY); // get Book to be Edited
 
         //get all notes for the book
         ArrayList<BookNote> notes = db.getBookNotes(book.getId());
 
-        updateStatusBox(view);
+        updateStatusBox(tabLayout);
 
         //initialize recycle view and set adapter
-        RecyclerView rv = (RecyclerView) view.findViewById(R.id.rv);
+        RecyclerView rv = (RecyclerView) tabLayout.findViewById(R.id.rv);
         rv.setLayoutManager(new LinearLayoutManager(getActivity()));
         final NotesAdapter adapter = new NotesAdapter(notes, getActivity());
         rv.setAdapter(adapter);
         rv.setNestedScrollingEnabled(true);
 
 
-        FloatingActionMenu fabMenu = (FloatingActionMenu) view.findViewById(R.id.fab_notes_tab);
+        FloatingActionMenu fabMenu = (FloatingActionMenu) tabLayout.findViewById(R.id.fab_notes_tab);
         fabMenu.setClosedOnTouchOutside(true);
 
         //set event handlers for fab buttons
-        FloatingActionButton newNoteButton = (FloatingActionButton) view.findViewById(R.id.createNoteButton);
+        FloatingActionButton newNoteButton = (FloatingActionButton) tabLayout.findViewById(R.id.createNoteButton);
         newNoteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,7 +101,7 @@ public class NotesTabFragment extends Fragment{
             }
         });
 
-        final FloatingActionButton updateStatusButton = (FloatingActionButton) view.findViewById(R.id.updateReadingStatusButton);
+        final FloatingActionButton updateStatusButton = (FloatingActionButton) tabLayout.findViewById(R.id.updateReadingStatusButton);
         updateStatusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
@@ -107,7 +111,7 @@ public class NotesTabFragment extends Fragment{
             }
         });
 
-        return view;
+        return tabLayout;
     }
 
 
@@ -153,19 +157,35 @@ public class NotesTabFragment extends Fragment{
         // Create and show the dialog.
         DialogFragment newFragment = UpdateStatusDialogFragment.newInstance(book);
         newFragment.show(ft, "dialog");
+
+        //set dismiss handler
+        getFragmentManager().executePendingTransactions();
+        newFragment.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                updateStatusBox(tabLayout);
+            }
+        });
     }
 
 
     private void updateStatusBox(View view){
         if(book.getReadingStatus() != null){
             TextView statusText = (TextView) view.findViewById(R.id.status_text);
+            statusText.setTextColor(getResources().getColor(R.color.colorAccent));
 
             if(book.getReadingStatus().equals(ReadingStatus.WANT_TO_READ.toString())){
-                statusText.setText("To Start on " + DateTimeHelper.toString(book.getDateToReadBy()));
+                statusText.setText("To Start on " + DateTimeHelper.toString(book.getDateToReadBy())
+                                    + " (In " + DateTimeHelper.getDaysTill(book.getDateToReadBy()) +
+                                    " days)");
             }else if(book.getReadingStatus().equals(ReadingStatus.READING.toString())){
-                statusText.setText("Started on " + DateTimeHelper.toString(book.getDateStarted()));
+                statusText.setText("Started on " + DateTimeHelper.toString(book.getDateStarted())
+                                    + " (" + DateTimeHelper.getDaysSince(book.getDateStarted()) +
+                                    " days ago)");
             }else if(book.getReadingStatus().equals(ReadingStatus.COMPLETED.toString())){
-                statusText.setText("Completed on " + DateTimeHelper.toString(book.getDateCompleted()));
+                statusText.setText("Completed on " + DateTimeHelper.toString(book.getDateCompleted())
+                                    + " (" + DateTimeHelper.getDaysSince(book.getDateCompleted()) +
+                                    " days ago)");
             }else if(book.getReadingStatus().equals(ReadingStatus.NO_STATUS.toString())){
                 statusText.setText("Update Reading Status Using Bottom Button");
                 statusText.setTextColor(getResources().getColor(R.color.light_grey));

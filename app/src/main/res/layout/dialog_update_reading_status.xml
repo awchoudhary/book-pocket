@@ -30,7 +30,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Want To Read"
-                android:textColor="@color/colorAccent" />
+                android:textColor="@color/colorAccent"
+                android:theme="@style/RadioButton"/>
 
             <LinearLayout android:id="@+id/inputs_want_to_read"
                 android:layout_height="wrap_content"
@@ -47,8 +48,9 @@
                     android:text="Date To Start Reading" />
 
                 <EditText android:id="@+id/input_date_to_start_reading"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:minWidth="100dp"
                     android:background="@drawable/input_background"
                     android:padding="@dimen/input_padding"
                     android:layout_marginBottom="@dimen/input_spacing"
@@ -79,7 +81,8 @@
                 android:layout_height="wrap_content"
                 android:text="Start Reading"
                 android:textColor="@color/colorAccent"
-                android:onClick="onRadioButtonClicked"/>
+                android:onClick="onRadioButtonClicked"
+                android:theme="@style/RadioButton"/>
 
             <LinearLayout android:id="@+id/inputs_start_reading"
                 android:layout_height="wrap_content"
@@ -96,8 +99,9 @@
                     android:text="Date Started" />
 
                 <EditText android:id="@+id/input_date_started_reading"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:minWidth="100dp"
                     android:background="@drawable/input_background"
                     android:padding="@dimen/input_padding"
                     android:layout_marginBottom="@dimen/input_spacing"
@@ -128,7 +132,8 @@
                 android:layout_height="wrap_content"
                 android:text="Mark As Completed"
                 android:textColor="@color/colorAccent"
-                android:onClick="onRadioButtonClicked"/>
+                android:onClick="onRadioButtonClicked"
+                android:theme="@style/RadioButton"/>
 
             <LinearLayout android:id="@+id/inputs_completed"
                 android:layout_height="wrap_content"
@@ -145,8 +150,9 @@
                     android:text="Date Completed" />
 
                 <EditText android:id="@+id/input_date_completed"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:minWidth="100dp"
                     android:background="@drawable/input_background"
                     android:padding="@dimen/input_padding"
                     android:layout_marginBottom="@dimen/input_spacing"
@@ -160,7 +166,8 @@
                 android:layout_height="wrap_content"
                 android:text="Clear Reading Status"
                 android:textColor="@color/colorAccent"
-                android:onClick="onRadioButtonClicked"/>
+                android:onClick="onRadioButtonClicked"
+                android:theme="@style/RadioButton"/>
 
         </RadioGroup>
 

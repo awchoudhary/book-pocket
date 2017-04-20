@@ -30,15 +30,16 @@ public class DateTimeHelper {
         return DATE_FORMATTER.parseDateTime(dateTimeString);
     }
 
-    public int getDaysSinceStarted(DateTime dateStarted){
-        return Days.daysBetween(dateStarted, new DateTime()).getDays();
+    public static int getDaysSince(DateTime date){
+        return Days.daysBetween(date, new DateTime()).getDays();
     }
 
-    public int getDaysTakenToComplete(DateTime dateStarted, DateTime dateCompleted){
+    public static int getDaysBetween(DateTime dateStarted, DateTime dateCompleted){
         return Days.daysBetween(dateStarted, dateCompleted).getDays();
     }
 
-    public int getDaysSinceCompleted(DateTime dateCompleted){
-        return Days.daysBetween(dateCompleted, new DateTime()).getDays();
+    public static int getDaysTill(DateTime date){
+        return Days.daysBetween(new DateTime(), date).getDays();
     }
+
 }

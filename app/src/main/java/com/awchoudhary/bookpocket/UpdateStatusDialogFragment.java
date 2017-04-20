@@ -1,6 +1,7 @@
 package com.awchoudhary.bookpocket;
 
 import android.os.Bundle;
+import android.support.annotation.IntegerRes;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -158,10 +159,13 @@ public class UpdateStatusDialogFragment extends DialogFragment {
 
                 String dateToReadBy = ((EditText)dialogView.findViewById(R.id.input_date_to_start_reading))
                         .getText().toString();
-                int priority = Integer.parseInt(((EditText)dialogView.findViewById(R.id.input_priority_number))
-                        .getText().toString());
+                String priorityString = ((EditText)dialogView.findViewById(R.id.input_priority_number))
+                        .getText().toString();
+
+                if(!priorityString.equals("")){
+                    book.setSeqNo(Integer.parseInt(priorityString));
+                }
                 book.setDateToReadBy(DateTimeHelper.toDateTime(dateToReadBy));
-                book.setSeqNo(priority);
                 break;
 
             case R.id.radio_start_reading:
@@ -169,10 +173,13 @@ public class UpdateStatusDialogFragment extends DialogFragment {
 
                 String dateStarted = ((EditText)dialogView.findViewById(R.id.input_date_started_reading))
                         .getText().toString();
-                int currentPage = Integer.parseInt(((EditText)dialogView.findViewById(R.id.input_current_page))
-                        .getText().toString());
-                book.setDateToReadBy(DateTimeHelper.toDateTime(dateStarted));
-                book.setCurrentPage(currentPage);
+                String currentPageString = ((EditText)dialogView.findViewById(R.id.input_current_page))
+                        .getText().toString();
+
+                if(!currentPageString.equals("")){
+                    book.setCurrentPage(Integer.parseInt(currentPageString));
+                }
+                book.setDateStarted(DateTimeHelper.toDateTime(dateStarted));
                 break;
 
             case R.id.radio_completed:
