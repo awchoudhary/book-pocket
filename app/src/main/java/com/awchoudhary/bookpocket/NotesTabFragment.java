@@ -158,19 +158,17 @@ public class NotesTabFragment extends Fragment{
 
     private void updateStatusBox(View view){
         if(book.getReadingStatus() != null){
-            if(book.getReadingStatus().equals(ReadingStatus.WANT_TO_READ.toString())){
-                ((TextView) view.findViewById(R.id.status_text))
-                        .setText(DateTimeHelper.toString(book.getDateToReadBy()));
-            }else if(book.getReadingStatus().equals(ReadingStatus.READING.toString())){
-                ((TextView) view.findViewById(R.id.status_text))
-                        .setText(DateTimeHelper.toString(book.getDateStarted()));
+            TextView statusText = (TextView) view.findViewById(R.id.status_text);
 
+            if(book.getReadingStatus().equals(ReadingStatus.WANT_TO_READ.toString())){
+                statusText.setText("To Start on " + DateTimeHelper.toString(book.getDateToReadBy()));
+            }else if(book.getReadingStatus().equals(ReadingStatus.READING.toString())){
+                statusText.setText("Started on " + DateTimeHelper.toString(book.getDateStarted()));
             }else if(book.getReadingStatus().equals(ReadingStatus.COMPLETED.toString())){
-                ((TextView) view.findViewById(R.id.status_text))
-                        .setText(DateTimeHelper.toString(book.getDateCompleted()));
+                statusText.setText("Completed on " + DateTimeHelper.toString(book.getDateCompleted()));
             }else if(book.getReadingStatus().equals(ReadingStatus.NO_STATUS.toString())){
-                ((TextView) view.findViewById(R.id.status_text))
-                        .setText("No Reading Status Available");
+                statusText.setText("Update Reading Status Using Bottom Button");
+                statusText.setTextColor(getResources().getColor(R.color.light_grey));
             }
         }
     }
