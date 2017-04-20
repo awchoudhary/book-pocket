@@ -22,7 +22,7 @@ import java.util.ArrayList;
  */
 public class BookArrayAdaptor extends ArrayAdapter<Book> {
     private final Context context;
-    private final ArrayList<Book> books;
+    private ArrayList<Book> books;
 
     public BookArrayAdaptor(Context context, ArrayList<Book> books) {
         super(context, R.layout.content_main, books);
@@ -74,4 +74,5 @@ public class BookArrayAdaptor extends ArrayAdapter<Book> {
 
         return rowView;
     }
+
 }

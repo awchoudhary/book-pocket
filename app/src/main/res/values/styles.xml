@@ -36,6 +36,7 @@
 
     <style name="NoteDialog" parent="@android:style/Theme.Material.Dialog">
         <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:background">@drawable/note_dialog_background</item>
         <item name="android:windowAnimationStyle">@style/NoteDialogAnimation</item>
     </style>
 

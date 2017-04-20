@@ -45,6 +45,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_ISBN = "ISBN";
     private static final String KEY_FAVORITE = "Favorite";
     private static final String KEY_BOOK_SEQ_NO = "SequenceNumber";
+    private static final String KEY_CURRENT_PAGE = "CurrentPage";
 
     //BookNote table
     private static final String TABLE_BOOK_NOTES = "BookNotes";
@@ -72,7 +73,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 KEY_DATE_PUBLISHED + " TEXT," + KEY_DATE_ADDED + " TEXT," +
                 KEY_READING_STATUS + " TEXT," + KEY_ROW_COLOR + " TEXT," +
                 KEY_PUBLISHER + " TEXT," + KEY_ISBN + " TEXT," + KEY_FAVORITE +
-                " INTEGER," + KEY_BOOK_SEQ_NO + " INTEGER)";
+                " INTEGER," + KEY_BOOK_SEQ_NO + " INTEGER," + KEY_CURRENT_PAGE + " INTEGER)";
 
         String CREATE_BOOK_NOTES_TABLE = "CREATE TABLE " + TABLE_BOOK_NOTES + "("
                 + KEY_NOTE_ID + " INTEGER PRIMARY KEY," + KEY_BOOK_ID + " INTEGER,"
@@ -116,6 +117,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_ISBN, b.getIsbn());
         values.put(KEY_FAVORITE, b.isFavorite());
         values.put(KEY_BOOK_SEQ_NO, b.getSeqNo());
+        values.put(KEY_CURRENT_PAGE, b.getCurrentPage());
 
         // Insert Row
         //2nd argument is String that specifies nullable column name
@@ -157,6 +159,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 book.setIsbn(cursor.getString(15));
                 book.setFavorite((Integer.parseInt(cursor.getString(16)) == 0) ? false : true);
                 book.setSeqNo(Integer.parseInt(cursor.getString(17)));
+                book.setCurrentPage(Integer.parseInt(cursor.getString(18)));
 
                 // Adding book to list
                 myBooks.add(book);
@@ -193,6 +196,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_ISBN, b.getIsbn());
         values.put(KEY_FAVORITE, b.isFavorite());
         values.put(KEY_BOOK_SEQ_NO, b.getSeqNo());
+        values.put(KEY_CURRENT_PAGE, b.getCurrentPage());
 
         // updating row
         return db.update(TABLE_MY_BOOKS, values, KEY_ID + " = ?",

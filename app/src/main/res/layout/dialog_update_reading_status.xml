@@ -34,7 +34,7 @@
 
             <LinearLayout android:id="@+id/inputs_want_to_read"
                 android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:layout_marginStart="32dp"
                 android:visibility="gone">
@@ -83,7 +83,7 @@
 
             <LinearLayout android:id="@+id/inputs_start_reading"
                 android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:layout_marginStart="32dp"
                 android:visibility="gone">
@@ -132,26 +132,10 @@
 
             <LinearLayout android:id="@+id/inputs_completed"
                 android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:layout_marginStart="32dp"
                 android:visibility="gone">
-
-                <TextView android:id="@+id/label_date_started"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:layout_marginBottom="@dimen/label_input_spacing"
-                    android:textColor="@color/colorAccent"
-                    android:text="Date Started" />
-
-                <EditText android:id="@+id/input_date_started"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/input_background"
-                    android:padding="@dimen/input_padding"
-                    android:layout_marginBottom="@dimen/input_spacing"
-                    android:focusable="false"
-                    android:textColor="@color/colorAccent"/>
 
                 <TextView android:id="@+id/label_date_completed"
                     android:layout_height="wrap_content"

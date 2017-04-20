@@ -18,37 +18,25 @@
         <RelativeLayout
             android:id="@+id/statusBox"
             app:layout_widthPercent="100%"
-            app:layout_heightPercent="15%"
+            app:layout_heightPercent="5%"
             android:layout_alignParentTop="true"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/status_to_read_background">
-
-            <ImageView
-                android:id="@+id/status_icon"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:paddingStart="10dp"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/icon_status_reading"/>
+            android:layout_marginBottom="10dp">
 
             <TextView
                 android:id="@+id/status_text"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:paddingStart="10dp"
                 android:textColor="@color/colorAccent"
                 android:textSize="14dp"
                 android:textStyle="bold"
-                android:layout_centerVertical="true"
-                android:text="To Start Reading By Tuesday, April 11th"
-                android:layout_toRightOf="@+id/status_icon" />
+                android:layout_centerHorizontal="true"
+                android:text="To Start Reading By Tuesday, April 11th" />
 
         </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView
             app:layout_widthPercent="100%"
-            app:layout_heightPercent="85%"
+            app:layout_heightPercent="95%"
             android:layout_alignParentBottom="true"
             android:id="@+id/rv" />
 

@@ -17,11 +17,16 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private ListView booksList;
+    private BookArrayAdaptor adaptor;
+    private DatabaseHandler db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,13 +36,14 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         //handles db interactions
-        DatabaseHandler db = new DatabaseHandler(this);
+        db = new DatabaseHandler(this);
 
         // Listview to populate
-        final ListView booksList = (ListView) findViewById(R.id.booksList);
+        booksList = (ListView) findViewById(R.id.booksList);
 
         // populate listview with my books
-        booksList.setAdapter(new BookArrayAdaptor(this, db.getAllMyBooks()));
+        adaptor = new BookArrayAdaptor(this, db.getAllMyBooks());
+        booksList.setAdapter(adaptor);
 
         //attach event handlers
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -122,6 +128,15 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+
+        //refresh list
+        booksList.setAdapter(null);
+        booksList.setAdapter(new BookArrayAdaptor(this, db.getAllMyBooks()));
     }
 
 }

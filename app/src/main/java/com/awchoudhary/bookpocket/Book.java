@@ -28,6 +28,7 @@ public class Book implements Serializable {
     private String isbn;
     private boolean favorite;
     private int seqNo;
+    private int currentPage;
 
     public Book(){}
 
@@ -161,5 +162,12 @@ public class Book implements Serializable {
     }
     public void setSeqNo(int seqNo) {
         this.seqNo = seqNo;
+    }
+
+    public int getCurrentPage() {
+        return currentPage;
+    }
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
     }
 }
