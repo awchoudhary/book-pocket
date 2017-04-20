@@ -107,7 +107,7 @@ public class NotesTabFragment extends Fragment{
             public void onClick(View v){
                 //create and show update dialog
                 UpdateStatusDialogFragment dialog = new UpdateStatusDialogFragment();
-                showDialog(book);
+                showUpdateStatusDialog(book);
             }
         });
 
@@ -143,7 +143,7 @@ public class NotesTabFragment extends Fragment{
 
 
     //show update status dialog
-    private void showDialog(Book book) {
+    private void showUpdateStatusDialog(Book book) {
         // DialogFragment.show() will take care of adding the fragment
         // in a transaction.  We also want to remove any currently showing
         // dialog, so make our own transaction and take care of that here.
@@ -170,8 +170,8 @@ public class NotesTabFragment extends Fragment{
 
 
     private void updateStatusBox(View view){
+        TextView statusText = (TextView) view.findViewById(R.id.status_text);
         if(book.getReadingStatus() != null){
-            TextView statusText = (TextView) view.findViewById(R.id.status_text);
             statusText.setTextColor(getResources().getColor(R.color.colorAccent));
 
             if(book.getReadingStatus().equals(ReadingStatus.WANT_TO_READ.toString())){
@@ -190,6 +190,10 @@ public class NotesTabFragment extends Fragment{
                 statusText.setText("Update Reading Status Using Bottom Button");
                 statusText.setTextColor(getResources().getColor(R.color.light_grey));
             }
+        }
+        else{
+            statusText.setText("Update Reading Status Using Bottom Button");
+            statusText.setTextColor(getResources().getColor(R.color.light_grey));
         }
     }
 

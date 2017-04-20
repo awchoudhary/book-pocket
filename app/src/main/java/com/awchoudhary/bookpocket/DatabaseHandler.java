@@ -203,11 +203,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 new String[] { b.getId() });
     }
 
-    // Deletes single book
+    // Deletes single book and all of its associated notes
     public void deleteBook(Book b) {
         SQLiteDatabase db = this.getWritableDatabase();
+
+        //delete book
         db.delete(TABLE_MY_BOOKS, KEY_ID + " = ?",
                 new String[] { b.getId()});
+
+        //delete all note for book
+        db.delete(TABLE_BOOK_NOTES, KEY_BOOK_ID + " = ?",
+                new String[] { b.getId()});
+
         db.close();
     }
 
