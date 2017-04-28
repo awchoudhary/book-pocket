@@ -1,5 +1,6 @@
 package com.awchoudhary.bookpocket;
 
+import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +14,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
+
 import com.github.clans.fab.FloatingActionButton;
 
 import com.github.clans.fab.FloatingActionMenu;
@@ -79,6 +82,9 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+
+        Toast.makeText(this, getIntent().getStringExtra(SearchManager.QUERY), Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
@@ -131,6 +137,7 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    //called when activity is resumed eg when navigated to via back button
     @Override
     public void onResume(){
         super.onResume();
@@ -138,6 +145,12 @@ public class MainActivity extends AppCompatActivity
         //refresh list
         booksList.setAdapter(null);
         booksList.setAdapter(new BookArrayAdaptor(this, db.getAllMyBooks()));
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        setIntent(intent);
+        Toast.makeText(this, intent.getStringExtra(SearchManager.QUERY), Toast.LENGTH_SHORT).show();
     }
 
 }
