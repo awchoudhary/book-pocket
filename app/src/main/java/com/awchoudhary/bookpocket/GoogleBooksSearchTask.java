@@ -42,14 +42,19 @@ public class GoogleBooksSearchTask extends
         this.context = context;
     }
 
+    /*
     protected void onPreExecute() {
         //show progress dialog
         progressDialog = ProgressDialog.show(context, "", "Loading", true);
-    }
+    }*/
 
     protected ArrayList<Book> doInBackground(String... params) {
         String query = params[0];
+
         // Do some validation here
+        if(query.trim().isEmpty()){
+            return new ArrayList<Book>();
+        }
 
         try {
             URL url = new URL(baseUrl + URLEncoder.encode(query, "UTF-8"));
@@ -78,7 +83,7 @@ public class GoogleBooksSearchTask extends
     protected void onPostExecute(ArrayList<Book> results) {
         //update list view and hide dialog
         adaptor.updateEntries(results);
-        progressDialog.dismiss();
+        //progressDialog.dismiss();
     }
 
     //parse json response from google books

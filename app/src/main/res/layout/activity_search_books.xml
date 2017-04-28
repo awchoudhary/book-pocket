@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.awchoudhary.bookpocket.SearchBooksActivity"
+    tools:context="com.awchoudhary.bookpocket.SearchBooksActivity2"
     android:background="@color/colorBackground">
 
     <android.support.design.widget.AppBarLayout
@@ -21,9 +21,25 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             app:theme="@style/ThemeOverlay.AppCompat.Light"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+
+                <EditText
+                    android:id="@+id/input_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/input_background"
+                    android:padding="@dimen/input_padding"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:inputType="text"
+                    android:textColor="@color/colorAccent"
+                    android:hint="Title, Author or ISBN" />
+
+
+        </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
+
 
     <include layout="@layout/search_results_list" />
 

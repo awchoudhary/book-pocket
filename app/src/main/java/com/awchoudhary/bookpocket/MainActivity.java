@@ -2,9 +2,6 @@ package com.awchoudhary.bookpocket;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,11 +12,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
+import com.github.clans.fab.FloatingActionButton;
 
-import java.util.ArrayList;
+import com.github.clans.fab.FloatingActionMenu;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -46,11 +43,15 @@ public class MainActivity extends AppCompatActivity
         booksList.setAdapter(adaptor);
 
         //attach event handlers
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionMenu fabMenu = (FloatingActionMenu) findViewById(R.id.fab_main_activity);
+        fabMenu.setClosedOnTouchOutside(true);
+
+        //set event handlers for fab buttons
+        FloatingActionButton addBySearchButton = (FloatingActionButton) findViewById(R.id.button_add_by_search);
+        addBySearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, CreateBookActivity.class);
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SearchBooksActivity2.class);
                 startActivity(intent);
             }
         });
