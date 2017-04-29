@@ -1,24 +1,24 @@
 package com.awchoudhary.bookpocket;
 
-import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
+import android.widget.EditText;
 import android.widget.ListView;
 
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
- * Created by awaeschoudhary on 2/23/17.
+ * Created by awaeschoudhary on 4/20/17.
  */
 
 public class SearchBooksActivity extends AppCompatActivity {
-
     //create an empty search results adaptor, which will later be updated with the search result items
     SearchResultsAdaptor adaptor;
 
@@ -30,6 +30,7 @@ public class SearchBooksActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarSearch);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         //set the list adaptor
         final ListView searchResultsList = (ListView) findViewById(R.id.searchResultsList);
@@ -42,47 +43,40 @@ public class SearchBooksActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
                 //get selected book and pass it into the next view
                 Book selectedBook = (Book)searchResultsList.getItemAtPosition(position);
-                Intent intent = new Intent(SearchBooksActivity.this, ViewBookActivity.class);
+                Intent intent = new Intent(SearchBooksActivity.this, CreateBookActivity.class);
                 intent.putExtra("book", selectedBook);
-                intent.putExtra("isEdit", false);
                 startActivity(intent);
             }
         });
 
+        EditText searchInput = (EditText) findViewById(R.id.input_search);
 
-        handleIntent(getIntent());
-    }
+        searchInput.addTextChangedListener(
+                new TextWatcher() {
+                    @Override public void onTextChanged(CharSequence s, int start, int before, int count) { }
+                    @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.search_menu, menu);
-        return true;
-    }
+                    private Timer timer = new Timer();
+                    private final long DELAY = 500; // milliseconds
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        setIntent(intent);
-        handleIntent(intent);
-    }
+                    @Override
+                    public void afterTextChanged(final Editable s) {
+                        timer.cancel();
+                        timer = new Timer();
+                        timer.schedule(
+                                new TimerTask() {
+                                    @Override
+                                    public void run() {
+                                        String query = ((EditText) findViewById(R.id.input_search)).getText().toString();
+                                        GoogleBooksSearchTask task = new GoogleBooksSearchTask(SearchBooksActivity.this, adaptor);
+                                        task.execute(query);
+                                    }
+                                },
+                                DELAY
+                        );
+                    }
+                }
+        );
 
-    private void handleIntent(Intent intent) {
-        String query = "";
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            query = intent.getStringExtra(SearchManager.QUERY);
-        }
-
-        GoogleBooksSearchTask task = new GoogleBooksSearchTask(this, adaptor);
-        task.execute(query);
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item){
-        int id = item.getItemId();
-
-        if(id == R.id.action_search){
-            return onSearchRequested();
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

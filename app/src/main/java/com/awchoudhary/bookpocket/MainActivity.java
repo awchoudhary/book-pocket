@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity
         addBySearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, SearchBooksActivity2.class);
+                Intent intent = new Intent(MainActivity.this, SearchBooksActivity.class);
                 startActivity(intent);
             }
         });
@@ -82,9 +82,6 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
-
-        Toast.makeText(this, getIntent().getStringExtra(SearchManager.QUERY), Toast.LENGTH_SHORT).show();
-
     }
 
     @Override

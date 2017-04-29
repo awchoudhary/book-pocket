@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/action_add"
-        android:title="Add"
-        android:icon="@drawable/icon_plus"
-        app:showAsAction="ifRoom"
-        android:orderInCategory="1"
-        android:menuCategory="secondary"/>
-
     <item android:id="@+id/action_edit"
         android:title="edit"
         android:icon="@drawable/icon_edit"
