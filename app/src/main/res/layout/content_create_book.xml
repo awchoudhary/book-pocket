@@ -10,7 +10,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.awchoudhary.bookpocket.CreateBookActivity"
+    tools:context="com.awchoudhary.bookpocket.ui.editbookscreen.CreateBookActivity"
     tools:showIn="@layout/activity_create_book">
 
     <android.support.percent.PercentRelativeLayout
@@ -19,7 +19,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.awchoudhary.bookpocket.CreateBookActivity"
+        tools:context="com.awchoudhary.bookpocket.ui.editbookscreen.CreateBookActivity"
         tools:showIn="@layout/activity_create_book">
 
 

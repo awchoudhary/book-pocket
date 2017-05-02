@@ -1,4 +1,4 @@
-package com.awchoudhary.bookpocket;
+package com.awchoudhary.bookpocket.util;
 
 /**
  * Created by awaeschoudhary on 4/7/17.

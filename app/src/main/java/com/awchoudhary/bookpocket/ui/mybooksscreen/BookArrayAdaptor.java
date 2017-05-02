@@ -1,4 +1,4 @@
-package com.awchoudhary.bookpocket;
+package com.awchoudhary.bookpocket.ui.mybooksscreen;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,11 +8,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.awchoudhary.bookpocket.util.DateTimeHelper;
+import com.awchoudhary.bookpocket.R;
 import com.bumptech.glide.Glide;
-import com.squareup.picasso.Picasso;
-
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 

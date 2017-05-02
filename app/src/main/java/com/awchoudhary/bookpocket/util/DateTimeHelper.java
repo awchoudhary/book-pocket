@@ -1,4 +1,4 @@
-package com.awchoudhary.bookpocket;
+package com.awchoudhary.bookpocket.util;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;

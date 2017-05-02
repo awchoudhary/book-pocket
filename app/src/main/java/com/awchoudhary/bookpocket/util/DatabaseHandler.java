@@ -1,19 +1,15 @@
-package com.awchoudhary.bookpocket;
+package com.awchoudhary.bookpocket.util;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.support.v4.view.animation.FastOutLinearInInterpolator;
 
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
+import com.awchoudhary.bookpocket.ui.viewbookscreen.BookNote;
+import com.awchoudhary.bookpocket.ui.mybooksscreen.Book;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Created by awaeschoudhary on 3/4/17.

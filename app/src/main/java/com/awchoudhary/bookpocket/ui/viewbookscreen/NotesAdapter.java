@@ -1,4 +1,4 @@
-package com.awchoudhary.bookpocket;
+package com.awchoudhary.bookpocket.ui.viewbookscreen;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -17,12 +17,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.awchoudhary.bookpocket.R;
+import com.awchoudhary.bookpocket.util.DatabaseHandler;
+import com.awchoudhary.bookpocket.util.DatePickerCustom;
+import com.awchoudhary.bookpocket.util.DateTimeHelper;
+
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.R.color.transparent;
 
 
 /**
@@ -32,7 +35,6 @@ import static android.R.color.transparent;
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHolder>{
     private Context context;
     private ArrayList<BookNote> notes;
-    private final DateTimeHelper dateHelper;
     private boolean isActionMode; // indicates if action mode is active
     private ActionMode actionMode;
     private DatabaseHandler db;
@@ -43,7 +45,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
     public NotesAdapter(ArrayList<BookNote> notes, Context context){
         this.context = context;
         this.notes = notes;
-        dateHelper = new DateTimeHelper();
         selectedItems = new SparseBooleanArray();
         db = new DatabaseHandler(context);
     }
@@ -70,15 +71,18 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
         //set the title and date view text
         if(!title.equals("") && date != null){
             //Title (date) format
-            noteViewHolder.titleAndDateView.setText(title + " (" + dateHelper.toString(date) + ")");
+            noteViewHolder.titleAndDateView.setText(title + " (" + DateTimeHelper.toString(date) + ")");
         }
         else if(date == null){
             //just title
             noteViewHolder.titleAndDateView.setText(title);
         }
-        else{
+        else if(title.equals("")){
             //just date
-            noteViewHolder.titleAndDateView.setText(dateHelper.toString(date));
+            noteViewHolder.titleAndDateView.setText(DateTimeHelper.toString(date));
+        }
+        else{
+            noteViewHolder.titleAndDateView.setVisibility(View.GONE);
         }
 
         noteViewHolder.noteBodyView.setText(noteBody);
@@ -104,7 +108,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
 
                     //populate fields with note values
                     ((EditText) dialog.findViewById(R.id.titleInput)).setText(note.getTitle());
-                    ((EditText) dialog.findViewById(R.id.dateInput)).setText((dateHelper.toString(note.getDate())));
+                    ((EditText) dialog.findViewById(R.id.dateInput)).setText((DateTimeHelper.toString(note.getDate())));
                     ((EditText) dialog.findViewById(R.id.noteInput)).setText(note.getBody());
 
                     //set date input as a date picker
@@ -175,7 +179,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
         //update note item
         note.setTitle(title);
         if(!date.equals("")){
-            note.setDate(dateHelper.toDateTime(date));
+            note.setDate(DateTimeHelper.toDateTime(date));
         }
         note.setBody(body);
 

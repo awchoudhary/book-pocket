@@ -1,4 +1,4 @@
-package com.awchoudhary.bookpocket;
+package com.awchoudhary.bookpocket.ui.editbookscreen;
 
 import android.Manifest;
 import android.content.Intent;
@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,18 +20,18 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.awchoudhary.bookpocket.util.DateTimeHelper;
+import com.awchoudhary.bookpocket.ui.mybooksscreen.MainActivity;
+import com.awchoudhary.bookpocket.R;
+import com.awchoudhary.bookpocket.ui.mybooksscreen.Book;
+import com.awchoudhary.bookpocket.util.DatabaseHandler;
+import com.awchoudhary.bookpocket.util.DatePickerCustom;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
-
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.concurrent.ExecutionException;
-
-import static com.awchoudhary.bookpocket.R.id.imageView;
 
 /**
  * Created by awaeschoudhary on 3/5/17.

@@ -1,8 +1,10 @@
-package com.awchoudhary.bookpocket;
+package com.awchoudhary.bookpocket.ui.mybooksscreen;
 
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,6 +18,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.awchoudhary.bookpocket.R;
+import com.awchoudhary.bookpocket.ui.searchscreen.SearchBooksActivity;
+import com.awchoudhary.bookpocket.ui.viewbookscreen.TabManagerActivity;
+import com.awchoudhary.bookpocket.util.DatabaseHandler;
 import com.github.clans.fab.FloatingActionButton;
 
 import com.github.clans.fab.FloatingActionMenu;
@@ -24,8 +30,8 @@ import com.github.clans.fab.FloatingActionMenu;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private ListView booksList;
-    private BookArrayAdaptor adaptor;
+    private RecyclerView booksList;
+    private BooksAdapter adapter;
     private DatabaseHandler db;
 
     @Override
@@ -39,11 +45,13 @@ public class MainActivity extends AppCompatActivity
         db = new DatabaseHandler(this);
 
         // Listview to populate
-        booksList = (ListView) findViewById(R.id.booksList);
+        booksList = (RecyclerView) findViewById(R.id.recycle_view_books);
+        booksList.setLayoutManager(new LinearLayoutManager(this));
+        booksList.setNestedScrollingEnabled(true);
 
         // populate listview with my books
-        adaptor = new BookArrayAdaptor(this, db.getAllMyBooks());
-        booksList.setAdapter(adaptor);
+        adapter = new BooksAdapter(this, db.getAllMyBooks());
+        booksList.setAdapter(adapter);
 
         //attach event handlers
         FloatingActionMenu fabMenu = (FloatingActionMenu) findViewById(R.id.fab_main_activity);
@@ -68,20 +76,6 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        //set event handler for list item click
-        //attach list item click event
-        booksList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
-                //get selected book and pass it into the next view
-                Book selectedBook = (Book)booksList.getItemAtPosition(position);
-                Intent intent = new Intent(MainActivity.this, TabManagerActivity.class);
-                intent.putExtra("book", selectedBook);
-                intent.putExtra("isEdit", false);
-                startActivity(intent);
-            }
-        });
     }
 
     @Override
@@ -141,7 +135,7 @@ public class MainActivity extends AppCompatActivity
 
         //refresh list
         booksList.setAdapter(null);
-        booksList.setAdapter(new BookArrayAdaptor(this, db.getAllMyBooks()));
+        booksList.setAdapter(new BooksAdapter(this, db.getAllMyBooks()));
     }
 
     @Override

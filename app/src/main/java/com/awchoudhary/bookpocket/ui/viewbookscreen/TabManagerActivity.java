@@ -1,4 +1,4 @@
-package com.awchoudhary.bookpocket;
+package com.awchoudhary.bookpocket.ui.viewbookscreen;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.awchoudhary.bookpocket.R;
+import com.awchoudhary.bookpocket.ui.editbookscreen.CreateBookActivity;
+import com.awchoudhary.bookpocket.ui.mybooksscreen.Book;
+import com.awchoudhary.bookpocket.ui.mybooksscreen.MainActivity;
+import com.awchoudhary.bookpocket.util.DatabaseHandler;
 
 /**
  * Created by awaeschoudhary on 3/21/17.

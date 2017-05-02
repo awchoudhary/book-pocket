@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.awchoudhary.bookpocket.NotesTabFragment"
+    tools:context="com.awchoudhary.bookpocket.ui.viewbookscreen.NotesTabFragment"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/notes_tab_fragment">
 

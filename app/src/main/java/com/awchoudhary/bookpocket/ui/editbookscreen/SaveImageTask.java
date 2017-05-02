@@ -1,4 +1,4 @@
-package com.awchoudhary.bookpocket;
+package com.awchoudhary.bookpocket.ui.editbookscreen;
 
 import android.content.Context;
 import android.graphics.Bitmap;

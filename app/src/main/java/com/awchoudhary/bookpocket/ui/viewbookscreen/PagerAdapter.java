@@ -1,8 +1,10 @@
-package com.awchoudhary.bookpocket;
+package com.awchoudhary.bookpocket.ui.viewbookscreen;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+
+import com.awchoudhary.bookpocket.ui.mybooksscreen.Book;
 
 
 /**

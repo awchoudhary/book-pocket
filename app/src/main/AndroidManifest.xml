@@ -9,7 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.mybooksscreen.MainActivity"
             android:label="My Books"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan"
@@ -23,7 +23,7 @@
                 android:resource="@xml/searchable"/>
         </activity>
 
-        <activity android:name=".SearchBooksActivity"
+        <activity android:name=".ui.searchscreen.SearchBooksActivity"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="Search Results">
@@ -34,27 +34,21 @@
                 android:resource="@xml/searchable"/>
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".ui.mybooksscreen.MainActivity" />
         </activity>
 
         <activity
-            android:name=".ViewBookActivity"
-            android:label="View Book"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-
-        <activity
-            android:name=".CreateBookActivity"
+            android:name=".ui.editbookscreen.CreateBookActivity"
             android:label="Create Book"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".ui.mybooksscreen.MainActivity" />
         </activity>
 
         <activity
-            android:name=".TabManagerActivity"
+            android:name=".ui.viewbookscreen.TabManagerActivity"
             android:label="View Book"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan">
@@ -66,7 +60,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".ui.mybooksscreen.MainActivity" />
         </activity>
     </application>
 

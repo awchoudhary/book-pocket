@@ -1,4 +1,4 @@
-package com.awchoudhary.bookpocket;
+package com.awchoudhary.bookpocket.ui.searchscreen;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+
+import com.awchoudhary.bookpocket.R;
+import com.awchoudhary.bookpocket.ui.editbookscreen.CreateBookActivity;
+import com.awchoudhary.bookpocket.ui.mybooksscreen.Book;
 
 import java.util.Timer;
 import java.util.TimerTask;

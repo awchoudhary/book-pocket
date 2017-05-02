@@ -1,4 +1,4 @@
-package com.awchoudhary.bookpocket;
+package com.awchoudhary.bookpocket.ui.viewbookscreen;
 
 import org.joda.time.DateTime;
 

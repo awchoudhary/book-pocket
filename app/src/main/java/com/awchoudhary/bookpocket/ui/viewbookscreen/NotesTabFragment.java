@@ -1,6 +1,13 @@
-package com.awchoudhary.bookpocket;
+package com.awchoudhary.bookpocket.ui.viewbookscreen;
 
 import android.app.Dialog;
+
+import com.awchoudhary.bookpocket.R;
+import com.awchoudhary.bookpocket.util.ReadingStatus;
+import com.awchoudhary.bookpocket.ui.mybooksscreen.Book;
+import com.awchoudhary.bookpocket.util.DatabaseHandler;
+import com.awchoudhary.bookpocket.util.DatePickerCustom;
+import com.awchoudhary.bookpocket.util.DateTimeHelper;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 

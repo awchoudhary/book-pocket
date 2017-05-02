@@ -1,4 +1,4 @@
-package com.awchoudhary.bookpocket;
+package com.awchoudhary.bookpocket.util;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;

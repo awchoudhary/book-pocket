@@ -1,17 +1,21 @@
-package com.awchoudhary.bookpocket;
+package com.awchoudhary.bookpocket.ui.viewbookscreen;
 
 import android.os.Bundle;
-import android.support.annotation.IntegerRes;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RadioButton;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import com.awchoudhary.bookpocket.R;
+import com.awchoudhary.bookpocket.ui.mybooksscreen.Book;
+import com.awchoudhary.bookpocket.util.DatabaseHandler;
+import com.awchoudhary.bookpocket.util.DatePickerCustom;
+import com.awchoudhary.bookpocket.util.DateTimeHelper;
+import com.awchoudhary.bookpocket.util.ReadingStatus;
 
 /**
  * Created by awaeschoudhary on 4/15/17.
