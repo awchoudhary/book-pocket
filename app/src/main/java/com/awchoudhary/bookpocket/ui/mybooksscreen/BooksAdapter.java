@@ -60,7 +60,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHold
         //set cardview properties
         bookViewHolder.cardView.setCardBackgroundColor(Color.parseColor("#ffffff"));
         bookViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
-            Book book = books.get(position);
+            Book book = books.get(bookViewHolder.getAdapterPosition());
             @Override
             public void onClick(View v) {
                 //navigate to book view screen
