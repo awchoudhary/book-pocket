@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "105461357089",
+    "firebase_url": "https://bookpocket-ce088.firebaseio.com",
+    "project_id": "bookpocket-ce088",
+    "storage_bucket": "bookpocket-ce088.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:105461357089:android:ef147b81530f3199",
+        "android_client_info": {
+          "package_name": "com.awchoudhary.bookpocket"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "105461357089-h9hcslmpieu07upo8h9dhhe5dgqkj670.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.awchoudhary.bookpocket",
+            "certificate_hash": "174d4e4738d11391becec19d9febe66dfa7a469c"
+          }
+        },
+        {
+          "client_id": "105461357089-9t965h34lehltbo2kob0ljpabt1g4g68.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1a3Bao1bSgqd635ADEV6QdGS2Bgcw7XQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "105461357089-9t965h34lehltbo2kob0ljpabt1g4g68.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

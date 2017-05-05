@@ -6,6 +6,9 @@
 
     <string name="action_settings">Settings</string>
 
+    <!-- OAuth client ID for authentication -->
+    <string name="oauth_client_id">105461357089-9t965h34lehltbo2kob0ljpabt1g4g68.apps.googleusercontent.com</string>
+
     <!-- Input Hint Strings -->
     <string name="hint_search">Search Title or Author</string>
     <string name="hint_title_input">Title</string>

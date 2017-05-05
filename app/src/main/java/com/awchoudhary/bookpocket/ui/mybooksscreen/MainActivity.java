@@ -20,16 +20,24 @@ import android.widget.Toast;
 
 import com.awchoudhary.bookpocket.R;
 import com.awchoudhary.bookpocket.ui.searchscreen.SearchBooksActivity;
+import com.awchoudhary.bookpocket.ui.signinscreen.SignInActivity;
 import com.awchoudhary.bookpocket.ui.viewbookscreen.TabManagerActivity;
 import com.awchoudhary.bookpocket.util.DatabaseHandler;
 import com.github.clans.fab.FloatingActionButton;
 
 import com.github.clans.fab.FloatingActionMenu;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    private FirebaseAuth mAuth;
     private RecyclerView booksList;
     private BooksAdapter adapter;
     private DatabaseHandler db;
@@ -40,6 +48,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        mAuth = FirebaseAuth.getInstance();
 
         //handles db interactions
         db = new DatabaseHandler(this);
@@ -76,6 +86,17 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+            Toast.makeText(this, "Logged in as " + currentUser.getEmail(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -121,6 +142,8 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.my_books) {
             // Handle my books page action
+        }else if(id == R.id.signout){
+            SignInActivity.signOut(MainActivity.this);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -143,5 +166,4 @@ public class MainActivity extends AppCompatActivity
         setIntent(intent);
         Toast.makeText(this, intent.getStringExtra(SearchManager.QUERY), Toast.LENGTH_SHORT).show();
     }
-
 }
