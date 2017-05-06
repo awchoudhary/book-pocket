@@ -5,16 +5,26 @@ package com.awchoudhary.bookpocket.ui.mybooksscreen;
  */
 
 public class Shelf {
-    private int shelfId;
+    private String shelfId;
     private String shelfName;
     private String shelfColor;
     private int bookCount;
     private boolean isPublic;
+    private String userId;
 
-    public int getShelfId() {
+    //public no arg constructor
+    public Shelf(){}
+
+    public Shelf(String shelfId, String shelfName, String userId){
+        this.shelfId = shelfId;
+        this.shelfName = shelfName;
+        this.userId = userId;
+    }
+
+    public String getShelfId() {
         return shelfId;
     }
-    public void setShelfId(int shelfId) {
+    public void setShelfId(String shelfId) {
         this.shelfId = shelfId;
     }
 
@@ -44,5 +54,12 @@ public class Shelf {
     }
     public void setPublic(boolean aPublic) {
         this.isPublic = aPublic;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingTop="16dp">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorAccent"/>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/form_new_shelf"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+        <TextView android:id="@+id/label_shelf_name"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginBottom="@dimen/label_input_spacing"
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold"
+            android:text="Name" />
+
+        <EditText
+            android:id="@+id/input_shelf_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/input_background"
+            android:padding="@dimen/input_padding"
+            android:layout_marginBottom="@dimen/input_spacing"
+            android:inputType="text"
+            android:textColor="@color/colorAccent"/>
+
+        <Button android:id="@+id/button_save_shelf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/add_button_background"
+            android:textColor="@color/colorPrimary"
+            android:text="@string/label_save_button"
+            android:textSize="18sp"/> <!-- TODO: make text size size responsive across devices -->
+
+    </LinearLayout>
+
+</RelativeLayout>

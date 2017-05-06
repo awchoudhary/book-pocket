@@ -3,6 +3,8 @@ package com.awchoudhary.bookpocket.ui.mybooksscreen;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -22,6 +24,7 @@ import com.awchoudhary.bookpocket.R;
 import com.awchoudhary.bookpocket.ui.searchscreen.SearchBooksActivity;
 import com.awchoudhary.bookpocket.ui.signinscreen.SignInActivity;
 import com.awchoudhary.bookpocket.ui.viewbookscreen.TabManagerActivity;
+import com.awchoudhary.bookpocket.ui.viewbookscreen.UpdateStatusDialogFragment;
 import com.awchoudhary.bookpocket.util.DatabaseHandler;
 import com.github.clans.fab.FloatingActionButton;
 
@@ -33,14 +36,26 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+
+import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private FirebaseUser currentUser;
     private FirebaseAuth mAuth;
     private RecyclerView booksList;
     private BooksAdapter adapter;
     private DatabaseHandler db;
+    private DatabaseReference mDatabase;
+    private NavigationView navigationView;
+    private ArrayList<Shelf> shelves = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +65,9 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         mAuth = FirebaseAuth.getInstance();
+
+        //get database reference
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         //handles db interactions
         db = new DatabaseHandler(this);
@@ -84,7 +102,7 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
@@ -93,10 +111,12 @@ public class MainActivity extends AppCompatActivity
         super.onStart();
 
         // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
             Toast.makeText(this, "Logged in as " + currentUser.getEmail(), Toast.LENGTH_SHORT).show();
         }
+
+        populateNavigationDrawer();
     }
 
     @Override
@@ -144,6 +164,15 @@ public class MainActivity extends AppCompatActivity
             // Handle my books page action
         }else if(id == R.id.signout){
             SignInActivity.signOut(MainActivity.this);
+        }else if(id == R.id.create_shelf){
+            //show create shelf dialog
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            DialogFragment newFragment = CreateShelfDialogFragment.newInstance();
+            newFragment.show(ft, "dialog");
+        }
+        else{
+            Shelf shelf = shelves.get(id);
+            String name = shelf.getShelfName();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -161,9 +190,45 @@ public class MainActivity extends AppCompatActivity
         booksList.setAdapter(new BooksAdapter(this, db.getAllMyBooks()));
     }
 
+    //called when search is made
     @Override
     protected void onNewIntent(Intent intent) {
         setIntent(intent);
         Toast.makeText(this, intent.getStringExtra(SearchManager.QUERY), Toast.LENGTH_SHORT).show();
+    }
+
+    private void populateNavigationDrawer(){
+        final Menu menu = navigationView.getMenu();
+        Query query = mDatabase.child("shelves").orderByChild("userId").equalTo(currentUser.getUid());
+        query.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
+                // A new comment has been added, add it to the displayed list
+                Shelf shelf = dataSnapshot.getValue(Shelf.class);
+                shelves.add(shelf);
+                menu.add(0, shelves.size()-1, 0, shelf.getShelfName());
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(MainActivity.this, "Failed to load shelves.",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
