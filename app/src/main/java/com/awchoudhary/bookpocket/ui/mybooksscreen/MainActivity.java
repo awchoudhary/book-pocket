@@ -55,7 +55,9 @@ public class MainActivity extends AppCompatActivity
     private DatabaseHandler db;
     private DatabaseReference mDatabase;
     private NavigationView navigationView;
-    private ArrayList<Shelf> shelves = new ArrayList<>();
+    private ArrayList<Shelf> shelves = new ArrayList<>(); //List of user's custom shelves
+    private ArrayList<Book> currentBooks = new ArrayList<>(); //List of books being viewed
+    private String currentShelfId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,9 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         mAuth = FirebaseAuth.getInstance();
+
+        //set current shelf id to mybooks
+        currentShelfId = Integer.toString(R.id.my_books);
 
         //get database reference
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -78,8 +83,10 @@ public class MainActivity extends AppCompatActivity
         booksList.setNestedScrollingEnabled(true);
 
         // populate listview with my books
-        adapter = new BooksAdapter(this, db.getAllMyBooks());
+        //adapter = new BooksAdapter(this, db.getAllMyBooks());
+        adapter = new BooksAdapter(this, new ArrayList<Book>());
         booksList.setAdapter(adapter);
+
 
         //attach event handlers
         FloatingActionMenu fabMenu = (FloatingActionMenu) findViewById(R.id.fab_main_activity);
@@ -112,11 +119,16 @@ public class MainActivity extends AppCompatActivity
 
         // Check if user is signed in (non-null) and update UI accordingly.
         currentUser = mAuth.getCurrentUser();
+
         if(currentUser != null){
             Toast.makeText(this, "Logged in as " + currentUser.getEmail(), Toast.LENGTH_SHORT).show();
         }
 
+        //load shelves for user
         populateNavigationDrawer();
+
+        //load books for current shelf
+        loadBooks();
     }
 
     @Override
@@ -161,7 +173,8 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.my_books) {
-            // Handle my books page action
+            currentShelfId = Integer.toString(R.id.my_books);
+            loadBooks();
         }else if(id == R.id.signout){
             SignInActivity.signOut(MainActivity.this);
         }else if(id == R.id.create_shelf){
@@ -172,7 +185,8 @@ public class MainActivity extends AppCompatActivity
         }
         else{
             Shelf shelf = shelves.get(id);
-            String name = shelf.getShelfName();
+            currentShelfId = shelf.getShelfId();
+            loadBooks();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -186,8 +200,8 @@ public class MainActivity extends AppCompatActivity
         super.onResume();
 
         //refresh list
-        booksList.setAdapter(null);
-        booksList.setAdapter(new BooksAdapter(this, db.getAllMyBooks()));
+        //booksList.setAdapter(null);
+        //booksList.setAdapter(new BooksAdapter(this, db.getAllMyBooks()));
     }
 
     //called when search is made
@@ -227,6 +241,46 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Toast.makeText(MainActivity.this, "Failed to load shelves.",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    //populate current books array with books corresponding to current shelf
+    private void loadBooks(){
+        //clear adapter
+        booksList.setAdapter(null);
+        adapter = new BooksAdapter(this, new ArrayList<Book>());
+        booksList.setAdapter(adapter);
+
+        Query query = mDatabase.child("Books").orderByChild("userShelfId").equalTo(currentUser.getUid() + currentShelfId);
+
+        query.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
+                // A new comment has been added, add it to the displayed list
+                Book book = dataSnapshot.getValue(Book.class);
+                adapter.updateEntries(book);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(MainActivity.this, "Failed to load books.",
                         Toast.LENGTH_SHORT).show();
             }
         });

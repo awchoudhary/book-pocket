@@ -10,7 +10,7 @@ import java.io.Serializable;
  */
 
 public class Book implements Serializable {
-    private String id;
+    private String id; //id = userId_shelfId
     private String name; //TODO: Change "name" to "title"
     private String subtitle;
     private String author;
@@ -29,6 +29,7 @@ public class Book implements Serializable {
     private boolean favorite;
     private int seqNo;
     private int currentPage;
+    private String userShelfId; //concatenation of userId and shelfId
 
     public Book(){}
 
@@ -169,5 +170,12 @@ public class Book implements Serializable {
     }
     public void setCurrentPage(int currentPage) {
         this.currentPage = currentPage;
+    }
+
+    public String getUserShelfId() {
+        return userShelfId;
+    }
+    public void setUserShelfId(String userShelfId) {
+        this.userShelfId = userShelfId;
     }
 }

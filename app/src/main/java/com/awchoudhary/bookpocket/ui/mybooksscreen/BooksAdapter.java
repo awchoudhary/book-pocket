@@ -82,6 +82,10 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHold
         notifyDataSetChanged();
     }
 
+    public void clearEntries(){
+        books.clear();
+    }
+
     public static class BookViewHolder extends RecyclerView.ViewHolder {
         CardView cardView;
         TextView titleTextView;
