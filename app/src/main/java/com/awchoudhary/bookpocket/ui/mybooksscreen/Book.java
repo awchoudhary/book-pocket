@@ -10,7 +10,7 @@ import java.io.Serializable;
  */
 
 public class Book implements Serializable {
-    private String id; //id = userId_shelfId
+    private String id;
     private String name; //TODO: Change "name" to "title"
     private String subtitle;
     private String author;

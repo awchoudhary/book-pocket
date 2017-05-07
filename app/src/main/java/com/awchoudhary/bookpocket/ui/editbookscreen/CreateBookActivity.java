@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -20,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.awchoudhary.bookpocket.ui.mybooksscreen.Shelf;
 import com.awchoudhary.bookpocket.util.DateTimeHelper;
 import com.awchoudhary.bookpocket.ui.mybooksscreen.MainActivity;
 import com.awchoudhary.bookpocket.R;
@@ -28,7 +30,17 @@ import com.awchoudhary.bookpocket.util.DatabaseHandler;
 import com.awchoudhary.bookpocket.util.DatePickerCustom;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -38,7 +50,9 @@ import java.util.Date;
  * Handles logic for creating a new book and editing book. TODO: Class name is misleading. Change it.
  */
 public class CreateBookActivity extends AppCompatActivity {
+    private DatabaseReference mDatabase;
     private DateTimeHelper dateTimeHelper = new DateTimeHelper();
+    private String shelfId;
     //book that is being created/edited
     private Book book = new Book();
 
@@ -60,6 +74,9 @@ public class CreateBookActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarSearch);
         setSupportActionBar(toolbar);
 
+        //get database reference
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
         Intent intent = getIntent();
 
         //if a book was passed to the view, populate inputs. Book is passed to view on add by search and edit.
@@ -72,6 +89,10 @@ public class CreateBookActivity extends AppCompatActivity {
             }
 
             populate(book);
+        }
+
+        if(intent.hasExtra("shelfId")){
+            shelfId = intent.getStringExtra("shelfId");
         }
 
         //set the date edit texts as date pickers
@@ -191,6 +212,9 @@ public class CreateBookActivity extends AppCompatActivity {
             return false;
         }
 
+        //set id for book
+        book.setId(mDatabase.child("books").push().getKey());
+
         //update book with text inputs
         book.setName(title);
         book.setSubtitle(subtitle);
@@ -203,18 +227,37 @@ public class CreateBookActivity extends AppCompatActivity {
 
         //save the cover image if it was changed
         if(isNewCoverImage){
-            saveCoverImage(book);
+            uploadImageToFirebase(book);
         }
 
         //update or create a new book
         if(newBook){
-            dbHandler.createBook(book);
+            saveToFirebase(book);
         }
         else{
             dbHandler.updateBook(book);
         }
 
         return true;
+    }
+
+    private void saveToFirebase(Book book){
+        //get current userId
+        String userId = "";
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            userId = user.getUid();
+        } else {
+            Toast.makeText(this, "Error: No signed in user found", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        //create and set user shelf id
+        book.setUserShelfId(userId + shelfId);
+
+        //save new shelf
+        mDatabase.child("books").child(book.getId()).setValue(book);
+
     }
 
     //save cover image on device and set book coverUrl to the local path TODO: Error checking of some sort
@@ -239,6 +282,47 @@ public class CreateBookActivity extends AppCompatActivity {
         //save image to local path
         SaveImageTask task = new SaveImageTask(this, bitmap);
         task.execute(localImageFile);
+    }
+
+    private void uploadImageToFirebase(final Book book){
+        //get bitmap for the image in imageview
+        ImageView imageView = (ImageView) findViewById(R.id.coverImage);
+        Bitmap bitmap;
+
+        //The bitmap for default cover image is of type BitmapDrawable whereas images obtained from the api are GlideBitmapDrawables.
+        if(imageView.getDrawable() instanceof GlideBitmapDrawable){
+            bitmap = ((GlideBitmapDrawable)imageView.getDrawable()).getBitmap();
+        }
+        else {
+            bitmap = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
+        }
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+
+        // Create a storage reference from our app
+        StorageReference storageRef = storage.getReference();
+
+        // Create a reference to "mountains.jpg"
+        StorageReference imageRef = storageRef.child(book.getId() + ".jpg");
+
+        UploadTask uploadTask = imageRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                book.setCoverUrl(downloadUrl.toString());
+            }
+        });
     }
 
     /* Create a File for saving an image */

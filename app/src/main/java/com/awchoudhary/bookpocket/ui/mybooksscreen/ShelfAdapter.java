@@ -20,11 +20,11 @@ import java.util.ArrayList;
  * Created by awaeschoudhary on 5/1/17.
  */
 
-public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHolder> {
+public class ShelfAdapter extends RecyclerView.Adapter<ShelfAdapter.BookViewHolder> {
     private Context context;
     private ArrayList<Book> books;
 
-    public BooksAdapter(Context context, ArrayList<Book> books){
+    public ShelfAdapter(Context context, ArrayList<Book> books){
         this.context = context;
         this.books = books;
     }

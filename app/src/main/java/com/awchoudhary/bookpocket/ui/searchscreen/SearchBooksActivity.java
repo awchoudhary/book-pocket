@@ -25,6 +25,7 @@ import java.util.TimerTask;
 public class SearchBooksActivity extends AppCompatActivity {
     //create an empty search results adaptor, which will later be updated with the search result items
     SearchResultsAdaptor adaptor;
+    private String shelfId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,12 @@ public class SearchBooksActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+
+        Intent intent = getIntent();
+        if(intent.hasExtra("shelfId")){
+            shelfId = intent.getStringExtra("shelfId");
+        }
 
         //set the list adaptor
         final ListView searchResultsList = (ListView) findViewById(R.id.searchResultsList);
@@ -49,6 +56,7 @@ public class SearchBooksActivity extends AppCompatActivity {
                 Book selectedBook = (Book)searchResultsList.getItemAtPosition(position);
                 Intent intent = new Intent(SearchBooksActivity.this, CreateBookActivity.class);
                 intent.putExtra("book", selectedBook);
+                intent.putExtra("shelfId", shelfId);
                 startActivity(intent);
             }
         });

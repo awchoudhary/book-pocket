@@ -51,12 +51,11 @@ public class MainActivity extends AppCompatActivity
     private FirebaseUser currentUser;
     private FirebaseAuth mAuth;
     private RecyclerView booksList;
-    private BooksAdapter adapter;
+    private ShelfAdapter adapter;
     private DatabaseHandler db;
     private DatabaseReference mDatabase;
     private NavigationView navigationView;
     private ArrayList<Shelf> shelves = new ArrayList<>(); //List of user's custom shelves
-    private ArrayList<Book> currentBooks = new ArrayList<>(); //List of books being viewed
     private String currentShelfId;
 
     @Override
@@ -82,9 +81,8 @@ public class MainActivity extends AppCompatActivity
         booksList.setLayoutManager(new LinearLayoutManager(this));
         booksList.setNestedScrollingEnabled(true);
 
-        // populate listview with my books
-        //adapter = new BooksAdapter(this, db.getAllMyBooks());
-        adapter = new BooksAdapter(this, new ArrayList<Book>());
+        // set adapter for listview
+        adapter = new ShelfAdapter(this, new ArrayList<Book>());
         booksList.setAdapter(adapter);
 
 
@@ -98,6 +96,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, SearchBooksActivity.class);
+                intent.putExtra("shelfId", currentShelfId);
                 startActivity(intent);
             }
         });
@@ -128,7 +127,7 @@ public class MainActivity extends AppCompatActivity
         populateNavigationDrawer();
 
         //load books for current shelf
-        loadBooks();
+        loadCurrentShelf();
     }
 
     @Override
@@ -174,7 +173,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.my_books) {
             currentShelfId = Integer.toString(R.id.my_books);
-            loadBooks();
+            loadCurrentShelf();
         }else if(id == R.id.signout){
             SignInActivity.signOut(MainActivity.this);
         }else if(id == R.id.create_shelf){
@@ -186,7 +185,7 @@ public class MainActivity extends AppCompatActivity
         else{
             Shelf shelf = shelves.get(id);
             currentShelfId = shelf.getShelfId();
-            loadBooks();
+            loadCurrentShelf();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -199,9 +198,6 @@ public class MainActivity extends AppCompatActivity
     public void onResume(){
         super.onResume();
 
-        //refresh list
-        //booksList.setAdapter(null);
-        //booksList.setAdapter(new BooksAdapter(this, db.getAllMyBooks()));
     }
 
     //called when search is made
@@ -247,10 +243,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     //populate current books array with books corresponding to current shelf
-    private void loadBooks(){
+    private void loadCurrentShelf(){
         //clear adapter
         booksList.setAdapter(null);
-        adapter = new BooksAdapter(this, new ArrayList<Book>());
+        adapter = new ShelfAdapter(this, new ArrayList<Book>());
         booksList.setAdapter(adapter);
 
         Query query = mDatabase.child("Books").orderByChild("userShelfId").equalTo(currentUser.getUid() + currentShelfId);
