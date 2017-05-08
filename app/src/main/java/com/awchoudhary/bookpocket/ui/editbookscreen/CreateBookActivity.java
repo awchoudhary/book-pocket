@@ -108,7 +108,8 @@ public class CreateBookActivity extends AppCompatActivity {
                     boolean isSaved = save();
                     if(isSaved){
                         Intent intent = new Intent(CreateBookActivity.this, MainActivity.class);
-                        startActivity(intent);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        startActivityIfNeeded(intent, 0);
                     }
                 }
             }
@@ -174,7 +175,7 @@ public class CreateBookActivity extends AppCompatActivity {
         ((EditText) findViewById(R.id.authorInput)).setText(book.getAuthor());
         ((EditText) findViewById(R.id.isbnInput)).setText(book.getIsbn());
         ((EditText) findViewById(R.id.publisherInput)).setText(book.getPublisher());
-        ((EditText) findViewById(R.id.datePublishedInput)).setText(dateTimeHelper.toString(book.getDatePublished()));
+        ((EditText) findViewById(R.id.datePublishedInput)).setText(book.getDatePublished());
         ((EditText) findViewById(R.id.numPagesInput)).setText(Integer.toString(book.getNumPages()));
         ((EditText) findViewById(R.id.descriptionInput)).setText(book.getDescription());
 
@@ -222,7 +223,7 @@ public class CreateBookActivity extends AppCompatActivity {
         book.setNumPages((!numPages.equals("")) ? Integer.parseInt(numPages) : 0);
         book.setIsbn(isbn);
         book.setPublisher(publisher);
-        book.setDatePublished(dateTimeHelper.toDateTime(datePublished));
+        book.setDatePublished(datePublished);
         book.setDescription(description);
 
         //save the cover image if it was changed

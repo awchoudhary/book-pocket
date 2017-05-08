@@ -65,13 +65,13 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
     public void onBindViewHolder(final NoteViewHolder noteViewHolder, final int position) {
         BookNote note = notes.get(position);
         String title = note.getTitle();
-        DateTime date = note.getDate();
+        String date = note.getDate();
         String noteBody = note.getBody();
 
         //set the title and date view text
         if(!title.equals("") && date != null){
             //Title (date) format
-            noteViewHolder.titleAndDateView.setText(title + " (" + DateTimeHelper.toString(date) + ")");
+            noteViewHolder.titleAndDateView.setText(title + " (" + date + ")");
         }
         else if(date == null){
             //just title
@@ -79,7 +79,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
         }
         else if(title.equals("")){
             //just date
-            noteViewHolder.titleAndDateView.setText(DateTimeHelper.toString(date));
+            noteViewHolder.titleAndDateView.setText(date);
         }
         else{
             noteViewHolder.titleAndDateView.setVisibility(View.GONE);
@@ -108,7 +108,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
 
                     //populate fields with note values
                     ((EditText) dialog.findViewById(R.id.titleInput)).setText(note.getTitle());
-                    ((EditText) dialog.findViewById(R.id.dateInput)).setText((DateTimeHelper.toString(note.getDate())));
+                    ((EditText) dialog.findViewById(R.id.dateInput)).setText(note.getDate());
                     ((EditText) dialog.findViewById(R.id.noteInput)).setText(note.getBody());
 
                     //set date input as a date picker
@@ -179,7 +179,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
         //update note item
         note.setTitle(title);
         if(!date.equals("")){
-            note.setDate(DateTimeHelper.toDateTime(date));
+            note.setDate(date);
         }
         note.setBody(body);
 

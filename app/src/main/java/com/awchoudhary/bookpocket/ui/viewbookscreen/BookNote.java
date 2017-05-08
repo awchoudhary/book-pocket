@@ -11,7 +11,7 @@ public class BookNote {
     private String noteId;
     private String bookId; // book that the note is for
     private String title;
-    private DateTime date;
+    private String date;
     private String body; // the contents of the note
     private String color;
     private int SeqNo;
@@ -37,10 +37,10 @@ public class BookNote {
         this.title = title;
     }
 
-    public DateTime getDate() {
+    public String getDate() {
         return date;
     }
-    public void setDate(DateTime date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

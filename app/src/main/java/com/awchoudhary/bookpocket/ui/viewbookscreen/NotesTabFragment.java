@@ -3,6 +3,8 @@ package com.awchoudhary.bookpocket.ui.viewbookscreen;
 import android.app.Dialog;
 
 import com.awchoudhary.bookpocket.R;
+import com.awchoudhary.bookpocket.ui.mybooksscreen.MainActivity;
+import com.awchoudhary.bookpocket.ui.mybooksscreen.ShelfAdapter;
 import com.awchoudhary.bookpocket.util.ReadingStatus;
 import com.awchoudhary.bookpocket.ui.mybooksscreen.Book;
 import com.awchoudhary.bookpocket.util.DatabaseHandler;
@@ -10,6 +12,12 @@ import com.awchoudhary.bookpocket.util.DatePickerCustom;
 import com.awchoudhary.bookpocket.util.DateTimeHelper;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 import android.content.DialogInterface;
 import android.support.v4.app.DialogFragment;
@@ -24,6 +32,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -44,6 +53,11 @@ public class NotesTabFragment extends Fragment{
     //codes for fragment args
     private static final String BOOK_KEY = "book_key";
 
+    private NotesAdapter adapter;
+    private RecyclerView notesRecycleView;
+    private DatabaseReference mDatabase;
+
+
     public static NotesTabFragment newInstance(Book book) {
         NotesTabFragment fragment = new NotesTabFragment();
         Bundle bundle = new Bundle();
@@ -59,17 +73,19 @@ public class NotesTabFragment extends Fragment{
         DatabaseHandler db = new DatabaseHandler(getActivity());
         book = (Book) getArguments().getSerializable(BOOK_KEY); // get Book to be Edited
 
-        //get all notes for the book
-        ArrayList<BookNote> notes = db.getBookNotes(book.getId());
+        //get database reference
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         updateStatusBox(tabLayout);
 
         //initialize recycle view and set adapter
-        RecyclerView rv = (RecyclerView) tabLayout.findViewById(R.id.rv);
-        rv.setLayoutManager(new LinearLayoutManager(getActivity()));
-        final NotesAdapter adapter = new NotesAdapter(notes, getActivity());
-        rv.setAdapter(adapter);
-        rv.setNestedScrollingEnabled(true);
+        notesRecycleView = (RecyclerView) tabLayout.findViewById(R.id.rv);
+        notesRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        adapter = new NotesAdapter(new ArrayList<BookNote>(), getActivity());
+        notesRecycleView.setAdapter(adapter);
+        notesRecycleView.setNestedScrollingEnabled(true);
+
+        loadNotesForBook();
 
 
         FloatingActionMenu fabMenu = (FloatingActionMenu) tabLayout.findViewById(R.id.fab_notes_tab);
@@ -136,7 +152,7 @@ public class NotesTabFragment extends Fragment{
 
         //only set date if non-empty, or the datehelper will return current date which we don't want
         if(!date.equals("")){
-            note.setDate(dateHelper.toDateTime(date));
+            note.setDate(date);
         }
         note.setTitle(title);
         note.setBody(body);
@@ -147,7 +163,6 @@ public class NotesTabFragment extends Fragment{
 
         return note;
     }
-
 
     //show update status dialog
     private void showUpdateStatusDialog(Book book) {
@@ -182,17 +197,11 @@ public class NotesTabFragment extends Fragment{
             statusText.setTextColor(getResources().getColor(R.color.colorAccent));
 
             if(book.getReadingStatus().equals(ReadingStatus.WANT_TO_READ.toString())){
-                statusText.setText("To Start on " + DateTimeHelper.toString(book.getDateToReadBy())
-                                    + " (In " + DateTimeHelper.getDaysTill(book.getDateToReadBy()) +
-                                    " days)");
+                statusText.setText("To Start on " + book.getDateToReadBy());
             }else if(book.getReadingStatus().equals(ReadingStatus.READING.toString())){
-                statusText.setText("Started on " + DateTimeHelper.toString(book.getDateStarted())
-                                    + " (" + DateTimeHelper.getDaysSince(book.getDateStarted()) +
-                                    " days ago)");
+                statusText.setText("Started on " + book.getDateStarted());
             }else if(book.getReadingStatus().equals(ReadingStatus.COMPLETED.toString())){
-                statusText.setText("Completed on " + DateTimeHelper.toString(book.getDateCompleted())
-                                    + " (" + DateTimeHelper.getDaysSince(book.getDateCompleted()) +
-                                    " days ago)");
+                statusText.setText("Completed on " + book.getDateCompleted());
             }else if(book.getReadingStatus().equals(ReadingStatus.NO_STATUS.toString())){
                 statusText.setText("Update Reading Status Using Bottom Button");
                 statusText.setTextColor(getResources().getColor(R.color.light_grey));
@@ -202,6 +211,45 @@ public class NotesTabFragment extends Fragment{
             statusText.setText("Update Reading Status Using Bottom Button");
             statusText.setTextColor(getResources().getColor(R.color.light_grey));
         }
+    }
+
+    private void loadNotesForBook(){
+        //clear adapter
+        notesRecycleView.setAdapter(null);
+        adapter = new NotesAdapter(new ArrayList<BookNote>(), getActivity());
+        notesRecycleView.setAdapter(adapter);
+
+        Query query = mDatabase.child("notes").orderByChild("bookId").equalTo(book.getId());
+
+        query.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
+                // A new comment has been added, add it to the displayed list
+                BookNote note = dataSnapshot.getValue(BookNote.class);
+                adapter.updateEntries(note);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(getActivity(), "Failed to load notes.",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }

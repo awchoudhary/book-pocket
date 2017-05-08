@@ -153,7 +153,7 @@ public class GoogleBooksSearchTask extends
                 String[] dateNums = volumeInfo.getString("publishedDate").split("-");
                 //make sure we have the numbers for month date and year
                 if(dateNums.length == 3){
-                    book.setDatePublished(dateTimeHelper.toDateTime(dateNums[1] + "/" + dateNums[2] + "/" + dateNums[0]));
+                    book.setDatePublished(dateNums[1] + "/" + dateNums[2] + "/" + dateNums[0]);
                 }
             }
 

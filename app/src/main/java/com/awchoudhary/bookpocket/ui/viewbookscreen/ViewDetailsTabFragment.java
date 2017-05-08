@@ -73,7 +73,7 @@ public class ViewDetailsTabFragment extends Fragment{
         isbn.setText(b.getIsbn());
 
         if(b.getDatePublished() != null){
-            publisher.setText(b.getPublisher() + " (" + dateTimeHelper.toString(b.getDatePublished()) + ")");
+            publisher.setText(b.getPublisher() + " (" + b.getDatePublished() + ")");
         }
         else{
             publisher.setText(b.getPublisher());

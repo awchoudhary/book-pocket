@@ -249,7 +249,7 @@ public class MainActivity extends AppCompatActivity
         adapter = new ShelfAdapter(this, new ArrayList<Book>());
         booksList.setAdapter(adapter);
 
-        Query query = mDatabase.child("Books").orderByChild("userShelfId").equalTo(currentUser.getUid() + currentShelfId);
+        Query query = mDatabase.child("books").orderByChild("userShelfId").equalTo(currentUser.getUid() + currentShelfId);
 
         query.addChildEventListener(new ChildEventListener() {
             @Override

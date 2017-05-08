@@ -169,7 +169,7 @@ public class UpdateStatusDialogFragment extends DialogFragment {
                 if(!priorityString.equals("")){
                     book.setSeqNo(Integer.parseInt(priorityString));
                 }
-                book.setDateToReadBy(DateTimeHelper.toDateTime(dateToReadBy));
+                book.setDateToReadBy(dateToReadBy);
                 break;
 
             case R.id.radio_start_reading:
@@ -183,7 +183,7 @@ public class UpdateStatusDialogFragment extends DialogFragment {
                 if(!currentPageString.equals("")){
                     book.setCurrentPage(Integer.parseInt(currentPageString));
                 }
-                book.setDateStarted(DateTimeHelper.toDateTime(dateStarted));
+                book.setDateStarted(dateStarted);
                 break;
 
             case R.id.radio_completed:
@@ -192,7 +192,7 @@ public class UpdateStatusDialogFragment extends DialogFragment {
                 String dateCompleted = ((EditText)dialogView.findViewById(R.id.input_date_completed))
                         .getText().toString();
 
-                book.setDateCompleted(DateTimeHelper.toDateTime(dateCompleted));
+                book.setDateCompleted(dateCompleted);
                 break;
 
             case R.id.radio_clear_status:
@@ -213,21 +213,21 @@ public class UpdateStatusDialogFragment extends DialogFragment {
             if(book.getReadingStatus().equals(ReadingStatus.WANT_TO_READ.toString())){
                 //populate fields
                 ((EditText)dialogView.findViewById(R.id.input_date_to_start_reading))
-                        .setText(DateTimeHelper.toString(book.getDateToReadBy()));
+                        .setText(book.getDateToReadBy());
                 //populate fields
                 ((EditText)dialogView.findViewById(R.id.input_priority_number))
                         .setText(Integer.toString(book.getSeqNo()));
             }else if(book.getReadingStatus().equals(ReadingStatus.READING.toString())){
                 //populate fields
                 ((EditText)dialogView.findViewById(R.id.input_date_started_reading))
-                        .setText(DateTimeHelper.toString(book.getDateStarted()));
+                        .setText(book.getDateStarted());
                 //populate fields
                 ((EditText)dialogView.findViewById(R.id.input_current_page))
                         .setText(Integer.toString(book.getCurrentPage()));
             }else if(book.getReadingStatus().equals(ReadingStatus.COMPLETED.toString())){
                 //populate fields
                 ((EditText)dialogView.findViewById(R.id.input_date_completed))
-                        .setText(DateTimeHelper.toString(book.getDateCompleted()));
+                        .setText(book.getDateCompleted());
             }
         }
     }

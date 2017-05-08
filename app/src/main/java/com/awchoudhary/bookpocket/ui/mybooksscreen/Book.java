@@ -17,11 +17,11 @@ public class Book implements Serializable {
     private String coverUrl;
     private int numPages;
     private String description;
-    private DateTime dateStarted;
-    private DateTime dateCompleted;
-    private DateTime dateToReadBy; //date book should be read by when status is TO_READ
-    private DateTime datePublished;
-    private DateTime dateAdded;
+    private String dateStarted;
+    private String dateCompleted;
+    private String dateToReadBy; //date book should be read by when status is TO_READ
+    private String datePublished;
+    private String dateAdded;
     private String readingStatus;
     private String rowColor; //Hex color of book row
     private String publisher;
@@ -88,38 +88,38 @@ public class Book implements Serializable {
         this.description = description;
     }
 
-    public DateTime getDateStarted(){
+    public String getDateStarted(){
         return dateStarted;
     }
-    public void setDateStarted(DateTime dateStarted){
+    public void setDateStarted(String dateStarted){
         this.dateStarted = dateStarted;
     }
 
-    public DateTime getDateCompleted(){
+    public String getDateCompleted(){
         return dateCompleted;
     }
-    public void setDateCompleted(DateTime dateCompleted){
+    public void setDateCompleted(String dateCompleted){
         this.dateCompleted = dateCompleted;
     }
 
-    public DateTime getDatePublished() {
+    public String getDatePublished() {
         return datePublished;
     }
-    public void setDatePublished(DateTime datePublished) {
+    public void setDatePublished(String datePublished) {
         this.datePublished = datePublished;
     }
 
-    public DateTime getDateToReadBy() {
+    public String getDateToReadBy() {
         return dateToReadBy;
     }
-    public void setDateToReadBy(DateTime dateToReadBy) {
+    public void setDateToReadBy(String dateToReadBy) {
         this.dateToReadBy = dateToReadBy;
     }
 
-    public DateTime getDateAdded() {
+    public String getDateAdded() {
         return dateAdded;
     }
-    public void setDateAdded(DateTime dateAdded) {
+    public void setDateAdded(String dateAdded) {
         this.dateAdded = dateAdded;
     }
 
