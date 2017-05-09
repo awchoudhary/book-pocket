@@ -52,6 +52,7 @@ public class CreateShelfDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 save();
+                dismiss();
                 Toast.makeText(getActivity(), "Created New Shelf", Toast.LENGTH_SHORT).show();
             }
         });

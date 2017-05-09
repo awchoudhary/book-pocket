@@ -175,6 +175,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.my_books) {
             currentShelfId = MY_BOOKS_SHELF_ID;
             loadCurrentShelf();
+            getSupportActionBar().setTitle("My Books");
         }else if(id == R.id.signout){
             SignInActivity.signOut(MainActivity.this);
         }else if(id == R.id.create_shelf){
@@ -187,6 +188,7 @@ public class MainActivity extends AppCompatActivity
             Shelf shelf = shelves.get(id);
             currentShelfId = shelf.getShelfId();
             loadCurrentShelf();
+            getSupportActionBar().setTitle(shelf.getShelfName());
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -216,7 +218,7 @@ public class MainActivity extends AppCompatActivity
                 // A new comment has been added, add it to the displayed list
                 Shelf shelf = dataSnapshot.getValue(Shelf.class);
                 shelves.add(shelf);
-                menu.add(0, shelves.size()-1, 0, shelf.getShelfName());
+                menu.add(0, shelves.size()-1, 0, shelf.getShelfName()).setIcon(R.drawable.icon_custom_shelf);
             }
 
             @Override
