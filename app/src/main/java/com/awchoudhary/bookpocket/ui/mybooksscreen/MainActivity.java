@@ -48,11 +48,13 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    //id for default shelves that all users will have
+    private final String MY_BOOKS_SHELF_ID = "my-books";
+
     private FirebaseUser currentUser;
     private FirebaseAuth mAuth;
     private RecyclerView booksList;
     private ShelfAdapter adapter;
-    private DatabaseHandler db;
     private DatabaseReference mDatabase;
     private NavigationView navigationView;
     private ArrayList<Shelf> shelves = new ArrayList<>(); //List of user's custom shelves
@@ -68,13 +70,10 @@ public class MainActivity extends AppCompatActivity
         mAuth = FirebaseAuth.getInstance();
 
         //set current shelf id to mybooks
-        currentShelfId = Integer.toString(R.id.my_books);
+        currentShelfId = MY_BOOKS_SHELF_ID;
 
         //get database reference
         mDatabase = FirebaseDatabase.getInstance().getReference();
-
-        //handles db interactions
-        db = new DatabaseHandler(this);
 
         // Listview to populate
         booksList = (RecyclerView) findViewById(R.id.recycle_view_books);
@@ -123,8 +122,10 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(this, "Logged in as " + currentUser.getEmail(), Toast.LENGTH_SHORT).show();
         }
 
-        //load shelves for user
-        populateNavigationDrawer();
+        //load shelves into nav drawer if they are not already loaded
+        if(shelves.size() == 0){
+            populateNavigationDrawer();
+        }
 
         //load books for current shelf
         loadCurrentShelf();
@@ -172,7 +173,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.my_books) {
-            currentShelfId = Integer.toString(R.id.my_books);
+            currentShelfId = MY_BOOKS_SHELF_ID;
             loadCurrentShelf();
         }else if(id == R.id.signout){
             SignInActivity.signOut(MainActivity.this);
@@ -197,7 +198,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onResume(){
         super.onResume();
-
     }
 
     //called when search is made
