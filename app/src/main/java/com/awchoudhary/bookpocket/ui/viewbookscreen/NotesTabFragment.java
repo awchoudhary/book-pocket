@@ -3,8 +3,7 @@ package com.awchoudhary.bookpocket.ui.viewbookscreen;
 import android.app.Dialog;
 
 import com.awchoudhary.bookpocket.R;
-import com.awchoudhary.bookpocket.ui.mybooksscreen.MainActivity;
-import com.awchoudhary.bookpocket.ui.mybooksscreen.ShelfAdapter;
+import com.awchoudhary.bookpocket.ui.mybooksscreen.NoteDialogFragment;
 import com.awchoudhary.bookpocket.util.ReadingStatus;
 import com.awchoudhary.bookpocket.ui.mybooksscreen.Book;
 import com.awchoudhary.bookpocket.util.DatabaseHandler;
@@ -96,31 +95,7 @@ public class NotesTabFragment extends Fragment{
         newNoteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //get dialog and set title
-                createNoteDialog = new Dialog(getActivity(), R.style.NoteDialog);
-                createNoteDialog.setContentView(R.layout.dialog_new_note);
-                createNoteDialog.setTitle("New Note");
-                createNoteDialog.getWindow().setBackgroundDrawableResource(R.drawable.note_dialog_background);
-
-                //set date input as a date picker
-                EditText dateInput = (EditText) createNoteDialog.findViewById(R.id.dateInput);
-                new DatePickerCustom(getActivity(), dateInput);
-
-                //set event handler for save button
-                Button saveButton = (Button) createNoteDialog.findViewById(R.id.saveButton);
-                saveButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        BookNote note = createNote(createNoteDialog);
-
-                        //add new book to adapter
-                        adapter.updateEntries(note);
-
-                        //hide dialog
-                        createNoteDialog.dismiss();
-                    }
-                });
-                createNoteDialog.show();
+                showNoteDialog(book.getId());
             }
         });
 
@@ -143,8 +118,8 @@ public class NotesTabFragment extends Fragment{
         DateTimeHelper dateHelper = new DateTimeHelper();
         //get all text inputs
         String title = ((EditText) dialog.findViewById(R.id.titleInput)).getText().toString();
-        String date = ((EditText) dialog.findViewById(R.id.dateInput)).getText().toString();
-        String body = ((EditText) dialog.findViewById(R.id.noteInput)).getText().toString();
+        String date = ((EditText) dialog.findViewById(R.id.input_note_date)).getText().toString();
+        String body = ((EditText) dialog.findViewById(R.id.input_note_body)).getText().toString();
 
         //populate new book object with inputs
         BookNote note = new BookNote();
@@ -162,6 +137,23 @@ public class NotesTabFragment extends Fragment{
         db.createBookNote(note);
 
         return note;
+    }
+
+    //show update status dialog
+    private void showNoteDialog(String bookId) {
+        // DialogFragment.show() will take care of adding the fragment
+        // in a transaction.  We also want to remove any currently showing
+        // dialog, so make our own transaction and take care of that here.
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+
+        // Create and show the dialog.
+        NoteDialogFragment noteDialog = NoteDialogFragment.newInstance(null, bookId);
+        noteDialog.show(ft, "dialog");
     }
 
     //show update status dialog

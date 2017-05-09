@@ -20,9 +20,6 @@ import android.widget.Toast;
 import com.awchoudhary.bookpocket.R;
 import com.awchoudhary.bookpocket.util.DatabaseHandler;
 import com.awchoudhary.bookpocket.util.DatePickerCustom;
-import com.awchoudhary.bookpocket.util.DateTimeHelper;
-
-import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,17 +99,17 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
                 else{
                     //get dialog and set title
                     final Dialog dialog = new Dialog(context, R.style.NoteDialog);
-                    dialog.setContentView(R.layout.dialog_new_note);
+                    dialog.setContentView(R.layout.dialog_note);
                     dialog.getWindow().setBackgroundDrawableResource(R.drawable.note_dialog_background);
                     dialog.setTitle("Edit Note");
 
                     //populate fields with note values
-                    ((EditText) dialog.findViewById(R.id.titleInput)).setText(note.getTitle());
-                    ((EditText) dialog.findViewById(R.id.dateInput)).setText(note.getDate());
-                    ((EditText) dialog.findViewById(R.id.noteInput)).setText(note.getBody());
+                    ((EditText) dialog.findViewById(R.id.input_note_title)).setText(note.getTitle());
+                    ((EditText) dialog.findViewById(R.id.input_note_date)).setText(note.getDate());
+                    ((EditText) dialog.findViewById(R.id.input_note_title)).setText(note.getBody());
 
                     //set date input as a date picker
-                    EditText dateInput = (EditText) dialog.findViewById(R.id.dateInput);
+                    EditText dateInput = (EditText) dialog.findViewById(R.id.input_note_date);
                     new DatePickerCustom(context, dateInput);
 
                     //set event handler for save button
@@ -172,9 +169,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
         DatabaseHandler db = new DatabaseHandler(context);
 
         //get all text inputs
-        String title = ((EditText) dialog.findViewById(R.id.titleInput)).getText().toString();
-        String date = ((EditText) dialog.findViewById(R.id.dateInput)).getText().toString();
-        String body = ((EditText) dialog.findViewById(R.id.noteInput)).getText().toString();
+        String title = ((EditText) dialog.findViewById(R.id.input_note_title)).getText().toString();
+        String date = ((EditText) dialog.findViewById(R.id.input_note_date)).getText().toString();
+        String body = ((EditText) dialog.findViewById(R.id.input_note_body)).getText().toString();
 
         //update note item
         note.setTitle(title);

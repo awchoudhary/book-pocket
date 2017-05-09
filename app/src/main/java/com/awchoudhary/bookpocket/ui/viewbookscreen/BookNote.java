@@ -2,12 +2,14 @@ package com.awchoudhary.bookpocket.ui.viewbookscreen;
 
 import org.joda.time.DateTime;
 
+import java.io.Serializable;
+
 /**
  * Created by awaeschoudhary on 3/26/17.
  * Note item for a book
  */
 
-public class BookNote {
+public class BookNote implements Serializable {
     private String noteId;
     private String bookId; // book that the note is for
     private String title;
@@ -15,6 +17,16 @@ public class BookNote {
     private String body; // the contents of the note
     private String color;
     private int SeqNo;
+
+    public BookNote(){}
+
+    public BookNote(String noteId, String bookId, String title, String date, String body){
+        this.noteId = noteId;
+        this.bookId = bookId;
+        this.title = title;
+        this.date = date;
+        this.body = body;
+    }
 
     public String getNoteId() {
         return noteId;
