@@ -1,8 +1,11 @@
 package com.awchoudhary.bookpocket.ui.viewbookscreen;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.awchoudhary.bookpocket.R;
+import com.awchoudhary.bookpocket.ui.mybooksscreen.NoteDialogFragment;
 import com.awchoudhary.bookpocket.util.DatabaseHandler;
 import com.awchoudhary.bookpocket.util.DatePickerCustom;
 
@@ -35,13 +39,16 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
     private boolean isActionMode; // indicates if action mode is active
     private ActionMode actionMode;
     private DatabaseHandler db;
+    private String bookId;
+    private int recentSelectedIndex = 0; // The index in the notes array for the most recently selected item
 
     //keeps track of selected cards
     private SparseBooleanArray selectedItems;
 
-    public NotesAdapter(ArrayList<BookNote> notes, Context context){
+    public NotesAdapter(ArrayList<BookNote> notes, String bookId, Context context){
         this.context = context;
         this.notes = notes;
+        this.bookId = bookId;
         selectedItems = new SparseBooleanArray();
         db = new DatabaseHandler(context);
     }
@@ -97,36 +104,13 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
                 }
 
                 else{
-                    //get dialog and set title
-                    final Dialog dialog = new Dialog(context, R.style.NoteDialog);
-                    dialog.setContentView(R.layout.dialog_note);
-                    dialog.getWindow().setBackgroundDrawableResource(R.drawable.note_dialog_background);
-                    dialog.setTitle("Edit Note");
+                    // Create and show the dialog.
+                    FragmentTransaction ft = ((TabManagerActivity)context).getSupportFragmentManager().beginTransaction();
+                    NoteDialogFragment noteDialog = NoteDialogFragment.newInstance(notes.get(noteViewHolder.getAdapterPosition()), bookId);
+                    noteDialog.show(ft, "dialog");
 
-                    //populate fields with note values
-                    ((EditText) dialog.findViewById(R.id.input_note_title)).setText(note.getTitle());
-                    ((EditText) dialog.findViewById(R.id.input_note_date)).setText(note.getDate());
-                    ((EditText) dialog.findViewById(R.id.input_note_title)).setText(note.getBody());
-
-                    //set date input as a date picker
-                    EditText dateInput = (EditText) dialog.findViewById(R.id.input_note_date);
-                    new DatePickerCustom(context, dateInput);
-
-                    //set event handler for save button
-                    Button saveButton = (Button) dialog.findViewById(R.id.saveButton);
-                    saveButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            updateNote(note, dialog);
-
-                            //refresh view
-                            notifyDataSetChanged();
-
-                            //hide dialog
-                            dialog.dismiss();
-                        }
-                    });
-                    dialog.show();
+                    //update recentSelectedIndex
+                    recentSelectedIndex = noteViewHolder.getAdapterPosition();
                 }
             }
         });
@@ -212,6 +196,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
             items.add(selectedItems.keyAt(i));
         }
         return items;
+    }
+
+    public int getRecentSelectedIndex(){
+        return recentSelectedIndex;
     }
 
     public static class NoteViewHolder extends RecyclerView.ViewHolder {

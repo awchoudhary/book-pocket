@@ -1,7 +1,6 @@
 package com.awchoudhary.bookpocket.ui.viewbookscreen;
 
 import android.app.Dialog;
-
 import com.awchoudhary.bookpocket.R;
 import com.awchoudhary.bookpocket.ui.mybooksscreen.NoteDialogFragment;
 import com.awchoudhary.bookpocket.util.ReadingStatus;
@@ -16,7 +15,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-
 import android.content.DialogInterface;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -30,7 +28,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 
 /**
@@ -78,7 +75,7 @@ public class NotesTabFragment extends Fragment{
         //initialize recycle view and set adapter
         notesRecycleView = (RecyclerView) tabLayout.findViewById(R.id.rv);
         notesRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new NotesAdapter(new ArrayList<BookNote>(), getActivity());
+        adapter = new NotesAdapter(new ArrayList<BookNote>(), book.getId(), getActivity());
         notesRecycleView.setAdapter(adapter);
         notesRecycleView.setNestedScrollingEnabled(true);
 
@@ -206,7 +203,7 @@ public class NotesTabFragment extends Fragment{
     private void loadNotesForBook(){
         //clear adapter
         notesRecycleView.setAdapter(null);
-        adapter = new NotesAdapter(new ArrayList<BookNote>(), getActivity());
+        adapter = new NotesAdapter(new ArrayList<BookNote>(), book.getId(), getActivity());
         notesRecycleView.setAdapter(adapter);
 
         Query query = mDatabase.child("notes").orderByChild("bookId").equalTo(book.getId());
@@ -221,7 +218,7 @@ public class NotesTabFragment extends Fragment{
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
-
+                adapter.notifyItemChanged(adapter.getRecentSelectedIndex());
             }
 
             @Override

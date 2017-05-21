@@ -67,9 +67,7 @@ public class NoteDialogFragment extends DialogFragment{
         View dialogView = inflater.inflate(R.layout.dialog_note, container, false);
 
         //if we are editing a note, populate dialog
-        if(isEdit){
-            populate(note);
-        }
+        if(isEdit){ populate(note, dialogView); }
 
         //initialize date pickers
         new DatePickerCustom(getActivity(), (EditText) dialogView.findViewById(R.id.input_note_date));
@@ -79,7 +77,12 @@ public class NoteDialogFragment extends DialogFragment{
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                save((isEdit) ? note.getNoteId() : null);
+                if(isEdit){
+                    updateNote();
+                }
+                else{
+                    createNote();
+                }
                 dismiss();
                 Toast.makeText(getActivity(), (isEdit) ? "Note Updated" : "New Note Created", Toast.LENGTH_SHORT).show();
             }
@@ -88,21 +91,17 @@ public class NoteDialogFragment extends DialogFragment{
         return dialogView;
     }
 
-    private void populate(BookNote note){
-        View view = getView();
-
+    private void populate(BookNote note, View view){
         ((EditText)(view.findViewById(R.id.input_note_title))).setText(note.getTitle());
         ((EditText)(view.findViewById(R.id.input_note_date))).setText(note.getDate());
         ((EditText)(view.findViewById(R.id.input_note_body))).setText(note.getBody());
     }
 
-    private void save(String noteId){
+    private void createNote(){
         View view = getView();
 
         //get unique id for note if we are not editing an existing note
-        if(!isEdit){
-            noteId = mDatabase.child("notes").push().getKey();
-        }
+        String noteId = mDatabase.child("notes").push().getKey();
 
         //create note object
         BookNote note = new BookNote(noteId, bookId
@@ -112,5 +111,16 @@ public class NoteDialogFragment extends DialogFragment{
 
         //create or update new note
         mDatabase.child("notes").child(noteId).setValue(note);
+    }
+
+    private void updateNote(){
+        View view = getView();
+
+        //update note with new values
+        note.setTitle(((EditText)(view.findViewById(R.id.input_note_title))).getText().toString());
+        note.setDate(((EditText)(view.findViewById(R.id.input_note_date))).getText().toString());
+        note.setBody(((EditText)(view.findViewById(R.id.input_note_body))).getText().toString());
+
+        mDatabase.child("notes").child(note.getNoteId()).setValue(note);
     }
 }
