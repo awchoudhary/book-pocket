@@ -24,6 +24,9 @@ import com.awchoudhary.bookpocket.R;
 import com.awchoudhary.bookpocket.ui.mybooksscreen.NoteDialogFragment;
 import com.awchoudhary.bookpocket.util.DatabaseHandler;
 import com.awchoudhary.bookpocket.util.DatePickerCustom;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +37,7 @@ import java.util.List;
  */
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHolder>{
+    private DatabaseReference mDatabase;
     private Context context;
     private ArrayList<BookNote> notes;
     private boolean isActionMode; // indicates if action mode is active
@@ -51,6 +55,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
         this.bookId = bookId;
         selectedItems = new SparseBooleanArray();
         db = new DatabaseHandler(context);
+        mDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
     @Override
@@ -235,20 +240,22 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
                     //remove all selected items from the list
                     List<Integer> selectedItemPositions = getSelectedItems();
                     for (int i = selectedItemPositions.size()-1; i >= 0; i--) {
-                        BookNote note = notes.get(selectedItemPositions.get(i).intValue());
+                        final int position = selectedItemPositions.get(i);
+                        BookNote note = notes.get(position);
 
-                        //remove note from adapter list
-                        notes.remove(selectedItemPositions.get(i).intValue());
-
-                        //remove note from db
-                        db.deleteBookNote(note);
+                        mDatabase.child("notes").child(note.getNoteId()).removeValue(new DatabaseReference.CompletionListener() {
+                            @Override
+                            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                notes.remove(position);
+                                notifyItemRemoved(position);
+                            }
+                        });
                     }
 
                     //display confirmation message
                     showMessage(getSelectedItemCount() + " notes deleted.");
 
                     actionMode.finish();
-                    notifyDataSetChanged();
                     return true;
                 default:
                     return false;
