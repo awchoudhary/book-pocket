@@ -15,6 +15,7 @@ import com.awchoudhary.bookpocket.ui.editbookscreen.CreateBookActivity;
 import com.awchoudhary.bookpocket.ui.mybooksscreen.Book;
 import com.awchoudhary.bookpocket.ui.mybooksscreen.MainActivity;
 import com.awchoudhary.bookpocket.util.DatabaseHandler;
+import com.awchoudhary.bookpocket.util.ReadingStatus;
 
 /**
  * Created by awaeschoudhary on 3/21/17.
@@ -40,6 +41,10 @@ public class TabManagerActivity extends AppCompatActivity{
         if(intent.hasExtra("book")){
             book = (Book)intent.getSerializableExtra("book");
         }
+
+        //set titles
+        getSupportActionBar().setTitle(book.getName());
+        setStatusText();
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("Details"));
@@ -96,6 +101,17 @@ public class TabManagerActivity extends AppCompatActivity{
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setStatusText(){
+        if(book.getReadingStatus() != null){
+            if(book.getReadingStatus().equals(ReadingStatus.READING.toString()) && book.getDateStarted() != null){
+                getSupportActionBar().setSubtitle("Started on " + book.getDateStarted());
+            }
+            else if(book.getReadingStatus().equals(ReadingStatus.COMPLETED.toString()) && book.getDateCompleted() != null){
+                getSupportActionBar().setSubtitle("Completed on " + book.getDateCompleted());
+            }
+        }
     }
 
 }

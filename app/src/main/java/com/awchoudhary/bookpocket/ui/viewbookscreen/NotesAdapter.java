@@ -78,11 +78,11 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
         String noteBody = note.getBody();
 
         //set the title and date view text
-        if(!title.equals("") && date != null){
+        if(!title.equals("") && !date.equals("")){
             //Title (date) format
             noteViewHolder.titleAndDateView.setText(title + " (" + date + ")");
         }
-        else if(date == null){
+        else if(date.equals("")){
             //just title
             noteViewHolder.titleAndDateView.setText(title);
         }
