@@ -16,6 +16,8 @@ import com.awchoudhary.bookpocket.util.DatabaseHandler;
 import com.awchoudhary.bookpocket.util.DatePickerCustom;
 import com.awchoudhary.bookpocket.util.DateTimeHelper;
 import com.awchoudhary.bookpocket.util.ReadingStatus;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * Created by awaeschoudhary on 4/15/17.
@@ -201,7 +203,8 @@ public class UpdateStatusDialogFragment extends DialogFragment {
         }
 
         //update the book
-        db.updateBook(book);
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("books").child(book.getId()).setValue(book);
 
         //hide dialog
         dismiss();

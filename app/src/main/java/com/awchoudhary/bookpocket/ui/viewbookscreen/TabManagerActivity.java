@@ -3,11 +3,14 @@ package com.awchoudhary.bookpocket.ui.viewbookscreen;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.awchoudhary.bookpocket.R;
@@ -33,19 +36,22 @@ public class TabManagerActivity extends AppCompatActivity{
         Intent intent = getIntent();
 
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_tab_manager);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        //set toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_tab_manager);
         setSupportActionBar(toolbar);
 
-        //if a book was passed to the view, update book object.
+        //get book to be viewed within the activity
         if(intent.hasExtra("book")){
             book = (Book)intent.getSerializableExtra("book");
         }
 
-        //set titles
+        //set titles for toolbar
         getSupportActionBar().setTitle(book.getName());
-        setStatusText();
 
+        //create tablayout and add tabs
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("Details"));
         tabLayout.addTab(tabLayout.newTab().setText("Notes & Progress"));
@@ -101,17 +107,6 @@ public class TabManagerActivity extends AppCompatActivity{
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private void setStatusText(){
-        if(book.getReadingStatus() != null){
-            if(book.getReadingStatus().equals(ReadingStatus.READING.toString()) && book.getDateStarted() != null){
-                getSupportActionBar().setSubtitle("Started on " + book.getDateStarted());
-            }
-            else if(book.getReadingStatus().equals(ReadingStatus.COMPLETED.toString()) && book.getDateCompleted() != null){
-                getSupportActionBar().setSubtitle("Completed on " + book.getDateCompleted());
-            }
-        }
     }
 
 }
