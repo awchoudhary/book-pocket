@@ -15,28 +15,35 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <RelativeLayout
-            android:id="@+id/statusBox"
+        <android.support.v7.widget.CardView
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/card_view_date_started"
             app:layout_widthPercent="100%"
-            app:layout_heightPercent="5%"
+            app:layout_heightPercent="7%"
             android:layout_alignParentTop="true"
-            android:layout_marginBottom="10dp">
+            card_view:cardBackgroundColor="@color/colorStatusCompletedBg">
 
-            <TextView
-                android:id="@+id/status_text"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:textColor="@color/colorAccent"
-                android:textSize="14dp"
-                android:textStyle="bold"
-                android:layout_centerHorizontal="true"
-                android:text="To Start Reading By Tuesday, April 11th" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                >
 
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/status_text"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/colorStatusCompletedText"
+                    android:layout_centerHorizontal="true" />
+
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.RecyclerView
             app:layout_widthPercent="100%"
-            app:layout_heightPercent="95%"
+            app:layout_heightPercent="93%"
             android:layout_alignParentBottom="true"
             android:id="@+id/rv" />
 

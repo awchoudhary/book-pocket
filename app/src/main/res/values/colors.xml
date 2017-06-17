@@ -9,4 +9,6 @@
     <color name="colorBackground">#FCF8F0</color>
     <color name="grey">#bfbfbf</color>
     <color name="colorSelectedCard">#dedede</color>
+    <color name="colorStatusCompletedBg">#ccffcc</color>
+    <color name="colorStatusCompletedText">#009900</color>
 </resources>
