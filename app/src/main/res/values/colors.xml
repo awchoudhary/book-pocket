@@ -11,4 +11,6 @@
     <color name="colorSelectedCard">#dedede</color>
     <color name="colorStatusCompletedBg">#ccffcc</color>
     <color name="colorStatusCompletedText">#009900</color>
+    <color name="colorStatusStartedBg">#ffedcc</color>
+    <color name="colorStatusStartedText">#ffa600</color>
 </resources>

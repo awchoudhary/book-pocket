@@ -70,7 +70,7 @@ public class NotesTabFragment extends Fragment{
         //get database reference
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        updateStatusBox(tabLayout);
+        displayStatusCards(tabLayout);
 
         //initialize recycle view and set adapter
         notesRecycleView = (RecyclerView) tabLayout.findViewById(R.id.rv);
@@ -172,31 +172,29 @@ public class NotesTabFragment extends Fragment{
         newFragment.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
-                updateStatusBox(tabLayout);
+                displayStatusCards(tabLayout);
             }
         });
     }
 
+    private void displayStatusCards(View view){
 
-    private void updateStatusBox(View view){
-        TextView statusText = (TextView) view.findViewById(R.id.status_text);
-        if(book.getReadingStatus() != null){
-            statusText.setTextColor(getResources().getColor(R.color.colorAccent));
-
-            if(book.getReadingStatus().equals(ReadingStatus.WANT_TO_READ.toString())){
-                statusText.setText("To Start on " + book.getDateToReadBy());
-            }else if(book.getReadingStatus().equals(ReadingStatus.READING.toString())){
-                statusText.setText("Started on " + book.getDateStarted());
-            }else if(book.getReadingStatus().equals(ReadingStatus.COMPLETED.toString())){
-                statusText.setText("Completed on " + book.getDateCompleted());
-            }else if(book.getReadingStatus().equals(ReadingStatus.NO_STATUS.toString())){
-                statusText.setText("Update Reading Status Using Bottom Button");
-                statusText.setTextColor(getResources().getColor(R.color.light_grey));
-            }
+        //show or hide date started reading
+        if(book.getDateStarted() != null && !book.getDateStarted().equals("")){
+            ((TextView) (view.findViewById(R.id.text_status_started))).setText("Started on " + book.getDateStarted());
+            view.findViewById(R.id.text_status_started).setVisibility(View.VISIBLE);
         }
         else{
-            statusText.setText("Update Reading Status Using Bottom Button");
-            statusText.setTextColor(getResources().getColor(R.color.light_grey));
+            view.findViewById(R.id.card_view_date_started).setVisibility(View.GONE);
+        }
+
+        //show or hide date completed
+        if(book.getDateCompleted() != null && !book.getDateCompleted().equals("")){
+            ((TextView) (view.findViewById(R.id.text_status_completed))).setText("Completed on " + book.getDateCompleted());
+            view.findViewById(R.id.text_status_completed).setVisibility(View.VISIBLE);
+        }
+        else{
+            view.findViewById(R.id.card_view_date_completed).setVisibility(View.GONE);
         }
     }
 
