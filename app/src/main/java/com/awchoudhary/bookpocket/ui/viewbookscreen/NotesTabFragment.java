@@ -182,7 +182,7 @@ public class NotesTabFragment extends Fragment{
         //show or hide date started reading
         if(book.getDateStarted() != null && !book.getDateStarted().equals("")){
             ((TextView) (view.findViewById(R.id.text_status_started))).setText("Started on " + book.getDateStarted());
-            view.findViewById(R.id.text_status_started).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.card_view_date_started).setVisibility(View.VISIBLE);
         }
         else{
             view.findViewById(R.id.card_view_date_started).setVisibility(View.GONE);
@@ -191,7 +191,7 @@ public class NotesTabFragment extends Fragment{
         //show or hide date completed
         if(book.getDateCompleted() != null && !book.getDateCompleted().equals("")){
             ((TextView) (view.findViewById(R.id.text_status_completed))).setText("Completed on " + book.getDateCompleted());
-            view.findViewById(R.id.text_status_completed).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.card_view_date_completed).setVisibility(View.VISIBLE);
         }
         else{
             view.findViewById(R.id.card_view_date_completed).setVisibility(View.GONE);
