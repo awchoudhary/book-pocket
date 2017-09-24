@@ -30,6 +30,8 @@ import com.awchoudhary.bookpocket.util.DatabaseHandler;
 import com.awchoudhary.bookpocket.util.DatePickerCustom;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -51,13 +53,11 @@ import java.util.Date;
  */
 public class CreateBookActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
-    private DateTimeHelper dateTimeHelper = new DateTimeHelper();
     private String shelfId;
     //book that is being created/edited
     private Book book = new Book();
 
-    //True if book is being created and False if it is being edited. True by default.
-    private boolean newBook = true;
+    private boolean isNewBook = true;
 
     //indicates if a new cover image was uploaded
     private boolean isNewCoverImage = false;
@@ -74,7 +74,6 @@ public class CreateBookActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarSearch);
         setSupportActionBar(toolbar);
 
-        //get database reference
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         Intent intent = getIntent();
@@ -85,7 +84,7 @@ public class CreateBookActivity extends AppCompatActivity {
 
             //if book has an ID, it already exists in the DB and is therefore being edited.
             if(book.getId() != null){
-                newBook = false;
+                isNewBook = false;
             }
 
             populate(book);
@@ -145,7 +144,7 @@ public class CreateBookActivity extends AppCompatActivity {
         }
     }
 
-    //called on resturn from dialog activity
+    //called on return from dialog activity
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (requestCode == SELECT_IMAGE) {
@@ -183,6 +182,7 @@ public class CreateBookActivity extends AppCompatActivity {
         ImageView cover = (ImageView) findViewById(R.id.coverImage);
         Glide.with(this)
                 .load(book.getCoverUrl())
+                .asBitmap() //ensures that bitmap is a BitmapDrawable object
                 .placeholder(R.drawable.default_cover_image_big)
                 .error(R.drawable.default_cover_image_big)
                 .override(257, 389) //TODO: Needs to be responsive
@@ -190,9 +190,6 @@ public class CreateBookActivity extends AppCompatActivity {
     }
 
     private boolean save() {
-        //handles db interactions
-        DatabaseHandler dbHandler = new DatabaseHandler(this);
-
         //get all text field inputs
         String title = ((EditText) findViewById(R.id.titleInput)).getText().toString();
         String subtitle = ((EditText) findViewById(R.id.subtitleInput)).getText().toString();
@@ -214,7 +211,9 @@ public class CreateBookActivity extends AppCompatActivity {
         }
 
         //set id for book
-        book.setId(mDatabase.child("books").push().getKey());
+        if(isNewBook){
+            book.setId(mDatabase.child("books").push().getKey());
+        }
 
         //update book with text inputs
         book.setName(title);
@@ -227,17 +226,11 @@ public class CreateBookActivity extends AppCompatActivity {
         book.setDescription(description);
 
         //save the cover image if it was changed
-        if(isNewCoverImage){
+        if(isNewCoverImage || isNewBook){
             uploadImageToFirebase(book);
         }
 
-        //update or create a new book
-        if(newBook){
-            saveToFirebase(book);
-        }
-        else{
-            dbHandler.updateBook(book);
-        }
+        saveToFirebase(book);
 
         return true;
     }
@@ -259,30 +252,6 @@ public class CreateBookActivity extends AppCompatActivity {
         //save new shelf
         mDatabase.child("books").child(book.getId()).setValue(book);
 
-    }
-
-    //save cover image on device and set book coverUrl to the local path TODO: Error checking of some sort
-    private void saveCoverImage(Book book){
-        //set the local image path (where image is going to be downloaded) as cover url
-        File localImageFile = getOutputImageFile();
-
-        book.setCoverUrl(localImageFile.getPath());
-
-        //get bitmap for the image in imageview
-        ImageView imageView = (ImageView) findViewById(R.id.coverImage);
-        Bitmap bitmap;
-
-        //The bitmap for default cover image is of type BitmapDrawable whereas images obtained from the api are GlideBitmapDrawables.
-        if(imageView.getDrawable() instanceof GlideBitmapDrawable){
-            bitmap = ((GlideBitmapDrawable)imageView.getDrawable()).getBitmap();
-        }
-        else {
-            bitmap = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
-        }
-
-        //save image to local path
-        SaveImageTask task = new SaveImageTask(this, bitmap);
-        task.execute(localImageFile);
     }
 
     private void uploadImageToFirebase(final Book book){
@@ -307,7 +276,7 @@ public class CreateBookActivity extends AppCompatActivity {
         // Create a storage reference from our app
         StorageReference storageRef = storage.getReference();
 
-        // Create a reference to "mountains.jpg"
+        // Create a reference to the image
         StorageReference imageRef = storageRef.child(book.getId() + ".jpg");
 
         UploadTask uploadTask = imageRef.putBytes(data);
@@ -324,26 +293,6 @@ public class CreateBookActivity extends AppCompatActivity {
                 book.setCoverUrl(downloadUrl.toString());
             }
         });
-    }
-
-    /* Create a File for saving an image */
-    private File getOutputImageFile(){
-        File mediaStorageDir = new File(Environment.getExternalStorageDirectory().getPath()
-                                        + "/Android/data/"
-                                        + getApplicationContext().getPackageName()
-                                        + "/Files");
-
-        //if directory doesn't exist, create one.
-        if (! mediaStorageDir.exists()){
-            mediaStorageDir.mkdirs();
-        }
-
-        // Create a media file name. Use current date and time to ensure unique name for all images.
-        String timeStamp = new SimpleDateFormat("ddMMyyyy_HHmmss").format(new Date());
-        File mediaFile;
-        String mImageName="MI_"+ timeStamp +".jpg";
-        mediaFile = new File(mediaStorageDir.getPath() + File.separator + mImageName);
-        return mediaFile;
     }
 
     //check if permission was granted to access storage. If not, ask for it. Only for > Marshmallow.
