@@ -50,7 +50,7 @@ public class ShelfAdapter extends RecyclerView.Adapter<ShelfAdapter.BookViewHold
                 .load(book.getCoverUrl())
                 .placeholder(R.drawable.default_cover_image)
                 .error(R.drawable.default_cover_image)
-                .override(131, 200) //TODO: Needs to be responsive
+                //.override(131, 200) //TODO: Needs to be responsive
                 .into(bookViewHolder.coverImageView);
 
         //set values
