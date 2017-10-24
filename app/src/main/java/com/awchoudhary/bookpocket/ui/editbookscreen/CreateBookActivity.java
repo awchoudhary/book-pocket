@@ -247,7 +247,9 @@ public class CreateBookActivity extends AppCompatActivity {
         }
 
         //create and set user shelf id
-        book.setUserShelfId(userId + shelfId);
+        if(isNewBook){
+            book.setUserShelfId(userId + shelfId);
+        }
 
         //save new shelf
         mDatabase.child("books").child(book.getId()).setValue(book);
