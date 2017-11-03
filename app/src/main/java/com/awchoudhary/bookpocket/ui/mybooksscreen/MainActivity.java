@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,24 +18,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.awchoudhary.bookpocket.R;
 import com.awchoudhary.bookpocket.ui.searchscreen.SearchBooksActivity;
 import com.awchoudhary.bookpocket.ui.signinscreen.SignInActivity;
-import com.awchoudhary.bookpocket.ui.viewbookscreen.TabManagerActivity;
-import com.awchoudhary.bookpocket.ui.viewbookscreen.UpdateStatusDialogFragment;
-import com.awchoudhary.bookpocket.util.DatabaseHandler;
 import com.github.clans.fab.FloatingActionButton;
 
 import com.github.clans.fab.FloatingActionMenu;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -46,8 +38,7 @@ import com.google.firebase.database.Query;
 import java.util.ArrayList;
 
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, SearchView.OnQueryTextListener {
     //id for default shelves that all users will have
     private final String MY_BOOKS_SHELF_ID = "my-books";
 
@@ -75,15 +66,14 @@ public class MainActivity extends AppCompatActivity
         //get database reference
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        // Listview to populate
+        // RecyclerView to populate
         booksList = (RecyclerView) findViewById(R.id.recycle_view_books);
         booksList.setLayoutManager(new LinearLayoutManager(this));
         booksList.setNestedScrollingEnabled(true);
 
         // set adapter for listview
-        adapter = new ShelfAdapter(this, new ArrayList<Book>());
+        adapter = new ShelfAdapter(this, new ArrayList<Book>(), new ArrayList<Book>());
         booksList.setAdapter(adapter);
-
 
         //attach event handlers
         FloatingActionMenu fabMenu = (FloatingActionMenu) findViewById(R.id.fab_main_activity);
@@ -99,7 +89,6 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -145,6 +134,23 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+
+        final MenuItem searchItem = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setOnQueryTextListener(this);
+
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        adapter.filter(query);
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        adapter.filter(newText);
         return true;
     }
 
@@ -159,9 +165,9 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.action_settings) {
             return true;
         }
-        else if(id == R.id.action_search){
+        /*else if(id == R.id.action_search){
             return onSearchRequested();
-        }
+        }*/
 
         return super.onOptionsItemSelected(item);
     }
@@ -248,7 +254,7 @@ public class MainActivity extends AppCompatActivity
     private void loadCurrentShelf(){
         //clear adapter
         booksList.setAdapter(null);
-        adapter = new ShelfAdapter(this, new ArrayList<Book>());
+        adapter = new ShelfAdapter(this, new ArrayList<Book>(), new ArrayList<Book>());
         booksList.setAdapter(adapter);
 
         Query query = mDatabase.child("books").orderByChild("userShelfId").equalTo(currentUser.getUid() + currentShelfId);

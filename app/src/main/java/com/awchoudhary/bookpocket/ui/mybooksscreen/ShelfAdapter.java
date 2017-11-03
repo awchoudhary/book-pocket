@@ -23,10 +23,13 @@ import java.util.ArrayList;
 public class ShelfAdapter extends RecyclerView.Adapter<ShelfAdapter.BookViewHolder> {
     private Context context;
     private ArrayList<Book> books;
+    //Keeps track of books within RecyclerView as books array can be filtered on search
+    private ArrayList<Book> booksCopy;
 
-    public ShelfAdapter(Context context, ArrayList<Book> books){
+    public ShelfAdapter(Context context, ArrayList<Book> books, ArrayList<Book> booksCopy){
         this.context = context;
         this.books = books;
+        this.booksCopy = booksCopy;
     }
 
     @Override
@@ -79,11 +82,30 @@ public class ShelfAdapter extends RecyclerView.Adapter<ShelfAdapter.BookViewHold
 
     public void updateEntries(Book book) {
         books.add(book);
+        booksCopy.add(book);
         notifyDataSetChanged();
     }
 
     public void clearEntries(){
         books.clear();
+    }
+
+    public void filter(String text) {
+        books.clear();
+
+        if(text.isEmpty()){
+            books.addAll(booksCopy);
+        }
+        else{
+            text = text.toLowerCase();
+            for(Book book: booksCopy){
+                if(book.getName().toLowerCase().contains(text)){
+                    books.add(book);
+                }
+            }
+        }
+
+        notifyDataSetChanged();
     }
 
     public static class BookViewHolder extends RecyclerView.ViewHolder {

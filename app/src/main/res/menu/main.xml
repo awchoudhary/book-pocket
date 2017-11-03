@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never" />
+
     <item android:id="@+id/action_search"
-        android:icon="@drawable/icon_search"
         android:title="@string/hint_search"
         app:showAsAction="ifRoom"
+        app:actionViewClass="android.support.v7.widget.SearchView"
         android:orderInCategory="1"
-        android:menuCategory="secondary"/>
+        android:menuCategory="secondary"
+        android:icon="@drawable/icon_search"
+        />
+
 </menu>
