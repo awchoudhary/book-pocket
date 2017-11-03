@@ -60,6 +60,13 @@ public class ShelfAdapter extends RecyclerView.Adapter<ShelfAdapter.BookViewHold
         bookViewHolder.titleTextView.setText(book.getName());
         bookViewHolder.authorTextView.setText(book.getAuthor());
 
+        if(book.getDateCompleted() != null && !book.getDateCompleted().isEmpty()){
+            bookViewHolder.dateTextView.setText(book.getDateCompleted());
+        }
+        else if(book.getDateStarted() != null && !book.getDateStarted().isEmpty()){
+            bookViewHolder.dateTextView.setText(book.getDateStarted());
+        }
+
         //set cardview properties
         bookViewHolder.cardView.setCardBackgroundColor(Color.parseColor("#ffffff"));
         bookViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
@@ -112,16 +119,16 @@ public class ShelfAdapter extends RecyclerView.Adapter<ShelfAdapter.BookViewHold
         CardView cardView;
         TextView titleTextView;
         TextView authorTextView;
+        TextView dateTextView;
         ImageView coverImageView;
 
         BookViewHolder(View itemView) {
             super(itemView);
             cardView = (CardView) itemView.findViewById(R.id.card_book);
-            titleTextView = (TextView)itemView.findViewById(R.id.title);
-            authorTextView = (TextView)itemView.findViewById(R.id.author);
-            coverImageView = (ImageView)itemView.findViewById(R.id.coverImage);
+            titleTextView = (TextView)itemView.findViewById(R.id.card_book_title);
+            authorTextView = (TextView)itemView.findViewById(R.id.card_book_author);
+            dateTextView = (TextView)itemView.findViewById(R.id.card_book_date);
+            coverImageView = (ImageView)itemView.findViewById(R.id.card_book_coverImage);
         }
     }
-
-
 }

@@ -13,7 +13,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/coverImage"
+            android:id="@+id/card_book_coverImage"
             android:layout_width="50dp"
             android:layout_height="78dp" />
 
@@ -24,19 +24,19 @@
             android:paddingStart="@dimen/default_element_margin">
 
             <TextView
-                android:id="@+id/title"
+                android:id="@+id/card_book_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/author"
+                android:id="@+id/card_book_author"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="5dp"/>
 
             <TextView
-                android:id="@+id/date"
+                android:id="@+id/card_book_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="italic"

@@ -19,6 +19,10 @@ import com.awchoudhary.bookpocket.util.ReadingStatus;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 /**
  * Created by awaeschoudhary on 4/15/17.
  */
@@ -85,12 +89,11 @@ public class UpdateStatusDialogFragment extends DialogFragment {
         //update book with dates
         String dateStarted = ((EditText)dialogView.findViewById(R.id.input_date_started_reading))
                 .getText().toString();
-        book.setDateStarted(dateStarted);
+        book.setDateStarted(formatDate(dateStarted));
 
         String dateCompleted = ((EditText)dialogView.findViewById(R.id.input_date_completed))
                 .getText().toString();
-
-        book.setDateCompleted(dateCompleted);
+        book.setDateCompleted(formatDate(dateCompleted));
 
         //update the book
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -113,4 +116,16 @@ public class UpdateStatusDialogFragment extends DialogFragment {
         }
     }
 
+    //Convert date string from MM/dd/YYYY to Month, day Year format
+    private String formatDate(String dateString){
+        if(dateString == null || dateString.isEmpty()){
+            return null;
+        }
+
+        DateTimeFormatter dtf = DateTimeFormat.forPattern("MM/dd/yyyy");
+
+        DateTime dateTimeString = dtf.parseDateTime(dateString);
+
+        return dateTimeString.toString(DateTimeFormat.mediumDate());
+    }
 }
