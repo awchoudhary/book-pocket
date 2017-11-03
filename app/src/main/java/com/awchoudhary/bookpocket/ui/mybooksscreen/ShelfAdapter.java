@@ -61,10 +61,10 @@ public class ShelfAdapter extends RecyclerView.Adapter<ShelfAdapter.BookViewHold
         bookViewHolder.authorTextView.setText(book.getAuthor());
 
         if(book.getDateCompleted() != null && !book.getDateCompleted().isEmpty()){
-            bookViewHolder.dateTextView.setText(book.getDateCompleted());
+            bookViewHolder.dateTextView.setText("Completed " + book.getDateCompleted());
         }
         else if(book.getDateStarted() != null && !book.getDateStarted().isEmpty()){
-            bookViewHolder.dateTextView.setText(book.getDateStarted());
+            bookViewHolder.dateTextView.setText("Started " + book.getDateStarted());
         }
 
         //set cardview properties
