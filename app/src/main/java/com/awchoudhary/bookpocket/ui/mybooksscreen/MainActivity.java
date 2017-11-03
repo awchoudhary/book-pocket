@@ -107,10 +107,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Check if user is signed in (non-null) and update UI accordingly.
         currentUser = mAuth.getCurrentUser();
 
-        if(currentUser != null){
-            Toast.makeText(this, "Logged in as " + currentUser.getEmail(), Toast.LENGTH_SHORT).show();
-        }
-
         //load shelves into nav drawer if they are not already loaded
         if(shelves.size() == 0){
             populateNavigationDrawer();
@@ -206,13 +202,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onResume(){
         super.onResume();
-    }
-
-    //called when search is made
-    @Override
-    protected void onNewIntent(Intent intent) {
-        setIntent(intent);
-        Toast.makeText(this, intent.getStringExtra(SearchManager.QUERY), Toast.LENGTH_SHORT).show();
     }
 
     private void populateNavigationDrawer(){

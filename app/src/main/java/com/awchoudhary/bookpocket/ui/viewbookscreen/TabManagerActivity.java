@@ -19,6 +19,9 @@ import com.awchoudhary.bookpocket.ui.mybooksscreen.Book;
 import com.awchoudhary.bookpocket.ui.mybooksscreen.MainActivity;
 import com.awchoudhary.bookpocket.util.DatabaseHandler;
 import com.awchoudhary.bookpocket.util.ReadingStatus;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * Created by awaeschoudhary on 3/21/17.
@@ -98,11 +101,17 @@ public class TabManagerActivity extends AppCompatActivity{
         }
         else if(id == R.id.action_delete) {
             //delete and navigate to mybooks page.
-            DatabaseHandler db = new DatabaseHandler(this);
-            db.deleteBook(book);
-            Toast.makeText(getApplicationContext(), "Deleted " + book.getName(), Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(TabManagerActivity.this, MainActivity.class);
-            startActivity(intent);
+            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+
+            mDatabase.child("books").child(book.getId()).removeValue(new DatabaseReference.CompletionListener() {
+                @Override
+                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                    Intent intent = new Intent(TabManagerActivity.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                    startActivityIfNeeded(intent, 0);
+                }
+            });
+
             return true;
         }
 
