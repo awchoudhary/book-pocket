@@ -3,22 +3,17 @@ package com.awchoudhary.bookpocket.ui.viewbookscreen;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
 import com.awchoudhary.bookpocket.R;
 import com.awchoudhary.bookpocket.ui.editbookscreen.CreateBookActivity;
 import com.awchoudhary.bookpocket.ui.mybooksscreen.Book;
 import com.awchoudhary.bookpocket.ui.mybooksscreen.MainActivity;
-import com.awchoudhary.bookpocket.util.DatabaseHandler;
-import com.awchoudhary.bookpocket.util.ReadingStatus;
+
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;

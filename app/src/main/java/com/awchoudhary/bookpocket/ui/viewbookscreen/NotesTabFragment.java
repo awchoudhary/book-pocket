@@ -38,9 +38,6 @@ public class NotesTabFragment extends Fragment{
     //view for activity
     private View tabLayout;
 
-    //dialogs used in fragment
-    private Dialog createNoteDialog;
-
     //the book that is being edited
     private Book book;
 
@@ -105,33 +102,6 @@ public class NotesTabFragment extends Fragment{
         });
 
         return tabLayout;
-    }
-
-
-    //save note in db
-    private BookNote createNote(Dialog dialog){
-        DateTimeHelper dateHelper = new DateTimeHelper();
-        //get all text inputs
-        String title = ((EditText) dialog.findViewById(R.id.titleInput)).getText().toString();
-        String date = ((EditText) dialog.findViewById(R.id.input_note_date)).getText().toString();
-        String body = ((EditText) dialog.findViewById(R.id.input_note_body)).getText().toString();
-
-        //populate new book object with inputs
-        BookNote note = new BookNote();
-        note.setBookId(book.getId());
-
-        //only set date if non-empty, or the datehelper will return current date which we don't want
-        if(!date.equals("")){
-            note.setDate(date);
-        }
-        note.setTitle(title);
-        note.setBody(body);
-
-        //write to db
-        DatabaseHandler db = new DatabaseHandler(dialog.getContext());
-        db.createBookNote(note);
-
-        return note;
     }
 
     //show update status dialog

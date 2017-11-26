@@ -42,7 +42,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
     private ArrayList<BookNote> notes;
     private boolean isActionMode; // indicates if action mode is active
     private ActionMode actionMode;
-    private DatabaseHandler db;
     private String bookId;
     private int recentSelectedIndex = 0; // The index in the notes array for the most recently selected item
 
@@ -54,7 +53,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
         this.notes = notes;
         this.bookId = bookId;
         selectedItems = new SparseBooleanArray();
-        db = new DatabaseHandler(context);
         mDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
@@ -152,24 +150,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
     public void updateEntries(BookNote note) {
         notes.add(note);
         notifyDataSetChanged();
-    }
-
-    private void updateNote(BookNote note, Dialog dialog){
-        DatabaseHandler db = new DatabaseHandler(context);
-
-        //get all text inputs
-        String title = ((EditText) dialog.findViewById(R.id.input_note_title)).getText().toString();
-        String date = ((EditText) dialog.findViewById(R.id.input_note_date)).getText().toString();
-        String body = ((EditText) dialog.findViewById(R.id.input_note_body)).getText().toString();
-
-        //update note item
-        note.setTitle(title);
-        if(!date.equals("")){
-            note.setDate(date);
-        }
-        note.setBody(body);
-
-        db.updateBookNote(note);
     }
 
     //remove or add index to the selectedItems list
