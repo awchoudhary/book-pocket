@@ -184,8 +184,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             DialogFragment newFragment = CreateShelfDialogFragment.newInstance();
             newFragment.show(ft, "dialog");
-        }
-        else{
+        }else{
             Shelf shelf = shelves.get(id);
             currentShelfId = shelf.getShelfId();
             loadCurrentShelf();
@@ -250,7 +249,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
-                // A new comment has been added, add it to the displayed list
                 Book book = dataSnapshot.getValue(Book.class);
                 adapter.updateEntries(book);
             }

@@ -42,4 +42,16 @@ public class DateTimeHelper {
         return Days.daysBetween(new DateTime(), date).getDays();
     }
 
+    //Convert date string from MM/dd/YYYY to Month, day Year format
+    public static String formatDate(String dateString){
+        if(dateString == null || dateString.isEmpty()){
+            return null;
+        }
+
+        DateTimeFormatter dtf = DateTimeFormat.forPattern("MM/dd/yyyy");
+
+        DateTime dateTimeString = dtf.parseDateTime(dateString);
+
+        return dateTimeString.toString(DateTimeFormat.mediumDate());
+    }
 }

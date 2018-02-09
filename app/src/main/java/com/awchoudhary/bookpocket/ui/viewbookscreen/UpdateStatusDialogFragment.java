@@ -89,11 +89,11 @@ public class UpdateStatusDialogFragment extends DialogFragment {
         //update book with dates
         String dateStarted = ((EditText)dialogView.findViewById(R.id.input_date_started_reading))
                 .getText().toString();
-        book.setDateStarted(formatDate(dateStarted));
+        book.setDateStarted(dateStarted);
 
         String dateCompleted = ((EditText)dialogView.findViewById(R.id.input_date_completed))
                 .getText().toString();
-        book.setDateCompleted(formatDate(dateCompleted));
+        book.setDateCompleted(dateCompleted);
 
         //update the book
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -114,18 +114,5 @@ public class UpdateStatusDialogFragment extends DialogFragment {
             ((EditText)dialogView.findViewById(R.id.input_date_completed))
                     .setText(book.getDateCompleted());
         }
-    }
-
-    //Convert date string from MM/dd/YYYY to Month, day Year format
-    private String formatDate(String dateString){
-        if(dateString == null || dateString.isEmpty()){
-            return null;
-        }
-
-        DateTimeFormatter dtf = DateTimeFormat.forPattern("MM/dd/yyyy");
-
-        DateTime dateTimeString = dtf.parseDateTime(dateString);
-
-        return dateTimeString.toString(DateTimeFormat.mediumDate());
     }
 }
